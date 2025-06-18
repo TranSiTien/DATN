@@ -11,17 +11,17 @@ PYTHON_PATH="/root/DATN/CatRecognition2"
 
 echo "--- Starting/Restarting .NET WebServer ---"
 # cd into the directory first, then run the pm2 command
-cd "$DOTNET_PATH"
+cd "/root/DATN/PetConnect/WebServer"
 pm2 restart "dotnet run" --name "petconnect_webserver"
 
 echo "--- Starting/Restarting React App ---"
 # cd into the directory first, then run the pm2 command
-cd "$REACT_PATH"
+cd "/root/DATN/lost-pet-finder"
 pm2 restart "npm run dev" --name "petconnect_react_app"
 
 echo "--- Starting/Restarting Python Script ---"
 # cd into the directory first, then run the pm2 command
-cd "$PYTHON_PATH"
+cd "/root/DATN/CatRecognition2"
 pm2 restart "venv/bin/python lost_and_found_cat.py" --name "petconnect_cat_recognition"
 
 echo
