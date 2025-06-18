@@ -10,19 +10,22 @@ REACT_PATH="/root/DATN/lost-pet-finder"
 PYTHON_PATH="/root/DATN/CatRecognition2"
 
 echo "--- Starting/Restarting .NET WebServer ---"
-# cd into the directory, then use pm2 startOrRestart
+# Navigate to the directory first
 cd "$DOTNET_PATH"
-pm2 startOrRestart "dotnet run" --name "petconnect_webserver"
+# Use 'bash -c' to execute the command as a shell command
+pm2 startOrRestart "bash -c 'dotnet run'" --name "petconnect_webserver"
 
 echo "--- Starting/Restarting React App ---"
-# cd into the directory, then use pm2 startOrRestart
+# Navigate to the directory first
 cd "$REACT_PATH"
-pm2 startOrRestart "npm run dev" --name "petconnect_react_app"
+# Use 'bash -c' to execute the command as a shell command
+pm2 startOrRestart "bash -c 'npm run dev'" --name "petconnect_react_app"
 
 echo "--- Starting/Restarting Python Script ---"
-# cd into the directory, then use pm2 startOrRestart
+# Navigate to the directory first
 cd "$PYTHON_PATH"
-pm2 startOrRestart "venv/bin/python lost_and_found_cat.py" --name "petconnect_cat_recognition"
+# Use 'bash -c' to execute the command as a shell command
+pm2 startOrRestart "bash -c 'venv/bin/python lost_and_found_cat.py'" --name "petconnect_cat_recognition"
 
 echo
 echo "All services are now running or have been restarted under PM2."
