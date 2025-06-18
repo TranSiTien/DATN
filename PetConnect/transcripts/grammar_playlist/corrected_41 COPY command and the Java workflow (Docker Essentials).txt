@@ -1,0 +1,218 @@
+one very useful and interesting command
+is the copy command which allows you to
+copy
+a local file into
+an image now why is that
+we looked at how you can get code from
+your local file into an image by using a
+mount right so let's say i have a java
+file here
+hello
+java and let's say i have
+some code over here
+and i have a public static void main
+which prints hello world now i want to
+be able to run this inside a java
+container there are a bunch of different
+ways we can do this first we looked at
+how we can create a java
+container from a java image an open jdk
+image and then mount this file
+as a directory mod and so this file is
+going to be available inside
+the container well that's one way to do
+it another way to do it and this is a
+recommended way when you use something
+like dockerfile is to copy this
+hello.java file into the image itself so
+when you spin up a container the image
+is going to have the state of the file
+when you created that image okay and i'm
+going to demonstrate how to do this and
+then you'll know what's going on here so
+there is a copy
+command and this specifies hello.java
+which is the name of the file this file
+is right here next to the dockerfile so
+i can just specify the name of the file
+here and then i'm going to do a dot here
+because the current working directory is
+code right so the working directory is
+already in code so i'm going to say copy
+hello.java to the current directory
+which is code now if i were to run this
+uh if i were to create let me exit this
+guy here if i were to create an image
+from
+this dockerfile right now what it's done
+is while it's created the image just
+like it ran all these commands in order
+to create the image it has also run this
+one specific command which is to copy a
+file from this location
+into the image so every time i spin up a
+container
+i'm going to have the hello.java
+which is showing up over here in
+addition to all of the other files that
+i have put into the code directory right
+so this hello.java is
+what's over here right
+now let me exit this
+and let's say i change this to add a
+couple more exclamation points and i'm
+going to save this file now if i were to
+start a new container from that image
+what do you think happens
+what do you think is the contents of
+hello.java well the contents will still
+be
+what the contents of this file was when
+you created the image right because it
+was only when you created the image that
+this thing ran okay so when the image
+was created this copy command took what
+was the state of this file at the time
+and then copied it into the image now if
+you start a new container it is not
+going to alter the image right it's
+going to take the state of hello.java
+and what you're going to get
+inside right so let's say
+you see this there's just one
+exclamation point okay this is because
+we don't have
+the image created another time all
+you're doing is spinning up a container
+so if you really want the image to be
+updated you're going to have to run the
+image command build again you're going
+to have to build the image again with
+this updated hello java okay now if you
+were to run this
+and now if i connect to that image
+and now here
+you can see that it has the updated
+state okay this is an alternative way of
+having a file in your host
+system get copied over to the container
+rather than having a container from
+a pre-existing image and then mounting
+the file during container run time what
+you're doing is now that we have the
+ability to create our own images well
+why do the mounting at the last minute
+why not create an image with exactly the
+file that we need and then it's going to
+be available right so this is an
+alternative way of creating these
+containers which kind of work exactly
+like the way you want it to which run
+the application exactly the way you want
+it to and now the this combination of
+copy and run and cmd you can kind of
+understand how this workflow is going to
+go all right so here's what i'm going to
+do i'm going to create a couple more
+steps here to create this workflow of
+executing this hello.java inside a
+container okay so what i'm going to do
+first is once i've copied hello.java i'm
+going to run a java c command okay i'm
+going to say run
+java c
+hello.java okay so now after this is
+done
+in the code directory there's going to
+be a class file and now when i want this
+container to start i want the hello.java
+hello.class to be executed so what i'm
+going to do is here in the cmd instead
+of doing echo welcome to my container
+instance i'm going to do java
+hello okay and i'm going to open the
+shell so what's going to happen now is
+this is going to leverage the java.class
+that was created by this step and uh let
+me actually get rid of this guy this is
+not necessary so this is going to run
+javascript hello.java so the image is
+created with a class file in it in
+addition to the
+java file right this copies a java file
+into the image this runs the java c
+command so that the class file exists in
+the image in the code directory and now
+i'm saying hey when a container runs
+from that image just run java hello okay
+now of course this is not going to be
+available in alpine so i'm going to make
+this
+open
+jdk
+and let me choose 17
+and now i'm going to run
+i'm going to build this image okay so it
+is going to get the open jdk image and
+it is going to do all the stuff in that
+image and since it has java c and java
+these two commands are going to run and
+they're going to run at different times
+right this is going to run during image
+creation time and this is just saved as
+a command that needs to be run during
+container startup time and when i start
+the container that's when this command
+runs right let's take a look i'm going
+to run the container and you notice here
+this started the java
+interpreter which ran that hello class
+and created you know printed this
+message to the console and then shell
+ran and of course i can verify this by
+seeding to the code
+or maybe i am in code because code is a
+working directory all right so if i were
+to do ls you can see there is a
+hello.class that was created in this
+step during the image creation time and
+this was rendered during the container
+run time which is what this cmd is doing
+okay i could have easily done
+run here so this would have run java
+hello and it would have created the
+shell but that's of no use it's going to
+get into the output the standard out of
+the image creation process we don't want
+that we wanted to go to the standard out
+of the container start process which is
+why i'm going to say this shouldn't be a
+run this should actually happen during
+container creation time which is what
+the cmd is for so now we have a decent
+workflow for working on java classes
+without having java installed all right
+so what you need to do is make a change
+to this java file and then run these two
+commands right first let me exit this
+guy
+first run the container sorry the image
+build command in order to create an
+image with the current state of this
+file and then once you created an image
+you run that run a container from that
+image and it is going to just print it's
+going to execute your code okay so this
+is a simplistic look at how to how this
+workflow changes when you have the
+ability to
+create your own images right you're not
+bound by
+using an existing image and then
+mounting your files anymore you can
+create your own images which has exactly
+this the class file and the java file
+you want and you can also use that image
+to create that class file and run the
+class file at the very moment the
+container starts up

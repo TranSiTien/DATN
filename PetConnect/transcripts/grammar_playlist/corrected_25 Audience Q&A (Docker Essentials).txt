@@ -1,0 +1,184 @@
+okay a couple more questions where does
+docker store these container and image
+details well this is stored in the
+in the vm or in wsl right because this
+is in wsl
+these files are linux files they're
+supposed to be in linux so it puts it in
+wsl or in your vm
+it's not
+you're not supposed to know
+where
+but it is it is over there i don't think
+it's it's a public api with the location
+of the containers isn't public api to
+the best of my knowledge i could be
+wrong
+is it a command to kill all the
+containers in an image well no not a
+docker command but you can use a bash
+command you can just say docker
+rm
+and then or in this case you're doing a
+kill you say docker kill and then
+plug in a command which does docker ps
+dash a okay or docker ps and then get
+the container id and you pass that to
+this command you can use bash tricks to
+do it but there isn't a docker command
+to
+kill all containers or remove all
+containers no you just give it the ids
+when you remove the container it
+releases the memory used by that
+container
+well it remove memory is tricky it's not
+ram it removes the memory the space on
+the disk that is used by the container
+you can only remove a container which is
+stopped you cannot remove a running
+container let me demonstrate that so
+here is okay so let's say docker
+ps
+okay so this is a container
+that is currently running and this is
+using memory right it is using ram
+obviously now notice what happens when i
+try to
+remove this okay docker rm
+try and remove the sky you see here it
+says you cannot remove a running
+container here is a full hash by the way
+you don't have to do that
+stop the container before attempting
+removal or you have to force remove
+which is which is usually not good so we
+have to make sure it's it's stopped so
+when it stopped the container is
+obviously not going to be
+using
+memory right it's not it's not it's
+mainly space and the hard disk so you're
+going to free that up by by doing docker
+rm
+if a container crashes can we commit
+to
+an image
+to debug
+if a container is crashed you can
+well you can
+commit a container to an image you can
+just create a new image from a container
+but crashing i don't know it depends on
+the state of the container so let me
+show you there's a docker commit command
+so let's say docker
+ps or it's just your docker
+commit
+help
+okay you see here
+docker commit creates a new image from a
+container's changes so let's say you
+have uh you know hello.txt and you
+really want that hello.txt in your
+container image that you spin this
+container from so you can say docker
+commit and then use these options and
+then create a new container and now now
+we have a new image which is exactly the
+same state as your container is right
+now okay so now this is this is one way
+you can make an image but this is hardly
+used people don't make images this way
+people actually use docker files for it
+you don't you don't tend to create
+images by you know getting it from the
+container because who knows what you did
+in the container right you're basically
+kind of writing it into an image you
+want a little more control over your
+images so you don't tend to do that can
+we run containers in a cluster using
+master slave architecture
+yeah you can it's not containers itself
+is what's inside the container that is
+that's going to be master maybe some
+process that's being a masters and
+process being a slave for as far as
+docker is concerned they're just
+separate containers right there's no
+there's no container being a master
+that's somehow going to make it
+different
+from something else just different
+containers using running different
+images what is running inside the
+container can be a master to what's
+running inside another container
+that makes sense
+for anything to run it should come and
+run into a ram so why can't we say that
+the ram is just released yeah the ram is
+not released when you do a docker remove
+because the container is not going to be
+running anyway you cannot docker remove
+a running container you can only docker
+remove a stopped container when a
+container is stopped by definition it
+means it's not consuming any ram it's
+just sitting there on the hard disk so
+when you do a container remove you're
+just deleting files you're not freeing
+up space in memory when it does when a
+container is running and consuming
+memory you cannot do docker remove
+anyway you can do docker stop or docker
+kill and that is going to stop the
+container and free up ram at that point
+but then it's only after that you can do
+docker remove
+does that make sense can the stopped
+container be restarted with an ide thus
+reloading the files added within the
+container yes that is possible you can
+do a docker start
+okay so let's see
+docker ps
+a
+and here are all the stopped containers
+now let's see let's take httpd which is
+a good good interesting use case so i
+can say
+docker start
+oops
+docker start and that container id or
+the container name and now i have that
+started okay so let's say docker
+ps
+you see here this is running now i can
+ssh into it so it's basically when i
+stopped it it has the files exactly
+where it should be like it hasn't
+removed anything it's just not a running
+currently running process it's just a
+stopped process now you can start it and
+it is going to kind of kick start that
+process again start the process again
+and whatever is the state of that
+container the file folder structure at
+that point it is going to take it from
+there some processes are good in that it
+can kind of pick up where it left off
+some processes are like oh something
+happened i died last time and i'm
+somebody's bringing me back again i
+don't know how to work it depends on how
+the process is handling it in this
+particular case httpd is good it's like
+okay i'm starting httpd process again it
+starts up again in that same container
+snapshot as it was when you last started
+it but again remember this is a new
+instantiation of that process the new
+process is running of course the same
+command but a new process

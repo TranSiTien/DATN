@@ -1,0 +1,234 @@
+so this
+way of
+specifying the commands for run or the
+cmd command
+is one of two different ways in which we
+can do this right so this is referred to
+as the shell command approach the shell
+way of writing the other way is
+something referred to as the execute
+right the recommended way is actually
+not the shell way it's the exact way so
+let me explain what exactly means so
+let's say i have a
+shell file let's say test.sh and i can
+write my shell commands over here dir mk
+dir fu it's basically going to be
+uh running all these commands right it's
+a shell file
+now the way it works is when you when
+you run this thing there is a shell
+process that gets initialized and that
+shell process is going to spawn all
+these different commands right whatever
+commands you have over here it is going
+to spawn all that so if it's a mkdir and
+it is going to
+you know it's a shell process that's
+going to spawn it however if i do exec
+mkdir what this is going to do is it is
+going to replace the running process the
+shell process with the mkdir process
+okay so the process that's actually
+running will be replaced to be
+terminated and a new process is going to
+take its place okay so exec is a way for
+you to run a process without starting
+the shell
+okay i'm going to do it without saving
+here
+now all these commands that you're
+running over here it's say i uh run java
+c hello to java i run touchnewfile.txt
+and i run this cmd
+all these whether it's being run during
+the image creation time like these two
+are the container runtime like this one
+all of these are actually shell commands
+right so there is a shell that special
+process that's going to spawn
+and that shell process is going to
+actually spawn these child processes
+now this is not the recommended way of
+doing things okay we don't want the
+shell process to be process id number
+one
+okay
+instead of that you can have have it run
+the exact way okay not not do this
+you don't want to do this instead there
+is a special syntax for running this and
+what you need to do is instead of
+specifying the command itself you use a
+json array like structure and specify
+each token in the command as a string in
+that json array so this is how it's
+going to look like right so i'm going to
+have a json array with the first string
+being java c
+the second string being hello.java okay
+this is the exact way of running this
+right
+now if i do it like this
+the docker cli is not going to spawn a
+shell and then have this be a command
+that's going to run in the shell okay
+it's going to basically
+run java c so the the process that's
+going to get triggered is not a shell
+which has a child process called java c
+no the process is going to trigger is
+java c okay i can do this for over here
+as well
+i'm going to have
+this be touch as the first string in my
+json array the second string is
+new file right and i can do the same
+thing over here as well and this is
+what's key right let me let me do this
+i'm going to just put this thing here
+just say i just want to run
+java hello okay so before what would
+happen was if i had just done it the old
+way
+okay i'm going to remove this guy here
+for now and i'll tell you why in a bit
+so let's say this was my cmd okay we
+want java hello to run when the
+container starts i've had done it this
+way the first process process id number
+one in that container would be the shell
+okay the shell will get started and then
+that shell would initialize this java
+hello
+okay now what if you don't want that you
+want your java process to be process id
+number one well then you use the
+structure right you use a json array and
+you say
+i want this to happen now
+the docker cli is not going to
+initialize well the docker
+infrastructure really is not going to
+initialize a shell as process id number
+one and then have it run java it is
+going to basically run this process as
+process id number one so whatever you
+provide in the cmd is going to be
+process id number one in the new
+container
+okay this is the recommended way of
+doing things so you're not starting off
+a shell
+but
+there are some gachas that you should be
+aware of there are some problems with
+this approach first problem
+is this now let's say this is what we
+had right we had java hello and sh now
+this and and ampersand ampersand is
+actually a shell command okay you want
+to run two commands in the shell what
+you do is you run command number one and
+then ampersand ampersand command number
+two and it is going to run one after the
+other okay but no you don't have a shell
+right you're you're running this this
+way so when you do like this
+you really cannot put ampersand
+ampersand here
+okay this is not going to work what this
+is going to do is it's going to pass
+these as arguments to the java process
+when the java process is like dude i
+don't know what this ampersand ampersand
+is right it's not going to work so when
+you have something like this when you
+want to chain
+this is not going to work and
+the funny thing is
+let's say i don't want to do this and
+i'm going to close this here and then
+let's say i want to do
+this
+okay
+and i'm gonna have a new cmd and i'm
+gonna run this sh well guess what this
+is not gonna work either because there
+is there can be only one command we saw
+how we can override the starting command
+for when a container starts so there can
+only be one so when i do this and do
+this guess what java hello is not going
+to run i'm just going to have the sh
+execute okay so this is not going to
+work either so what most people do when
+they have a situation like this is they
+create a binary which does all the
+things that they wanted to do like a
+shell file or a binary which does all
+the things they wanted to do and then
+use the cmd for that right so even over
+here right you don't want to have
+multiple run commands well you can
+technically do this multiple run
+commands where each run command is
+basically doing this okay i'm going to
+have one more
+over here
+and then basically chain a bunch of
+these run commands using the exec so
+that's one way to do it another way is
+to bundle all these commands together
+and have the run command
+run this whole thing just once
+there is another limitation to
+to using this exec farm which is that
+there are a bunch of things that you
+would assume in in a shell command like
+for example let's say you want to use a
+dollar home right so let's say
+i want to have
+dollar
+home i'm going to have the uh the shell
+variable a code to this file all right
+so let's say i want to have something
+like this in an exec format well what
+usually happens is when you use these
+environment variables it is the shell
+that evaluates the value of this thing
+and injects it into the command now if
+you're using the exact way of doing
+things it doesn't do that right so let's
+say i have something like this
+dollar home this is not going to work
+because java is going to see literally
+the string dollar home it's not going to
+see the value of that environment
+variable that you would have seen if you
+had done this using a shell so things to
+keep in mind but if you can get away
+with it if you can use the exact format
+the exact form of these commands i
+recommend you do that it also provides
+you this nice structure where you can
+validate exactly what is happening you
+know no extra spaces it is a little more
+rigid in that sense so this is something
+that is usually recommended when you use
+the exec format the very first string in
+that array needs to be the binary that
+needs to execute right here in this case
+it's java here it's java c and so on and
+then you need to have the arguments to
+that binary you know as separate strings
+in that json array separated by comma
+right you can't have
+java
+hello in one string that's not gonna
+work all right each individual token in
+that command needs to be its own string
+in that json array so this is the exec
+format and how it differs from the shell
+form of issuing these commands in the
+docker file

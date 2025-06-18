@@ -1,0 +1,298 @@
+in this video i'm going to explain to
+you the secrets of the inner workings of
+docker when it comes to using a docker
+file and building a docker image from it
+here's what i'm going to do i have this
+docker file which copies over a
+hello.java and then it compiles it
+and then oh it does something which is
+unnecessary so i'm going to remove this
+guy here right so it's going to compile
+it create a class file and then it has
+an entry point java hello so when you
+start up a container it is going to call
+java hello and it's going to pass in
+this command which is a name
+okay
+now what i'm going to do before i
+demonstrate the inner workings the
+secret is i'm going to add this
+maintainer
+command over here i'm going to give my
+name
+okay and now i'm going to
+create an image from this docker file
+all right so i'm going to do a
+docker build
+t
+i'm going to call it the same name test
+and dot to indicate the docker file is
+right here so when i run this
+there are a bunch of commands that get
+executed
+and what i want you to do is pay
+attention to the console output that has
+resulted from us running this command
+so here are one of the you know the most
+important of the secrets that i'm going
+to mention in this video
+every line here
+is resulting in the final image right so
+every line has an effect on the final
+image so here this runs a command this
+sets a working directory this adds a
+file to the thing so
+without knowing you would imagine that
+all these lines are having an impact on
+the same image and innovators what you
+get at the end of running all these
+commands is one image which has all of
+these commands
+impacting it right running on it
+however the secret that you should know
+is that every command every line of the
+docker file actually results in an
+intermediate image a separate
+intermediate image okay and each of
+those forms a layer to the final
+output right so all you're doing over
+here with all these different commands
+is basically creating multiple
+layers and this is something that
+happens by default with docker every
+line in your docker file is actually
+resulting in a new image that forms a
+layer on your final output which is
+what's happening over here right so line
+one of five this is what it's saying
+over here right line one of five
+is downloading the image from docker hub
+okay
+line two
+is running this one mkdir code
+line three is image three layer three
+which is work dir of core which is
+the sky
+okay so as you can see each one of these
+is actually triggering a new
+layer of course this one the entry point
+isn't triggering a new layer because the
+entry point is not something that
+affects the contents of the image the
+entry point is something that is
+instruction to what needs to happen when
+a container is run right so this entry
+point is not executed when the image is
+being built so these two do not result
+in new layers but anything else which
+affects the state of the image the state
+of the files or folders inside the image
+is actually resulting in a new layer so
+what we have in this docker file is five
+layers that's the first thing that you
+need to know okay and that's what's
+happening over here right it's one to y
+one of five two of five three if i all
+the way to five of five and then all
+these are layers that are exported to an
+image right it's the first secret
+the second secret is
+when docker is trying to create an image
+from a docker file which is what we did
+over here right when we did a docker
+build we are asking docker to create an
+image from this docker file what it's
+going to do is it's going to see if it
+really needs to make each of these
+layers by checking if it's there is any
+changes involved so docker is actually
+caching these intermediate image layers
+so here
+this particular line did not change from
+when i when i ran this thing last time
+okay so it has cached this layer so it
+looks at this instruction and goes okay
+i've already built this layer i've
+already built an image for this layer i
+don't have to build it again it's just
+going to take that similarly this one
+it's like i already built this i already
+built this and so on okay
+which is what this cached is telling you
+right this cache label in the front is
+saying it's just picking up a cached
+layer a cached image for that layer okay
+and if you were to change this let's say
+i make add an exclamation point over
+here okay so this means that it is going
+to run the second step is going to be
+this guy
+of course maintainer
+is not going to the reason i add that
+added that is to show you that
+maintainer does not result in a change
+in an image so you see this this thing
+did not trigger a layer you see this
+cached 2 or 5 the 2 is
+basically this one one
+is getting the the source image which is
+open jdk 17 from docker hub
+two is
+the sky
+right so maintainer did not result in a
+new layer because it's not affecting the
+contents of the image the files or
+folders of that image okay so this one
+what i'm going to do is i'm going to
+change this
+to add an exclamation point okay or you
+know it's like we have changed the step
+two
+of this
+of this process so now it cannot pick up
+the cache anymore the docker
+infrastructure is gonna detect okay i'm
+gonna have to build this
+layer again and so none of these other
+ones can be cached so it's going to
+build all of them again right let's say
+i had changed this line no that line
+isn't affecting the layer let's take
+this example let's say i was changed
+this line then it would take the cache
+for this one and then only apply this
+one all right it's going to try and
+cache as much as possible and it's going
+to try and reuse the cache as much as
+possible only when it detects a change
+does it build that layer and from then
+on it's going to build all subsequent
+layers because this layer has been
+modified now since i've modified layer 2
+let's run this again and we'll see the
+difference in the uh in the output
+okay
+i'm gonna expand this
+now we see here the first one is cached
+it does not fetching this from docker
+docker hub again because the source
+image is open jdk 17 which is unaffected
+okay maintainer does not result in a new
+layer but this guy which would have
+resulted in a new layer that was
+formerly cached it is not cached now
+because it detected that there is an
+excla extra exclamation point so you see
+here no cached label over here it is
+going to actually execute the code
+that's needed for this right it's going
+to actually create this image it's going
+to create this image it's going to
+create this image and so on okay so no
+caching involved i prefer to add another
+add tag over here when i'm copying
+another image well this layer is going
+to be picked up from the cache and this
+layer alone is going to be changed and
+then from then on this layer is also
+going to be changed okay so hopefully
+that makes sense right that's the second
+secret that you need to know about
+uh the way docker creates these
+images now the third secret
+by the way disclaimer these are not
+secrets i'm just trying to make this
+exciting but really this is something
+you should know okay not a secret all
+right the third thing that you should
+know about docker creating an image from
+dockerfile
+is that for every line the way it
+creates
+an image is by using the same mechanism
+that i showed you earlier about docker
+commit okay so every time you say hey
+docker i need a new layer or you're
+giving it a command what docker is doing
+is it's taking the previous image which
+is in this case it's this guy and then
+it is doing a docker run right just
+creating a container from it it's
+executing this command and then doing a
+docker comment so that you have an image
+out of it okay and next next line it's
+going to create a container from the
+previous layer the image of the previous
+layer
+run this code whatever this is right
+changing the working directory and then
+it does a docker commit and then creates
+a new image this one again gets a
+container runs the command do docker
+commit create an image so every step of
+the way there is a new container being
+created inside which this is being
+executed and then a docker commit is
+what actually creates the image right
+that's the process of how this is
+actually doing it right every step
+when you do it's when you ask this say
+hey i want this to be run in my image
+well how does it run something in an
+image there isn't really something you
+can run in an image right it's just
+basically a template so what docker does
+is when you say i want this command to
+be run in whatever image i need what
+docker is doing is it's creating a
+container
+running the command whatever you want it
+to do and then doing a docker commit and
+creating an image from it right so this
+is happening every step of the way
+now you should understand
+why we needed the env
+property okay if we had just set
+something in an environment variable
+what would happen
+well it would just set that in the
+environment variable of the container in
+that step and now the next line is not
+running in that container at all it's
+running in a new container that was
+created from a docker committed image of
+the previous step so anything that you
+put in the environment is all gone
+anything that you put in memory is all
+gone which is why you needed this env to
+provide the special syntax so the darker
+infrastructure knows that every time it
+spins up a container from this line on
+it needs to set this thing in the
+environment variable so it kind of makes
+a note of it and then it sets the
+environment variable for every container
+that it spins up in order to create an
+image from that point on okay so these
+are things for you to remember it's not
+commonly taught in most books and
+tutorials but this is basically how
+docker creates docker images
+from docker file okay and that's the
+reason why you have multiple such
+intermediate layers right if you look at
+a public repository for a popular docker
+image you see it's a bunch of multiple
+layers well guess what those layers are
+coming because the docker file for that
+image was a bunch of lines of code and
+each layer
+in that image corresponds to a line of
+code in the docker file which has a
+material impact of the file structure
+or folder structure in that image so
+hopefully this makes sense this is kind
+of like the underlying philosophy behind
+layers and how docker
+build works in converting a docker file
+into a docker image

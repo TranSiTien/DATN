@@ -1,0 +1,345 @@
+we will now be talking about images
+what are images
+we learned about containers as basically
+this
+isolated way of running processes
+what are images
+let's say
+you have this ability for docker to run
+to create containers right the whole
+isolation thing that we did we had to
+run three four linux commands to get an
+isolated process running let's say
+docker simplifies it with one command
+called run this is close to the truth by
+the way with some small changes which
+i'll explain in a bit assume docker does
+that for you right docker run does that
+for you
+it'll put you inside one place one empty
+directory
+and it's isolated now what do you do
+there
+you don't have anything to do because
+it's it's empty right you remember what
+happened when we did ch root on just one
+folder which
+had bash i couldn't even run ls right i
+needed ls there because that's like the
+bare minimum for a shell do you think so
+this command would probably throw you
+and then you throw in a shell and you're
+isolated now what you can't do anything
+right so when you're creating containers
+you can imagine you also need a starting
+point you need something to be there in
+that container so that you can use that
+container right so
+that's
+why you have
+docker images okay so for example you're
+quarantining you want to be in the in
+your house locked for a couple of days
+what do you do you stock up on stuff
+because you need stuff there because
+you're quarantining you can't go out
+shopping you need to pre-fill your place
+with stuff so docker images is a way
+for you to pre-fill your container with
+the things you need right it's a way for
+you to specify what you need in your
+newly isolated container right well
+basically for our ch root example we
+have to copy over all that stuff this is
+what you need docker to do right first
+of all it you need to create an isolated
+container
+but
+you needed to pre-set up the container
+to what you want all right the key here
+is the container needs to be set up
+right before it is isolated right there
+are a few things that you would expect
+to have in your new container you need
+to be able to do stuff like ls or bash
+or whatever maybe you don't need it if
+you're just running uh like a
+like an application you don't plan to
+use a shell in that case you don't need
+those utilities you might need something
+else that the shell requires
+you need some runtimes that your app
+might need like a java application would
+need at least a jre to be there in order
+to run it
+and then finally you need your
+application to be in that container
+because you're running your application
+right that's the whole point and all
+these need to be present before the
+container gets sealed off from the
+outside world okay would you want a
+container without any of
+these probably no it is probably a
+typical set of things you would need
+before you start the container so
+this is
+why you've got docker images because an
+empty container really doesn't make
+sense you always need some you always
+need some kind of a starting point right
+maybe there's some weird case where you
+really need an empty container but 99.9
+of the time you need a starting point
+and that's what dr image does docker
+image is basically a template for a
+container okay so you can easily imagine
+so that example that i showed you right
+i created a folder where i put all the
+files in the right place and then i see
+it routed to it okay docker images
+allows me to say what is the state of my
+container that i need without having to
+create it in a directory of course
+that's not a fiction docker image is a
+snapshot of what i need in my container
+before i start it right so docker image
+is basically a bunch of files that need
+to be in the container that's about it
+it's just specifying what files need to
+be there it is a compressed file it's a
+tar file you can use a docker image to
+start a container when you start a
+container you don't say docker run
+because it doesn't make any sense you
+just throw it into an empty container
+and you can't do anything what you do
+instead is when you say hey docker run a
+container
+from this image you give it an image you
+give it a starting point and docker will
+be like okay i'm going to create a
+container but i'm going to make sure
+that that container contains the files
+that you have specified in this image so
+that you're not starting from a blank
+slate you have all the stuff that you
+need exactly the way you need it
+it follows that template to to do that
+right the container will contain all the
+files that are available in that image
+okay
+so imagine a docker image can contain
+like i said you know a bunch of commands
+that you know lscad all those basic
+commands if necessary contain some bare
+bones unix commands and then it contains
+it can even contain full run times like
+java or node.js and all that stuff okay
+so those are the things that a container
+can
+possibly contain so those are the things
+that an image can have so that it
+pre-populates the container when it gets
+started
+all right i see a question here does
+docker really install the needed
+runtimes in the host system no docker
+does not install it in the host system
+the container contains those binaries in
+that in a container itself right it's
+isolated from the host the host is not
+going to have like let's say you run a
+docker container which is java in it
+you're not installing java to your post
+operating system it's basically a folder
+which has all the java files in the
+right place when you install a program
+all you're doing is putting the right
+files in the right place right so that's
+what happens with containers as well
+containers you start off with an image
+and that image has all the java files in
+the right place a node container will
+have all the node.js files in the right
+place so when you spin up a container
+now you have the the process that runs
+in a container has a world view of this
+new machine this fake machine which has
+all the java files in the right place
+and all the node files in the right
+place so when you run java as well
+like let's say you run jre in a
+container even java jre's world view is
+going to be limited to what's in that
+container it doesn't know that it's
+running inside another os it has no
+access to it so everything runs inside
+of that container
+okay so
+this is basically how you start a
+container
+in
+docker using docker you say docker run
+and then you give it the name of an
+image okay i'm going to talk about what
+that name is in a bit okay so you have
+uh
+different images you can have different
+images like you have one image which has
+just the cat command you can have
+another image which has the ls command
+then i think there'll be duplicate
+software in containers yes there will be
+duplicate software in containers but
+again like i said it's not that bad it's
+not as bad as duplicate voices and i
+will demonstrate that in a bit all right
+so docker images are createable by
+anybody okay you can create a docker
+image you can say i want this in a in a
+particular container you create a docker
+image and create containers from it you
+can say docker run and your image and
+you have a container with that image you
+can also get images from a public
+repository okay you have online
+repositories of docker images you can
+say hey i want to create a container
+with that image that's available in the
+repository and now you key docker can
+download that image to your machine and
+it's going to spin up a container and
+it's basically like i said an image is
+basically a zip of files right it's
+files and folders it is going to get
+that image extracted set it up for you
+on your machine and create a container
+where the containers the process of that
+container's world view is basically that
+location where it's the image has been
+extracted there is a default
+repository
+called docker hub okay again docker is
+like the the leader when it comes to
+containerization at least as of today
+and docker hub is the leading place for
+you to find images okay let me
+demonstrate that i'm going to go to
+docker hub this url this is basically
+docker.com products slash docker hub a
+website which kind of allows you to
+browse through all of the images that
+are available for you right like it asks
+you to sign up but you don't need to
+sign up to browse you need to create an
+account only if you want to
+create an image yourself and publish it
+to docker hub right if you just want to
+explore click on this explorer link at
+the top
+and here are all the images that are
+available
+for you so
+here is an image
+called ubuntu
+if you want to run
+ubuntu on your machine
+what you need to do is say hey docker
+get this image from docker hub save it
+on my machine and spin up a new
+container where the contents of the
+container is the contents of the zip
+file that i downloaded the image is a
+basically zip file it get the contents
+exactly the same way now when you do
+that what you have is the same file
+structure of a bare bones ubuntu or
+software installation
+okay doesn't work as is but with the
+processor isolation and all that stuff
+well you have a linux operating system
+running with the file system view of
+ubuntu so for all practical purposes
+you're running ubuntu right so here is
+another one alpine same thing radius is
+another one radius is an interesting one
+because it's not just an operating
+system it's basically an image with an
+os and a software installed which is
+redis installed so if you download this
+image spin up a container again
+gets the contents of that image into the
+container so the world view of any
+process inside that container is
+basically hey here is a machine which
+has redis installed okay destroy that
+container remove it you're back to the
+main system read this what who doesn't
+know right that's basically the idea you
+have all these different you know
+software different operating systems and
+all that stuff so you get this from
+docker hub docker hub is like a good
+repository for
+all these images
+and you might notice here there is this
+check box which says verified publisher
+and official images the official images
+checkbox filters with only the images
+published by docker alone this is a safe
+thing to do you want to deploy something
+in production well this is a safe thing
+this has been vetted and verified and
+it's secure
+a verified publisher is like people who
+are not docker but have been verified
+okay this is docker published only this
+is possibly not docker but somebody who
+is you know an organization which is
+reliable okay
+like i don't know canonical or microsoft
+or something like that okay so they have
+oracle or something like that um
+you can i usually recommend checking at
+least one of these two boxes so you know
+you're getting your containers from a
+reliable source if you don't do that i
+mean you have you have a whole lot like
+i guess like i said anybody can create a
+container you can create a container and
+put it out there so the
+there are there are possible issues with
+getting a container and running it when
+you don't know really who who made the
+container it's not as bad as installing
+some random program on your machine
+because it's still containerized it's
+jailed but still i would i'd recommend
+you be careful what containers you
+download and install
+all right
+so that's docker hub
+that's one of the several image
+registries that we have available okay
+so we have docker hub we have a whole
+lot of other public registries i
+honestly have been working with docker
+for a bit and i haven't
+used any other public registry apart
+from docker hub
+you can of course have private
+registries okay organizations have their
+own images and they obviously cannot
+publish it to dockerhub if it's a closed
+source so they have their own
+repositories i've seen docker images
+published to artifactory and you can
+configure docker to not just look at
+docker hub you can look at other
+repositories as well and get images from
+there
+so this is
+docker image registries
+the you know you get self faster the
+private registries here as well

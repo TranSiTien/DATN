@@ -1,0 +1,6 @@
+@smd_HostAddress = http://localhost:5062
+
+GET {{smd_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

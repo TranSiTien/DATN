@@ -1,0 +1,122 @@
+bare metal to vm i don't know if you
+folks know what bare metal is it's a
+common term that's used in in devops and
+using software engineering in general
+bare metal basically means when you're
+running your application in your
+operating system on the hardware
+directly
+okay we might ask well how else to run
+it well this is the other way to run it
+which is basically using virtual machine
+right so provisioning physical hardware
+is the old-school way of doing things
+right so
+previously maybe 15 20 years back you
+have you have a business you have an
+application that needs to run
+and you want to deploy to production
+allow other people to use it what do you
+need to do well you have to go
+buy hardware okay i don't mean buy
+hardware as in you know click buttons
+and make sure it happens no you have to
+talk to the vendor have the hardware
+shipped to your data center location
+right somebody has to
+carry that server right the physical
+human being has to carry that server
+that physical hardware
+put it on a rack mounted on a rack and
+they need somebody to run software on it
+install the operating system manually
+and check all that so this is this is
+the old way to do this right so this is
+provisioning physical hardware right so
+what are the things you need to do you
+need to procure hardware right you need
+to monitor it on server acts you need
+new hardware per application you don't
+run multiple applications on the same
+hardware oh my goodness that's a big
+problem because of all the things i
+talked about right and then here's the
+worst part you need to plan for peak
+capacity right let's say you are you're
+a cto you're setting up hardware for
+your ecommerce website do you set up
+ecommerce website the the capacity for
+that hardware for the average
+load well no because what if your load
+increases on certain time well that time
+your average capacity is not is not
+going to be able to handle it so you
+need to provision for the peak capacity
+what's the most traffic that i can
+anticipate to get
+plan for that and plan for a little bit
+of a buffer so even like some day your
+your website goes viral or whatever you
+need to handle that peak capacity
+because you want to make make use of
+that opportunity right so we want people
+buying more when your website becomes
+really popular this is actually because
+you can't run multiple applications on
+one machine right multiple applications
+on one machine what's the problem we
+talked about it environment is global in
+scope okay so we cannot do that
+conflicting runtimes
+all right one app might need one version
+of runtime another app might need
+another version
+and then you have applications competing
+for resources one runaway process might
+end up causing problems to other
+processes you might have unknown
+dependencies this is a tricky one and
+this is also something that docker
+provides a good solution for so
+you know you might change something in
+one application right change a file or
+rename a file which is not even related
+to you think is not related to that app
+but it turns out the other app needs
+that file all right so you might and we
+unknowingly
+break
+a process because you're actually
+changing something with another process
+and there is an unknown dependency there
+right so that's these are some common
+problems with running multiple apps on
+physical hardware on bare metal okay
+so the non-ideal solution is to have
+separate servers per app and physical
+servers which are slow and provisioning
+right you got to place the order and
+have the the vendor ship it to you and
+all that all the good stuff
+and you have planning capacity for peak
+load which means most of the times your
+servers are idle instead of that well
+what you can use is virtual machines
+okay virtual machines are
+like the breakthrough solution to the
+problem people were super pumped when
+virtual machines
+were kind of hit mainstream virtual
+machines have been there for a while but
+when they hit the mainstream with the
+work done by vmware and the
+popularization of virtualbox as an open
+source solution for virtual machines
+a lot of things change for people people
+are like man i can now run multiple
+applications on the same machine and not
+have to worry about peak capacity and
+not have to worry about one app
+interfering with the other all those
+things were possible with virtual
+machines right

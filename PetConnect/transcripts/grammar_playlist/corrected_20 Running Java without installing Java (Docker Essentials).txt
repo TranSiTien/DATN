@@ -1,0 +1,99 @@
+how do you run java without installing
+java
+of course one option you run it in the
+cloud but uh how do you run it locally
+so i'm gonna switch to the
+docker hub here
+and the go to
+this
+image that i
+tend to use a lot
+which is open jdk
+okay there's an open jdk image it's an
+official image so i don't have to worry
+about it
+by the docker folks
+and here is
+here's open jdk it's an open source
+implementation of the java platform
+standard edition
+cool
+now if you go to look at the labels
+look at the tags
+you will see all the different versions
+you see here there are there are a bunch
+of documentation as well say open jdk
+colon version and you have like you know
+8 11 12 all that good stuff
+i'm going to get the latest
+all right
+i'm going to run
+java
+without installing java and here's how
+all right so i'm going to clear this out
+this is my windows terminal okay whether
+i have java installed here or not
+doesn't matter i'm going to run it in a
+container and here's how i do it i say
+docker run
+i'm going to say interactive terminal
+what's the image that i need it is
+open jdk if i have a specific version in
+mind i'm going to do colon and then
+enter the version number i'm just going
+to go with the latest for this example
+and then i'm going to say
+bash i don't know if there is bash
+installed in this in this container but
+let's see i'm going to hit this hit
+enter and now it says not able to find
+open jdk locally it is going to download
+it
+and throw me a prompt
+which has you know it's going to throw
+me in a container
+which has java installed okay i'm going
+to show you what that looks like when it
+when it loads
+all right so it should put me in a
+prompt which is batch prompt so it turns
+out open jdk has
+bash installed i type ls
+now here is me inside my
+linux which has open jdk installed you
+can say java
+version you see i'm on java 1701
+open jdk runtime all right that's pretty
+cool right so i can say
+j shell
+and i'm over here i'm right i can write
+but let's say what i want to type
+system dot out dot
+println
+hello this is truly java it prints hello
+so i am basically running java
+on windows okay so i can create a
+directory over here create a java file
+use the java c command java c is
+available as well so i can use all these
+commands compile java code build java
+code all that stuff i can do inside this
+container okay we're not running code
+here yet we're going to do this later
+but i wanted to show you how you can
+get to an environment the linux
+environment where you have precisely the
+java version of your choice and nothing
+else no java home to mess with none of
+this stuff it's all set up all ready for
+you to go okay you want to switch java
+version well you have to uninstall java
+on your machine well no you just switch
+to that different container and that
+container has only that version of java
+and nothing else so it's it's perfect
+you want to play around and you're not
+bothered with installing java on your
+machine again i'm going to talk about
+how to write code and you know do some
+more advanced stuff in a little bit

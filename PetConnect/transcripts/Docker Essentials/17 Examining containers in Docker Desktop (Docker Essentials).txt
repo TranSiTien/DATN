@@ -1,0 +1,126 @@
+you don't even have to do the pull and
+run
+let me show you i'm going to switch over
+to our docker hub
+and we are going to run a container
+without
+even doing
+a pull
+right so let's run something else httpd
+all right let's run this guy
+so we did two steps right we did pull so
+that the image gets downloaded and then
+we did run we can just do docker run
+okay so i'm gonna go over here
+to
+my terminal
+and instead of running dockable and
+docker i'm going to say docker
+run
+httpd
+okay
+it is going to say see unable to find
+the image httpd locally which means
+where does it go it goes to docker hub
+and it's going to download the image and
+then spin up a new container with the
+contents of that image
+of course i haven't given it any
+process to run so either it is going to
+run it either is going to end right away
+or it is going to have its own process
+that runs but yeah so it runs httpd in
+the in the foreground okay so this is
+i'm going to talk about this later a
+container can have an opinion of what it
+needs to run
+okay it's like you're running httpd
+which is basically a web server whenever
+you run it it just has a default process
+that it starts with you can override it
+but it has a default process to start
+with i'm going to talk about that when
+we create our images
+i'm going to kill this because i don't
+want this to run
+and now if i go to a new command and
+then ps let's say
+docker ps
+dash a
+and i just do drps
+these are
+well that that since i closed the tab
+this container is now exited see here it
+exited eight seconds ago so
+that container doesn't is not running
+anymore
+all right so we looked at this docker
+pull image name
+pulls the latest tag you can specify
+your own tag if you like and it is going
+to pull that tag so every image has a
+tag associated with it it's just an
+arbitrary label
+you can call it foo and you say image
+name colon foo and it is going to pull
+that
+now the thing to remember is that uh
+docker run or any of these docker
+commands needs that daemon to run okay
+if you don't have docker desktop running
+you will get this error this cannot
+connect to the docker daemon is the
+docker daemon
+running
+okay it's necessary for it to run in
+with the docker desktop it's that wheel
+icon that sits in your tray make sure
+you run that if you don't run that
+you're gonna get errors you can try as i
+do these things you can try these
+commands on your own since you have
+docker installed you should be able to
+basically replicate exactly what i'm
+doing
+okay
+view what's happening
+in docker desktop so if you click on
+that wheel icon on the
+tray and open up the
+ui
+ui is going to look something like this
+okay so here are here are all the
+containers that i have run
+along with the
+status
+and now you can you do a bunch of things
+here that you would otherwise have to do
+in the cli so you know depending on
+whether you're a cli person or a ui
+person you can do the stuff you can
+end these containers and all that stuff
+and here's an interesting link you have
+images here and this is going to show
+you all the images that i have
+downloaded there's no surprise here i
+have alpine image which is in use tag is
+latest i have another alpine which is
+3.14.3 which is just downloaded for
+demonstration purposes and i didn't even
+bother to use it
+httpd latest it's in use ubuntu latest
+with some news notice the the size of
+these images they're pretty small right
+you look at this alpine is just like
+five to six mb httpd which is like a
+full web server is basically 143 mb
+which is nothing in this day and age
+ubuntu which you know if you download a
+distro
+you get like a i don't know like a 1gb
+destroy image but this ubuntu is just 72
+mb because it doesn't have to bundle all
+the kernel it just has to bundle the
+things that make ubuntu different from
+any typical linux kernel so
+that's uh that's why it's it's so small

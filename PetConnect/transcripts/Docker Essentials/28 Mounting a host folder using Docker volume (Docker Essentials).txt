@@ -1,0 +1,204 @@
+now
+here is a problem with everything we've
+seen so far with containers it's
+isolated
+okay you get the guarantee of okay it's
+separated out and it's it's immutable
+and all that stuff but there are certain
+use cases where it's too isolated and
+too immutable okay this this mysql use
+case is one what if you want to to
+persist this data right you what if you
+want multiple containers and you want to
+use this this is a problem right the
+container goes away all your data goes
+away
+so yes this is a problem because now we
+have uh containers that are too isolated
+and it's it's it's too ephemeral
+you the the basic problem is
+you cannot get the effects of any of
+your work done okay so you have a
+container you you're doing some work are
+you using java compiling code you're
+doing some work you want the result of
+it somewhere right you wanna you wanna
+have the result of your work persist
+beyond containers right so you either
+need think about it you need any one of
+two things you either need access to
+files after the container is gone or you
+need access to the network so that you
+can put it somewhere like you know you
+check in your code to get some git
+repository you need access to the
+network right you either need file
+access or you need network access you
+probably need both
+so
+i'm going to demonstrate the first one
+which is file access okay the file
+access lets you access the main
+operating systems file from inside the
+container okay in a controlled way you
+don't want like full fetch control
+because that's the whole point of the
+container so far we've been talking
+about isolating it now we want to give
+like a little bit of a control so that
+you you know the container can put some
+files outside of the container right you
+need you need a way to do that
+and you do that by using volumes okay
+docker volumes rocker volumes are a way
+for you to say
+i want this container to be able to
+access just this folder
+how do you do that well in linux
+anything is a
+all devices are basically files in linux
+so you have this big hierarchy
+everything gets mounted to root so you
+have like a
+you want to mount a file system that
+goes as a folder right everything is a
+folder so what you can do is you can say
+this is my folder in my host directory
+right so here i am i'm going to go to
+i'm going to create right here i think i
+had a temp folder didn't i okay so i had
+a temp folder this is my folder i want
+this folder to be accessible to the
+content only this folder and the
+container can write to it so now what
+you have is a way for the container to
+save the result of whatever operation it
+performed into this folder it's still
+controlled but
+now we have the ability to get that
+result back all right so here's how you
+do it and you do this using uh docker
+volumes okay so
+here's uh let me actually
+do
+let me clear this out okay empty
+directory
+now what i'm going to do
+is
+docker run
+i'm going to do the dash dash rm
+oh where did this go i'm going to do the
+dash dash rm because i don't want this
+container to stick around i'm going to
+use an interactive terminal
+and alpine
+sh well i'm gonna use this or maybe let
+me use ubuntu
+ubuntu
+bash but now i want to access this
+particular directory the stem directory
+i want to access this directory from
+inside the container i do that by using
+the dash
+v option dash v is the volume mount
+option what i can do is i can specify
+what can what folder in my host
+operating system i need and where it
+needs to go in my container i need to
+specify two pieces of information okay
+what is the folder that i need to expose
+well it is my present working directory
+so i can use the syntax
+called
+pwd okay so this indicates i want my
+present working directory to be
+available in the container okay that's
+the first piece of the puzzle the second
+piece is where is it available in the
+containers file system all right i'm
+going to put a colon here and i can
+specify the path where i want this
+folder to be mounted right so i'm going
+to say slash
+host
+volume okay so i want this to be mounted
+in the root i want a folder to be
+created called host wall and this is
+where i want this to be accessible
+okay so i hit enter
+now i'm here
+i type ls you notice there is a new
+folder here called host wall so this was
+the one that we created okay so if i go
+here cd
+host wall i do ls there is nothing here
+let's say i do this touch
+hello dot txt okay and i write something
+over here i let's say vi hello.txt
+okay i don't have vi here but we get the
+idea you put some to some file over here
+and then when i exit
+i'm back to my
+host directory if i type look ls here
+you see notice there is a hello.txt so i
+was able to write this file in the
+container but it's actually come to host
+okay
+it's not like i'm
+directly writing to it so basically what
+it so it's all about
+creating this impression of
+a container right so the container
+thinks it's its own thing like the the
+utilities that run in the container
+basically think okay there is some
+folder here it doesn't know that it's a
+host operating system or whatever else
+right docker has set it up for you that
+way okay docker has set it up in such a
+way that it has created this folder in
+the container and when there is a write
+that happens it's actually a write
+happening to your windows folder so
+that's kind of like it docker maintains
+that bridge and this is what's volume
+and you can use this as if you're
+writing to a some folder in your host
+operating in in the container operating
+system but what it's doing is
+it's it's creating it it's not really
+adding a branch what it's doing is it's
+creating a folder and setting it up
+that's basically about it okay so i'm
+going to do this again i'm going to
+create
+uh
+let's say
+i i'm going to use the whole folder
+directory over here okay i'm going to
+copy this
+okay see users training temps should go
+to i don't know some
+let's say let me actually use an
+existing directory or i'm going to say
+bin slash
+foo okay in the bin directory create a
+foo and that is where i want this to go
+okay i'm going to say
+bash and now i do ls
+bin
+well there's a lot i'm going to do cd
+bin
+foo and now here is that directory that
+we mounted right it is basically saying
+take any folder in your host directory
+and make it available to the container
+so that you can write on it right it's
+basically adding to the file tree
+off
+yeah that's basically what you said it's
+it's adding a file tree to yes you're
+right i misread it you're precisely
+right it's adding a branch to the
+containers file tree all right so i'm
+going to exit this

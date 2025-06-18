@@ -1,0 +1,83 @@
+in this lesson we're going to get a
+little bit into networking with docker
+we've kind of played around with some of
+the implications of networking when we
+started containers exposed ports and all
+that stuff but i want to get into a
+little bit of detail in terms of how it
+works why did we have to expose ports
+what was happening there
+let's try and understand that now so
+when you think about a typical container
+with docker running so you typically
+need access to a network when you're
+running a container right so you need
+access to either a local network
+or the internet or for some reason you
+need to be able to communicate with
+another container which is on perhaps on
+the same machine or a different machine
+so these are all some common
+needs when you're running a container
+when it comes to the network right
+take the example off when we run the
+httpd network okay so we did docker run
+http and we tried accessing localhost
+httpd is apache which runs on port 80.
+you would imagine that it would be able
+to just run localhost and have it work
+but
+we didn't actually get it to work right
+we had to run a port mapping flag right
+you need to say docker run dash p
+map the port and then access localhost
+and then it works fine now stop and
+think for a minute let's say you were
+running apache locally
+you didn't have to do any of that stuff
+right so you would be able to access
+localhost colon80 which is 80 is the
+default port so basically http localhost
+and you'd be able to access apache
+similarly tomcat right run tomcat
+locally localhost code in 8080 you would
+be able to access it right things should
+work if you're running something locally
+but when you're running it on docker you
+need you need it to do this extra step
+now the question is
+why is that
+well the reason is really because of
+docker virtualizing the network docker
+virtualizes a lot of stuff right
+including your cpu including your ram
+and all that so one of the things that
+docker virtualizes is also the network
+so when there is a process running the
+process has this virtualized view of the
+network it doesn't share your host
+computer's network by default okay the
+default happens to be something called a
+bridge okay so it creates its own mini
+network right it's fake network
+virtualized network and your containers
+by default connect to that virtualized
+network okay that's actually the reason
+why when you run something like this
+locally you don't have that virtual
+network it's using your host network so
+everything works fine you can access
+localhost and you're able to access your
+apache or tomcat but when you're running
+it in docker you cannot access it
+because guess what a process running in
+your docker container by default is not
+using your host network it is using its
+own virtual network which means that any
+process that's exposing this kind of a
+port exposing like a web server is not
+accessible from your host by default
+you're going to have to
+expose ports for it so let me give you a
+demo which demonstrates what's going on
+over here

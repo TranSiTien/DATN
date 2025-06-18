@@ -1,0 +1,273 @@
+images versus containers
+you should now have a good idea of what
+the difference is right an image is a
+starting point a template for a starting
+point and a container is a spun up from
+an image right an image tells you what
+the initial state of the container
+should be
+when you create a file
+inside a container it stays in a
+container i'm going to demonstrate that
+here okay so let me
+let's say here
+clear this here and i'm going to run
+docker run
+interactive terminal
+ubuntu
+bash
+okay now i'm in
+ubuntu right
+now let's say
+i create a file here so this is this is
+the directory structure inside ubuntu
+let's say i create a file here let's say
+use the touch command
+hello
+dot txt so now i have hello.txt
+in my
+in my container right simple
+now let's say i open another
+terminal and then i run the same command
+okay docker
+run dash id
+ubuntu
+bash
+now i'm in a new container from the
+ubuntu
+image right it's taken ubuntu image and
+create a new container for me now
+if i type ls do you think i'll find
+hello.txt here
+no prices for guessing
+it will not find it it's obvious because
+what we have here is a new instance of a
+container
+from an image you remember an image is a
+file okay this image is basically a zip
+file that it's extracted and created
+this every time you do docker run it's
+creating a new container by extracting
+an image and setting up everything like
+you the image expects you expects docker
+too so here this file exists but here
+this file doesn't exist okay this
+bin directory
+is very different from this bin
+directory
+okay i hope that makes sense these are
+two very different containers right as
+long as you understand that you will
+understand the difference between images
+and containers okay
+so
+an image
+is just a file okay it's you can almost
+think of it as a zip file that docker
+just extracts and uh does something with
+it okay so there's again like i said
+there's a concept of layers but for all
+practical purposes
+think of an image as a zip file of what
+needs to be there when a new container
+is created right now here is an
+interesting thing i can do all right i'm
+going to go here
+and let me show you this thing this is
+fun i'm going to exit
+exit this thing i'm back in windows
+right and back in windows i'm going to
+create
+a temp directory
+okay
+this is this is windows and i've created
+a temp directory here now what i can do
+is i can get
+a image and examine it i'll show you
+what that looks like so i can say
+docker
+save i'm going to get the alpine image
+and i'm going to save it to
+alpine dot
+zip so i'm going to ask i'm asking
+docker to get this alpine image and i'm
+outputting it it's the dash o i'm
+outputting and saving it put it into
+this file called alpine
+dot zip and now i it has
+put that alpine.zip in this location for
+me right
+let me show you now here you see this is
+my
+directory where i've created this and
+here is alpine.zip okay and now i
+extract this
+okay this one doesn't okay let me see if
+7-zip doesn't extract
+um
+you see here
+there are folders inside this thing but
+just think about it as
+it's just it's just a zip file and it
+has exactly what the state needs to be
+it has a bunch of like it has star
+within atar and so on we don't worry too
+much about it but you know it's a zip
+file and this is what docker uses when
+it needs to spin up a container it goes
+like okay this is the source of my
+my container so it has to get get the
+information about the starting point of
+the container from this image file and
+it's going to set this up
+okay
+this is what the this is what we did all
+right docker save so images versus
+containers are basically
+templates versus instances right
+template
+versus container being an instance of a
+template and kind of think of them as
+yes classes versus objects right a class
+is a template just like an image is a
+template objects are instances of that
+class template just like a container is
+an instance of an image it can change
+after the fact like once you start a
+container like i did touch hello.txt
+right so i've changed the state of the
+container now it's different from the
+image which is possible with objects
+also right and runtime
+objects properties values all change but
+the starting point is what matters and
+that's you know the instance
+all right
+images versus containers
+every container has a starting point as
+an image
+and two containers
+starting from the same image are exactly
+the same
+at the start and i have to highlight
+this at the start at the very the
+fractional millisecond of a millisecond
+at the very first instantiation of the
+container
+the two containers from the same image
+are going to be the same but depending
+on what that parent process does
+things can change the like the very
+first thing the parent process does is
+gonna create a new file in which case
+the containers are going to immediately
+start differing okay
+you can of course modify things on the
+container like we've just seen and it
+does not modify the image okay it
+doesn't even modify other containers
+that come from that image this should be
+obvious but just make sure you you can
+understand that this is really the
+difference between these two again think
+of it as changing an object's property
+right another object of that class will
+not be affected by this thing right
+that's pretty much it
+now what's the advantage of this thing
+this this model has been designed with a
+certain purpose the advantage is
+immutability okay your images are
+immutable so if you basically make
+changes to get something to work right
+so let's take an example
+you create your own java container
+you're not happy with openjdk right you
+create your own java container you're
+good to go you start running your
+program and you go oops i forgot to set
+java home so you type that command in
+your container and you said java home
+well guess what that will not do because
+that container goes away you can start
+another container container from that
+image that's going to have the same java
+home problem right in order to solve the
+problem for future
+containers from that image what you need
+to do is fix the image otherwise it's
+not going to work so
+that's something to remember
+immutability is key because what happens
+is you know there is this problem called
+configuration drift which applies in a
+lot of different situations but it also
+applies in in containers as well like
+you're trying to fix something you make
+a change and you make three four changes
+and you forget what change you made and
+you try that again you basically dealing
+with the same problems again so that's
+the reason why whenever you have these
+kind of things like set up issues and
+all that stuff you don't do that in the
+container you tweak
+the the image itself all right so
+otherwise it won't process so you pick
+your image and don't tweak your
+container to make something work you're
+using your container basically for
+exploratory purposes are for running
+your application that should be the only
+goal
+and again there are different images
+available already you don't even have to
+build a lot of stuff yourself right you
+have different oss you have versions
+labels and you can you can pick like
+even open jdk of different versions of
+java and all that stuff one thing to
+highlight with labels though is
+latest is the default i told you like if
+you don't specify colon
+label when you're doing when you're
+referencing an image it picks latest by
+default but latest
+it's just a label it doesn't mean
+anything okay it doesn't mean that that
+is the current like you know it doesn't
+there isn't a special latest tag
+attributed to the most recent image okay
+it's just the label that any image
+author can set to anything right like
+the alpine maintainer can put latest
+label on like a 10 year old image and
+that will be what's getting downloaded
+by default okay it's just a label it's a
+good default but it doesn't always work
+okay so if you go to docker hub over
+here and if you even if you look at
+alpine right so you see here here are
+all the tags right latest is assigned to
+3 15 0 and there is another tag for a
+newer build which is not latest okay
+this thing is just an arbitrary
+label that you can assign to any build
+they could have put latest to this guy
+as well right so just just keep that in
+mind latest doesn't always mean latest
+most of the times a lot of companies
+have this best practice to say they want
+to specify what version they're using so
+that it's uh predictable right because
+that's what we want we want predictable
+applications you don't want people
+saying well i use latest and my
+application worked in darker today my
+application isn't working in docker
+because somebody put latest label on
+some other thing like you want
+predictability so you get that
+predictability by referencing a specific
+version so that's something for you to
+keep in mind

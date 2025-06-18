@@ -1,0 +1,121 @@
+the hypervisor
+works as a parent process and all vms
+managed by the hypervisor acts as child
+processes to it so it
+so that it
+hypervisor does have better control on
+it
+yeah that's usually how it works
+it really depends on the internals of
+the hypervisor whether it creates new
+child processes for each
+vm or maybe creates multiple child
+processes for each vm but that's its job
+just like when you run an app the kind
+of processes that it creates really
+depends on what the app is doing
+so uh all
+you care about is you have your host
+operating system which is running a
+bunch of different processes and the
+virtualization the hypervisor is one of
+those processes and that can spawn
+multiple child processes and that's that
+has control over it so just like any
+other application it just happens to be
+a virtualization software that's that's
+the way i would look at it i see a
+question here are there any
+specifications or guidelines for
+containerization if yes
+uh docker is popular than others because
+all implementations will
+do the same
+yes there are guidelines actually uh
+there is something called oci which is
+the open container initiative
+the team at docker is actually in you
+know pivotal in
+being a part of
+drawing that specification so there's an
+open specification you can write a
+containerized solution that follows its
+specification and you can create the
+same containers the images and all that
+stuff that work in docker as well as
+your solution that's possible
+docker is popular because they were like
+the first movers they were the ones who
+made this
+popular and brought it to mass market
+and uh they have uh
+they have uh kind of lead time in terms
+of building features they built so many
+features now that it's kind of like it's
+mainstream but yeah there are there are
+alternatives as well which you can which
+you can use if you choose so
+docker requires a domain whereas podman
+doesn't require
+i think you mean demon could you
+elaborate a little bit more about the
+demon requirement
+um yes docker requires a demon to run
+i'm going to talk a little bit about
+this in a bit um
+i think podman
+honestly i don't know about padman
+you know folks if you don't know
+apartment is basically an alternative
+solution to docker containerization you
+can run containers with padman uh
+honestly i don't know much about it i
+don't know if
+i find it hard to believe that it can
+run without a daemon
+but if it does that would be that would
+be a great advantage
+docker's daemons are
+are
+not as bad as you would think so docker
+needs a daemon process to run in the
+background okay i'm going to talk about
+the client server model in a bit
+but that is kind of decoupled from the
+container so for example you can uh
+reinstall or update docker
+without
+messing with the containers okay you can
+get a new update for docker
+containers run as a separate process and
+it is not affected by the team and kind
+of they've decoupled the architecture a
+little bit
+so it's not bad but yes the demon still
+has to run
+next question want to understand the
+difference between docker container and
+docker image where does docker image fit
+in the previous screen showing docker
+architecture with darker
+containers well here's the thing the
+docker image doesn't fit in that screen
+because what i showed in that screen is
+what's happening at runtime
+okay what's actually running
+uh darker images
+don't show up in that screen just the
+same way as there's an os block there
+the os binary doesn't show up in that
+screen either right the os block there
+is a running operating system because
+you ran the os binaries similarly a
+docker container is a running entity
+because you instantiated a container
+from an image
+we are getting ahead of ourselves i'll
+talk about image in a bit but that's the
+reason why images don't fit in that
+screen because that's what's running at
+a certain point that i've described in
+that in that picture

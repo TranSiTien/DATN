@@ -1,0 +1,154 @@
+now here's the thing though this is this
+is really cool now what you can do is
+you can map
+the
+volume mount and port mapping you can do
+them both on a single container
+and
+have it work
+like a good web application development
+environment okay so let's let me kill
+this
+ps no say docker
+ps
+here is my nginx container silly mclean
+with that name you got to use the name
+instead of the id docker stop
+silly mclean
+and now here's what i'm going to do
+i'm going to
+create an html file
+on my windows machine
+okay
+and i'm going to use the nginx
+container
+to run that html to host that html and
+i'm going to access it in the browser
+what do i need to do first i need to
+volume mount the folder which has the
+html on my host so that the nginx
+container can access it
+okay and second i need to open the port
+so that when nginx accesses it and
+serves it
+as an http you know server
+i can access it on my browser we're
+going to do those two and this whole
+picture will become clear in your mind
+okay so let's try that now
+first thing i'm going to do
+is create an html file so what are the
+files we have over here i'm going to
+delete these two files
+okay so that was delete now what i'm
+going to do is i'm going to create an
+html file here right so i'm going to say
+notepad hello dot
+html
+and here i'm going to just say
+hello from
+windows
+html file
+through
+nginx
+okay i have a
+i have an h1
+over here
+so i'm gonna have an html file in
+windows i'm going to make it available
+to nginx inside a container and then i'm
+going to access it in a browser again
+back in windows right so full cycle
+i'm going to save this
+and close this out
+and now i can
+run my nginx container again but this
+time i need to map it to
+uh this thing so nginx it's like it
+really depends tomcat has a certain
+place where it it expects your jar file
+to be saved in order for it to host it
+similarly nginx has a certain place
+where it you know an html file needs to
+be saved it's basically in user share
+nginx html so i'm going to expose it
+over there right so i'm going to say
+docker run
+i can give it a name or whatever i'm
+going to do
+remove because i don't want this nginx
+container to stay now the first thing
+i'm going to do is volume on okay i'm
+going to volume mount this present
+working directory which is the directory
+which contains the html and i'm going to
+map it to
+slash
+user share
+nginx slash
+html okay so this is the location where
+an html file needs to be inside the
+container for nginx to be able to host
+it so this is what i'm going to do so by
+doing this what i'm doing is i'm
+creating this i'm
+placing kind of placing this hello dot
+html file in user share in nginx html
+directory in the container okay
+okay so this file is going to be there
+that's not enough i need to do port
+forwarding so i'm going to do dash p
+and i'm going to
+map
+the
+8080 port on the host again it has to be
+the host port first and then the
+container port next okay the 8080 port
+on the host to map to the 80 port on the
+container and because that is where
+nginx is listening right i have to map
+it over there and then i'm going to do a
+dash d to detach
+and again the last argument that i need
+is what image i need to run okay so i
+can do like ubuntu here and then all
+this happens to ubuntu and there's
+nothing listening to that port nothing
+happens okay but what i want is nginx
+this is what i'm going to do
+here nginx now it is going to start that
+container now i'm going to go back to my
+browser
+and if i access
+this thing again localhost 8080 it's
+still going to work but what we need is
+localhost 8080 what did i call it
+hello.html
+there you go we have
+the hello.html on my windows served
+through nginx back to a windows port
+that i can use to access this so this is
+a good workflow as you can imagine this
+is a typical workflow for
+web development right your web file you
+know your source code is going to be on
+your windows or mac machine you're using
+a container strictly as a stateless
+thing
+to to run this thing you can see the
+power of this thing let's say you're
+building an application and you want to
+test how this looks at different nginx
+versions contribute example but go with
+me here so now i have a way to do this
+all i need to do is run this command
+with different nginx versions right i
+want to see hey how does this look in
+nginx version five or engine expression
+whatever is the version of engine
+as simple as this right i don't have to
+install i don't have to do anything all
+i have is html on my on my machine and i
+got all of this done right using docker
+so i hope you appreciate the power of
+this thing this is super powerful

@@ -1,0 +1,139 @@
+we know that virtual machines
+isolate environments but with the cost
+right there does it cost the chip to pay
+all right
+and we don't want to pay the cost
+so what do we really need
+what we need is
+isolating environments i talked about
+environments
+being a part of your application right
+that's that's the main problem we have
+an ability to
+test the app but we don't have an
+ability to standardize and test
+environments and also we don't have an
+ability to isolate these environments
+so that's kind of what we really need
+right we look at virtual machines
+we are
+running an operating system
+okay
+what we need is to run just a process
+just an app that's all we need right if
+what we need is to run an operating
+system and to play around with it the
+virtual machines are perfect right i'm
+not i'm not slacking you know i'm not
+criticizing virtual machines right
+they're great and they're still going to
+be used but
+that's only if you want to run and know
+it's like you don't want to run windows
+you just want to run your app right
+so what virtual machines do
+is they virtualize hardware in order to
+run a full operating system
+what we need
+is if possible
+to virtualize an operating system to run
+a process
+okay that's this is really what we need
+is this possible is a question
+okay
+so
+what do we mean by isolating processes
+all right what do we need to do when you
+do you have an application in java or c
+sharp or whatever application
+what is what is is what exactly does
+isolating a process mean okay so when a
+process is running we want to be able to
+separate
+file systems that's that's a good start
+right one process is running it doesn't
+we don't want it to run and you know
+create files or delete files from
+another process that's a good thing to
+do right have separate views of the file
+system the other thing is we want a
+separation of the installed apps and
+runtimes right whatever like a java or
+you know
+i don't know some binaries installed on
+your machine you want to make sure that
+they are separate okay you this one this
+app needs java 14 this app needs java 17
+should be fine this app needs curl
+install this app needs wget different
+version install well that should be fine
+right so that separation is needed
+the third thing
+we need a separation of running
+processes right one app shouldn't be
+able to go issue a kill command kill all
+the other applications and it ends up
+killing another app that you're supposed
+to run well that shouldn't happen right
+it needs to have a separate view of the
+currently running processes
+and finally it needs to have a
+separation of resource usage we talked
+about runaway processes right one app
+consumes a lot of memory it shouldn't
+really choke the other app right it
+should have its own view of resources
+right
+this is do you agree that this is kind
+of a fair level of isolation like if we
+have this
+your application is kind of
+good to go like you're kind of
+jailing your app and providing it
+everything it needs
+as a set like a wrapper around it right
+turns out
+all of these are actually possible
+in linux
+you can run an app with this kind of
+isolation in linux but using various
+different tools
+okay
+a lot of different tools
+essentially i'm going to talk about
+three technologies which kind of make
+this happen okay the first one is
+something called ch root all right some
+people call it j root i'm not going to
+call it that i'm going to call it ch
+root this is uh one way of
+providing some kind of jailing some kind
+of isolation but the second technology
+is something called name spaces and the
+third technology is something called
+control groups right
+some of these technologies are actually
+the foundations of container technology
+including uh docker today all right not
+all of these are very well used for
+example ch root is not very is not i
+think it's not used for docker docker
+uses something else called pivot route i
+believe it might use something else
+tomorrow but the reason i'm highlighting
+ch root here is it's a good introduction
+to kind of put that idea in your head
+about how containers work because people
+don't quite get the the idea behind
+containers
+unless they've seen how ch root works
+right this has happened before you know
+people have been confused like what's
+the difference between vm and containers
+well let me explain to you how ch works
+once you know once you've seen that you
+will kind of get an idea of what this is
+right
+it's basically the idea of jailing and
+nothing illustrates it better than ch2
+which i'm going to demo now

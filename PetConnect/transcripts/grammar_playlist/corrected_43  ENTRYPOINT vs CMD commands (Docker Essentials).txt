@@ -1,0 +1,216 @@
+we're gonna talk about passing arguments
+to your container so let's say here's my
+hello.java where i have uh tweaked it a
+little bit it is not just printing hello
+anymore it's taking arguments right i
+have i'm checking if the args the input
+args to this java file is
+greater than zero that means that there
+is some argument passed in which case
+i'm going to say hello to the argument
+and then if nothing is passed i say
+hello world right so if i were to
+execute this let's say java
+hello
+java
+and i just get hello world and then if i
+were to pass my name it is going to say
+hello to my name okay so this is
+a very common in java programming and in
+most of the programming now what if you
+want to be able to create a container
+with this setup you want a container
+where hello.java is residing in the
+container it's compiled there is a class
+file ready to go but i want to pass an
+argument to it at runtime okay now
+before to create this container over
+here
+and then i
+run it it is going to print hello world
+but now how do i pass an argument to
+this thing i can't say
+kaushik here because guess what happens
+when i put something over here it is
+going to treat that as a command and
+it's going to try and run that command
+right i'm overriding
+this command by passing something over
+there that's not going to work what i
+want to do is leave the
+the thing that needs to run i want to
+leave it as is and i want to have
+whatever i pass over here
+get appended to that thing all right
+if we want to do that if you run into a
+situation where you want to do that what
+you should do is not use a command
+because if you use a command whatever
+you pass is going to get overwritten
+right what you should do instead is
+another directive called entry point
+okay entry point allows you to specify
+what you know is guaranteed to be the
+starting point for your container when
+it starts and any command that you pass
+is going to be passed as arguments to
+this thing
+okay so let me show you what the
+difference is if i if i don't change
+anything entry point works exactly the
+same as command if i'm not passing
+anything it works exactly the same as
+command it's going to basically just
+start when the container runs it's going
+to execute this
+whatever you pass over here i'm going to
+show you i'm going to create a new
+container sorry a new image and then i'm
+going to run this
+a container from that image it's going
+to print hello world because what it did
+was it ran java hello when the container
+started up right no difference from
+cmd okay now the difference happens when
+i pass something in here okay so let's
+say i uh you know i did earlier uh i ran
+this and i passed a name okay what it
+did earlier was since this was cmd it
+overrode the cmd that was in the docker
+file with what i passed over here right
+now since i'm having this as entry point
+what is passed here is going to be
+appended as an argument to what is in
+the entry point okay that's the
+difference if i were to run this you
+notice it is going to take this as an
+argument to the entry point so it's
+basically going to run java hello space
+kaushik so that's what's happening over
+here and that's what's getting printed
+over here because i'm taking that
+argument and putting this here right so
+this is the difference between
+command and entry point this is yet
+another thing that a lot of people get
+confused with but it's really very
+simple entry point is basically
+something that you want to execute no
+matter what when something is when a
+container is being started all right but
+when you pass something over here to
+that container when it's being started
+it's going to take that as an argument
+it's going to take that it's still
+taking this as a command right it's
+going to take this as an argument to
+entry point
+so this begs the question what was
+happening before when you didn't have an
+entry point well even then this was
+basically just a command and the you
+know no surprises here now considering
+all we've seen so far a command is
+basically just an argument to an entry
+point so for example let's say i do this
+i'm going to say a command and i'm going
+to pass
+kaushik here okay so this command but
+without any override so here i'm doing
+an override i'm passing a command over
+here this is basically the same as this
+we already established this even without
+this guy
+when you pass something to the container
+when you run it right some arbitrary
+commands that you pass it is basically
+the same as this and we found that this
+was a way to override cmd that was what
+was happening before right
+now instead of doing this
+instead of passing this as an argument
+using the run time using the cli i can
+do the same thing i can pass the cmd as
+an argument using the docker file so
+this acts as a default okay now if i
+were to save this and create an image
+i'm creating an image here with one
+entry point and one cmd okay if i don't
+pass anything
+if i'm just running the container what
+is it gonna do it's gonna take the entry
+point and it's going to append the cmd
+just like it did when i appended it over
+here right
+this is cmd
+this is cmd it's the same thing okay if
+i were to
+not pass anything
+this cmd is going to get appended to
+this entry point and now what i'm going
+to get is hello kaushik because it
+basically ran java hello kaushik but
+if i were to pass something over here
+the same behavior happens whatever i'm
+passing here is overriding cmd this
+should be familiar to you but it only
+overwrites cmd entry point is not
+overwritten okay entry point is when you
+want something to be executed no matter
+what and you want cmd to be an argument
+well now if i do this this is going to
+override
+the cmd
+but this entry point remains
+there without being overwritten so now
+we can guess what's going to happen it's
+going to run java hello
+it initially it was kaushik but now i'm
+passing command override so it's going
+to pass 4 to it and now the hello world
+greeting is going to be for foo
+having said this you can override the
+entry point when you're running this as
+well there is another another way to do
+it and this is by using dash dash
+entry point but this is usually not
+recommended well you can do it but entry
+point is when you're uh the creator of
+the image is saying well i want this
+this is like the purpose of this image
+this is the reason why you would want to
+run a container with that image and you
+pass this command as an argument so
+everything that you've seen so far with
+command well guess what it is an
+argument to an entry point and with a
+lot of these containers the entry point
+is usually a shell so when you said i
+want to run like an ubuntu container
+with the command being echo
+hello well that echo hello is basically
+going as an argument to the entry point
+which is the shell and that's the reason
+why it works okay so this is a little
+bit of a twist and a little bit of a
+rethinking of how you've considered
+these two commands so far
+but it's useful to think about it this
+way entry point is the actual command
+that you want to run when the container
+starts no matter what and the cmd
+is the argument that gets supplied to
+that entry point you can specify a cmd
+in the docker file and that arguments
+get sent to entry point
+when you don't specify anything when
+you're running the container or you have
+the option of overriding the cmd by
+passing in command line arguments and
+that is going to override the cmd and
+what you pass in the cli is what's going
+to get sent as an argument to entry
+point and that is what's going to get
+picked up so hopefully that makes sense
+this is the difference between entry
+point and cmd

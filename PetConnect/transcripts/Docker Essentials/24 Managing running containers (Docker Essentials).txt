@@ -1,0 +1,264 @@
+let's talk about
+managing running containers there are a
+bunch of ways in which you can manage
+containers that are already running
+we're going to talk about some of those
+so that you can be good at kind of
+handling containers and using docker cli
+with it so this is the part where you're
+going to get you comfortable with the
+docker cli and and using it
+okay we looked at docker ps which is
+basically a list of running docker
+containers right this one is a bit of an
+interesting choice yps i don't know if
+you folks are familiar with the the
+linux command for ps which stands for
+the the current processes isn't it
+interesting that in order to see what
+the running containers are
+the name of the command is docker ps
+it should make sense because again you
+know we talked about this this should
+have been cemented in your mind now the
+docker container only makes sense in
+terms of a process right so docker ps is
+like currently running processes that
+have been containerized by docker so if
+you think about it that way ps makes a
+lot of sense i see an interesting
+question here a lot of online teaching
+platforms are providing runtime
+environments to practice do you think
+these are examples of implementations of
+containers absolutely this is something
+that i haven't shared it with anyone
+this is something that i was exploring
+as well for java brains i just gave it
+up because it's too expensive you have
+to be the big guys in order to do this
+right so you need to be like a plural
+site or o'reilly i'm just one guy
+running this platform i can i cannot
+afford to do that but yeah they use uh
+docker you need you need a server which
+spins up containers on the fly and you
+need also a system switch which tackle
+security as well and manage it destroy
+containers optimize resources there's a
+whole lot there and yeah that's how they
+do it
+all right i'm gonna try a bunch of
+docker commands and all this stuff so
+whip up a terminal and follow along if
+you can
+if not that's cool too
+but make sure you're paying attention
+because that's that's more important
+all right
+let's start with docker ps okay i'm
+gonna first
+or i might just leave i might just leave
+this thing in here so this is one docker
+command docker container that's running
+okay i'm going to run one more docker
+container all right says the docker
+run dash id
+i'm going to say open
+jdk bash
+all right so i have another container
+running
+now in my i'm going to open a third
+terminal
+and i do
+docker ps what do i see i see
+the two containers that are currently
+running well technically
+three that are currently running okay
+that's the node as well which is another
+terminal so these are currently running
+containers
+it docker ps is that's what it does okay
+it shows a list of currently running
+containers now if i were to
+kill this thing
+if i were to say exit
+and exit from one of those containers
+and i go back and run docker ps again
+you notice that that's gone
+okay so see this open jdk one which i
+just exited is now gone
+that's the idea right it shows always
+the currently running
+containers you can stop containers from
+outside as well so here is like i did i
+did i went to that prompt and i exited
+it right but now here
+this is
+a container
+that i've created over here and i want
+to i want to end this right i want to
+end this i don't want to go to that
+prompt and type exit i just want to end
+this how do i do that well they notice
+each container has a container id okay
+just like an image has an image id a
+container has a container id right so
+this is a hash it's actually a much
+bigger hash than this it's shortened
+here and docker is kind of flexible with
+the
+shortened hash it knows like you know
+you can even type like 6b and it knows
+that you're referring to this thing and
+it's smart about that so this is what
+identifies uniquely identifies a
+container
+docker also has a name associated with
+the container it auto generates the name
+but it's you know you can
+you can make up your own name as well
+and i will show that and it has
+what image each container is created
+from
+and how long it was created like when
+was it created and how long has it been
+up
+and commands port we're going to talk
+about in a little bit okay so these are
+uh the way to do this like now i want to
+stop like we were talking about stopping
+i want to stop this node container so
+what do i do i can do a docker stop
+and then provide that container hash
+okay it is going to go ahead and try to
+stop that container okay so it's
+basically going to do an elegant stop
+it's going to try to
+end the process typically like when you
+close a process what happens it tries to
+give uh you know i think there is a
+certain sig signal that it sends to try
+and stop the process without really
+forcing to kill it okay so if i run
+docker ps again you see that is gone you
+can of course force kill a process okay
+so you can say docker
+kill if something is not responding i
+can do docker kill and it is going to
+send the sig kill the term signal in
+order to force kill
+a process that is possible too so this
+is how you can top a container from
+outside okay
+now container names like i said are auto
+generated but you can customize it okay
+so you can say let's say i want to start
+a new container docker
+i'm going to go back to this prompt so
+that it's easy to search
+so let's say i do the same command
+docker run
+dash i t open jdk bash i'm starting a
+new container but i want to give it a
+name okay so i'm going to say docker run
+dash dash my
+java
+container okay i'm giving this container
+a name
+and then dash id open everything else is
+the same now i run this i'm going to get
+a container as always
+but
+if i
+go over here
+ah i should have switched this thing
+okay never mind i'm going to run this
+command over here right so i'm going to
+say docker
+ps
+and here you see this is the new
+container that i created and here is a
+name for it i'm calling this
+my java container okay you can create a
+custom name otherwise it is going to
+take the default name and most of the
+times i use the id
+but i can
+use the the name as well okay so
+eliminate the docker stop
+i can say docker stop
+my
+java
+container
+and uh this should work as well let me
+go back here you see we are out of the
+out of the container right we it stopped
+it
+okay so here
+when i said docker ps
+i said it shows all of the
+running containers
+now what about the other containers what
+about containers that are not running
+well i do
+docker ps
+dash
+a
+show me all the containers and here are
+all of the containers that we have been
+playing with okay so this was the very
+first container that i used for showing
+you folks the demo and then from there
+on here are a bunch of containers that
+have created okay they've all exited
+most of them are exited you see here
+this one's created but we didn't really
+do anything with it this one's still
+running and so on right it has it has
+everything that's that's a lot there's a
+lot of containers we can remove them and
+again that is by using another docker
+command and say docker
+rm
+and then i can again either give the
+name of the container or the container
+id so here let's let's say i want to
+remove the
+the my java container so i'm going to
+copy this
+and then
+that particular container is removed and
+i'm also going to remove this one using
+the id okay i'm going to say docker rm
+and then remove this guy
+now if i do docker ps dash a
+those two are gone okay now the thing to
+remember is when i remove something
+i'm removing the instance of that
+container which means instance of that
+image so
+a container is basically that zip the
+image zip file extracted out it has your
+files and all that stuff right so it's
+basically some folder somewhere on that
+linux machine it doesn't matter where
+it's managing it but it basically when
+you su when you do a remove of the
+container basically deletes that thing
+so if you had a file in the container
+like we demonstrated earlier right i did
+touch hello.txt that hello.txt file was
+in that container when i removed the
+container that file is gone okay the
+file is deleted if i create a new
+container from the image it's basically
+whatever is in that image right so
+that's why you got to be very careful
+about what you put in the container
+because containers are traditionally not
+meant to be long-lasting your i the idea
+is you're supposed to be able to kind of
+get this get it out get it and get it
+out and you know just temporary use is
+what the container is used for

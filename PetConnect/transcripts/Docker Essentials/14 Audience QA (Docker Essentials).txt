@@ -1,0 +1,65 @@
+me let me actually address a couple of
+questions here
+we now have new docker command and which
+one to use that is new version docker
+container
+run
+image
+yeah i mean it's they say it's
+recommended to use docker container run
+but docker run works fine unless they
+are deprecated it
+should be fine like whatever whatever
+works is okay yeah i wouldn't be too
+worried about that
+so i keep tomcat jre and springboard
+application jar linux utility etc
+separately in artifactory and create a
+docker image using all these is my
+understanding correct well not really
+what you do is you create docker images
+for all those different
+needs like you let's say you need a
+tomcat container you create a tomcat
+container publish it to your uh
+repository you create you know a node.js
+container publish it to the repository
+when you're
+starting a new container you're giving
+docker what image to start out with okay
+so you just pick the image that you're
+using for docker run say docker run and
+give it the image name then it is going
+to
+create a container with that image kind
+of like you know classes and objects
+right and if you're an object-oriented
+programmer an image is kind of like a
+class an object is an instance of the
+class similarly container is basically
+an instance of that image may you please
+elaborate more on artifactory as far as
+i know it stores only jars no my friend
+it stores a lot more it stores a whole
+lot of artifacts for for example it
+stores terraform providers for example
+it stores npm packages it does it does a
+lot and i don't know if it's an extra
+plug-in you need to install or something
+like that but you can install
+uh docker images and host them in our
+factory
+can you use maven to build an image yes
+you can there's a docker maven plugin
+that you can use to build an image but i
+don't think yeah i'm not going to be
+covering that in this course yes you can
+do that it's part of a maven lifecycle
+you can do anything with me even you can
+write your own plugin which runs an
+arbitrary cli command so
+the docker plugin as you can imagine
+runs a docker cli command on a maven
+build face that's pretty much what it
+does
+all right

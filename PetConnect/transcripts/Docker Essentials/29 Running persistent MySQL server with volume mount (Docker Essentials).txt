@@ -1,0 +1,214 @@
+this brings about a good point
+can we use this to persist data in the
+mysql example that i showed you right so
+mysql we said well you know you end the
+container it's gone
+well can we do something about it i'm
+going to run that same mysql example
+with a volume mount so that i can
+the goal is this the goal is to be able
+to
+remove the mysql container right start a
+mysql container insert some data
+remove that container but we want the
+data to persist create a new mysql
+container on that same data and have it
+work just seamlessly okay isn't that
+great well we'll try that out so i'm
+going to run that mysql command again
+okay this was the one that we used but
+this time i'm going to use a volume
+mount okay so what does this command do
+it has given it a name
+okay i'm going to give it a different
+name my sequel because i don't know if i
+removed that one so you cannot create a
+new container with the same name as an
+existing container even if it has
+stopped so i'm going to create a mysql
+dash one
+all right now i have the environment
+variable set so it is putting that thing
+there but now i want to do a volume
+mount okay i'm going to do a volume
+mount with with the present directory
+okay so i'm going to say dash v
+and i'm not going to give the full path
+i'm going to use the shortcut pwd
+okay which is the present directory and
+i'm going to volume mount it to where
+the mysql process
+writes the data files for the database
+which is war lib okay while my sequel so
+i'm going to do i'm going to mount it to
+slash
+war
+slash
+lib
+slash okay
+so what this is gonna do
+but i think it's slash my sequel okay
+hang on now this is
+war slash
+my
+sequel okay so this is a directory where
+the
+files get written or i could have
+created a mysql directory here and
+exposed it to war slip however you do it
+okay so wire slash lib slash
+no that won't work because you're going
+to be overwriting voice that that's not
+going to work okay so what you're doing
+is basically just taking over
+var slash lib slash mysql directory okay
+saying instead of that directory in the
+container just plug this thing in use my
+hostos container okay a hostos folder
+and when you do this
+and dash d
+mysql it is going to run basically the
+same way i'm going to get rid of myself
+so that you can see the full command
+okay so present working directory is
+going to be mapped to slash var slash
+mysql which is where mysql writes
+the data files and dash d to disconnect
+and i'm running
+the mysql
+container oh sorry my sql image okay so
+it ran it and now i'm going to do a
+ls
+so hang on it should have
+created those files
+current working directory to
+that thing
+they should have been a bunch of
+different files
+over here i'm not sure why it's not
+running i'm pretty sure this works this
+is probably some one-off error that i'm
+facing let's see if i can figure this
+out over here i'm going to try
+another one
+okay that was the problem i had to
+remove the file that was already there
+it expected an empty uh folder i had a
+hello.txt there and for some reason it
+doesn't like that so now you see i have
+this mysql running and if i did a ls
+this was supposed to be an empty
+directory now you see here it does all
+the stuff okay let's do a docker
+stop and then i end this like i don't
+have to enter the full hash by the way
+this is another uh thing i want to
+demonstrate like i can just say nine c
+which are the first two characters
+okay there were multiple ids found so it
+doesn't know what to do let's say nine c
+d it's that if that helps oh sorry nine
+c d
+and uh now it knows what to stop okay so
+you don't have to copy the whole hash by
+the way that was just uh just a trick
+that i use all the time just copy the
+just type the first two characters and
+it'll know which container you're
+referring to okay so we notice here it
+has all these files that have been set
+up over here from my sql right mysql
+created all these things and any data
+entry that you make
+is going to be over here
+okay it's going to add files over here
+so imagine you start up a new mysql uh
+container
+over here i'm going to call it mysql-3
+as long as you're specifying the same
+folder you're mapping the same folder to
+wire slip slash mysql it is going to
+pick up that same thing and it is going
+to run like take that state and run so
+this is this is super powerful so this
+is how you can technically databases
+with docker you have to make that take
+the data the persistence out and map it
+to a host location
+having said that one thing that i would
+alert you is this is not commonly used
+well you can do it for development
+purposes but it's not common to use
+docker to run databases well
+some people think it's okay but it's not
+like it's the opinion is divided let's
+put it that way
+most people prefer to use docker mainly
+to run stateless
+operations right like what we talked
+about running an app that is essentially
+stateless the app connects to our
+database somewhere else with databases
+people typically tend to run it on
+either on vms
+or on
+you know the the operating system which
+runs on bare metal directly okay because
+it's not like you have to map this thing
+and it's not it's not very elegant so
+yeah again opinion is divided
+it's up to you to do what you want to do
+but you know just i want to highlight
+that it's not very straightforward like
+for applications it's very
+straightforward like yeah you got to run
+your app in docker it makes sense but
+for for databases it's not that obvious
+all right let me see if you folks have
+any questions
+are docker and kubernetes related well
+they are related in the sense that
+kubernetes allows you to arc containers
+okay docker is used to run containers
+one-off containers kubernetes is where
+you want to orchestrate containers you
+want to be like yeah i want uh 10
+containers running my springboard
+application and if one of them fails i
+wanted to start up something another
+container automatically right
+orchestration that is kubernetes docker
+is managing the scope of a single
+container you have something like docker
+swarm uh which is an alternative kind of
+to kubernetes but kubernetes is what's
+most popular for container orchestration
+when docker container is running it
+writes data okay i kind of answered that
+question already let's see
+suppose we have a java application that
+uses two different databases one for qa
+and one for dev do we use multiple
+containers java qa dev to communicate
+among themselves or do we build an image
+with java would there be db along with
+java with qadb
+well you can create one image for your
+app you don't create multiple images for
+multiple environments what you do is
+the hint is right here on the screen you
+pass in environment variables and say
+hey i want this particular environment
+to connect to a qa database i want this
+one to connect to prod so you can pass
+that in to your image and have the same
+image connect to different databases you
+don't want to create multiple images for
+multiple environments because you again
+get back to the same problem of okay
+this environment works this one doesn't
+work you want to have a consistent you
+know setup for multiple environments so
+yeah use the same image but use
+environment arguments to pass those
+things in

@@ -1,0 +1,170 @@
+there is a concept of docker volumes
+which is very handy instead of using
+these arbitrary folders as temporary
+volumes what you can do is create what's
+called a docker volume and that kind of
+persists so here's an example so let's
+say docker
+volume
+unless i do docker volume ls and it's
+going to show me
+what are all the
+volumes that are available okay so here
+it says there is a local volume i can
+create a new volume and this is this is
+also useful when you don't care about
+what the contents is and you don't care
+about having it accessible by your host
+operating system
+all you want is like a volume that is
+persistent right you you want to be able
+to create a volume
+and kind of attach it to a running
+container get rid of the container
+create a new container attach it to the
+same volume so they are all using that
+same set of files that persist across
+the lifespan of individual containers
+which come and go volumes persist this
+is how you do it okay so i'm going to
+create a new volume i'm going to say
+docker
+volume
+create and i can
+call it whatever i want i'm going to say
+new
+volume
+volume
+and now i've created a new volume okay
+docker volume ls now here i have a
+specific volume and given the name
+calling it new volume okay now i can
+inspect it i can say darker
+volume
+inspect
+and then
+new wall
+and
+this is what this is okay so it's
+basically
+created this volume called the new wall
+the scope is local so it's in this local
+machine and uh here is the
+here is the mount point right the
+default mount point for
+for this volume now i can say i want it
+to be mounted at a specific location so
+i can say
+docker i want to attach it to a
+container right so i can say docker
+run
+dash id
+and then i'm going to remove this
+dash v
+and then i'm now i can i don't have to
+give it a directory in my host location
+i'm going to say attach this volume to
+my container okay i'm going to
+say new dash wall which is the name of
+the volume
+i'm going to attach it colon to a
+certain location let's say call it vol
+wall like this is the path
+at which i want this volume attached
+let's go for i'll
+find
+and shell because i want it to be
+interactive right i'm going to open the
+shell
+so here i'm going to go to cd
+wall now i'm in that volume okay so i'm
+going to say
+touch
+hello dot i'm going to give it a
+different name because i've been using
+hello.txt throughout hello2.txt
+so i have that hello2.txt here i'm going
+to exit
+now this container is gone right since
+i've used dash dash rm this container
+doesn't exist anymore okay however i can
+create a new container maybe perhaps
+with ubuntu
+i'm mounting the same volume i'm i can
+mount it to a different location okay i
+can mount it to foo here on ubuntu and
+i'm going to use
+bash
+and now i can go to
+foo and guess what that file that i
+created exists because it's a part of
+the volume okay so this is a way for you
+to separate out the
+the persistent stuff things you want to
+stay
+and have state
+versus the stateless stuff which is the
+containers okay you don't want to mess
+with like yeah i don't want to create it
+in a certain folder i don't want to give
+it a folder for where my host operating
+system is
+just create volumes it's these darker
+entities which
+yeah they are saving it to the host
+operating system anyway but you don't
+you don't have to deal with it
+it has it gets its own name it it gets
+its own meaning so now i have this
+volume which is going to transcend the
+containers that come and go as long as i
+attach that volume to the container it
+is going to work on that volume
+okay and now i exit again that this
+container is gone because of the dash
+dash iron but that volume remains i hope
+that makes sense
+i can remove volumes as well i can say
+docker volume
+rm and then i can give it a name what
+volume do i want to remove new
+wall and it removes that volume another
+cool thing that
+docker desktop does it it provides views
+for volumes okay so here you see you
+have this volumes
+link in here here are all the volumes
+that i have created so this one's a
+volume that i i linked in my previous
+container this one's the volume that is
+not in used right now because all the
+containers that were using it is now
+gone
+the docker desktop has a benefit of
+being able to browse through this volume
+okay so here it says all the containers
+that are used so here let me go back
+here
+so this
+is used in the my mysql container which
+is still currently being used this one
+is not currently being used now i can go
+to the data tab over here and i can see
+what are the contents of this volume see
+this volume contains
+hello2.txt this is handy
+okay any questions before we get into
+docker ports let's see if there are any
+questions
+i could relate it to kind of elastic
+block storage attached to ec2 in aws
+well yes that's a very good analogy
+right so you have
+ec2 being a stateless skin you know
+virtual machines that you don't want to
+persist because you never know when it's
+going to go away but you have block
+storage or some kind of file storage
+even blob storage that you attach it so
+that that process it's basically state
+versus stateless that's a great analogy

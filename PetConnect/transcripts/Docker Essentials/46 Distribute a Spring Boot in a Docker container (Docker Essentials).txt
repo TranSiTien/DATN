@@ -1,0 +1,349 @@
+now because it's so easy to create these
+darker images from your source code and
+have the ability to both compile and run
+applications inside a docker container
+this is a very common practice so here
+in this docker file i actually moved the
+files to a folder called simple example
+now here what we're doing is we're using
+the docker container in order to both
+compile and
+run this java class
+but this is usually not very common
+people compile on their local machines
+and once the build is done they want a
+stable and predictable runtime
+environment for their applications and
+that's what is more important so usually
+when you have a job application like
+this people would compile this on their
+local machine
+but the compiled java class would
+probably be inside a container and you
+would have an entry point which runs the
+java class inside a container why do
+people do this again because they want
+predictability in hover trans right they
+can deploy this container on production
+and they know that it's going to work
+exactly the same way no matter which
+machine it runs on so you have all these
+containerized workloads where you can
+deploy it into some containerized
+service like aws azure google cloud they
+all have containerized services which
+take a container from you right it's
+going to run the docker build and it is
+going to create an instance of the
+container and it is going to um
+run an instance of the container in a
+production server right which is which
+is perfect which is what we want this
+eliminates the whole conversation we had
+in the very beginning of this course
+which is that you don't have that it
+runs in my machine problem anymore right
+you need predictable applications right
+we literally started this course with
+predictable applications so now we are
+at a place where we can create pretty
+predictable applications because we can
+bundle our compiled and built
+application in a container and we know
+that it's going to work the same way no
+matter what so we looked at a simple
+java use case what i want to do in this
+video is look at a spring boot use case
+springboard if you're not familiar with
+spring boot is
+another java framework which allows you
+to build very complex web applications
+and apis and micro services uh using
+java and there is a there is like a
+starter which allows you to get started
+really quickly it uses a lot of
+intelligent defaults you have an
+application up and running in no time
+okay so what i'm going to do is i'm
+going to create a springboot application
+right now from the scratch i'm going to
+create a docker file that goes with that
+springboard application and i'm going to
+package the built
+springboard application in the docker
+file so that i know that that app is
+going to work reliably well on any
+environment that i pick it it's actually
+very very simple now that you know this
+it's literally like four or five lines
+of docker files but i'm going to
+demonstrate that anyway so to create a
+springboard application i go to
+start.spring.io which is the place where
+you can customize your starting point
+for your springboard application i'm
+going to leave everything as a default
+that is fine and i'm going to add one
+dependency which is
+web because i want the web application
+but honestly it really doesn't matter so
+i'm going to click on generate and what
+start.spring.io is going to do is it's
+going to give me a starting point in
+which i can build right so this is
+basically a web application and it
+bundles it with a battery topcat it's an
+embedded container okay so i have opened
+the downloaded spring boot project in my
+vs code window and what you'll commonly
+see is a java class most springboot
+projects have this java class with a
+main method that helps you start a
+springboard application without needing
+to do anything else other than just run
+a simple main method there are a bunch
+of different ways in which you can run
+this application including inside the
+ide by clicking on the run button but
+i'm going to use the cli way of doing
+things i'm going to open the terminal
+and then i'm going to use the
+maven
+wrapper
+which is this guy over here okay it's a
+utility that wraps the maven climb even
+as a build tool in java it traps that me
+in cli and helps me
+run the springboard application i'm
+gonna do spring dash
+put
+colon run and this is going to start and
+run
+this
+uh this application okay so here you see
+it has started and run the uh
+the spring application over here in port
+8080 okay is the application it doesn't
+have anything right now i don't have a
+controller here so it basically shows
+nothing but it's it's an application
+which is started right now i can bundle
+this into a jar file right spring boot
+applications are
+what are referred to as fat jars right
+it contains everything it needs in order
+to run the application so what i can do
+is i can say dot slash mvnw
+and then
+package
+and here i'm going to get
+a hr file
+in my target directory now here you see
+there is a demo
+snapshot.jar
+right this should not come as a surprise
+for people who are springboot developers
+this is basic
+way in which you can you can
+run springboard applications now what
+i'm going to do is i'm going to test
+this out by creating a simple controller
+a controller is like an endpoint for
+springboot i'm going to create a simple
+controller here right in the demo
+application i'm going to say this is a
+public
+string
+let me call this home
+and this is going to return
+hello world
+and i'm going to annotate this with
+request mapping
+of
+the root url which is slash okay so i've
+created a a simple api endpoint which
+returns hello world nothing complex here
+and i need to do one more thing here
+which is to mark this as a rest
+controller so that spring knows that
+this is a controller now i'm going to
+open terminal and i'm going to
+run the springboard application using
+the maven wrapper we should be able to
+access localhost 8080
+and
+see hello world printed which is the
+endpoint that we have we've created over
+here right which is this guy
+now this is fine but what i want to do
+next is package this one into a
+jar file and then create
+a docker container which runs the shar
+file now i have created the jar file
+it's available over here this has one
+end point which returns hello world when
+you hit the root
+grey
+but
+i don't know if the environment that i'm
+going to deploy this jar file to has all
+the necessary things does it have java
+does it have all the necessary things
+that are needed for this jar file to run
+well we don't know that but the good
+thing is we don't need to know that with
+darker we can set this up so that
+we can guarantee the environment in
+which this runs okay so what i'm going
+to do is i'm going to make sure that
+this jar file runs in an open jdk
+container
+in production so here's what i'm going
+to do i'll close this guy here i'm gonna
+close this rc here with my java spring
+boot project i'm going to create a new
+file
+called dockerfile okay and now i'm going
+to
+start this docker so i'm creating a
+container right i want this container to
+have my jar file and the command to run
+the jar file okay so i'm going to say
+from
+openjdk i want to use openjdk i can
+specify a specific
+version if i want i'm fine with opengdk
+for now
+what i'm going to do first is
+add
+this jar file which is in the target
+directory into my container okay so i'm
+going to say copy
+and then what i want is target slash
+like i don't care about the name i'm
+going to do star.jar you can specify the
+name if you want to be really specific
+about what you need and i'm going to
+call this app dot jar
+one of the reasons i do this is because
+the name of the jar might change
+the name of the jar right now
+is
+0 0 1 snapshot because that's the
+version of pawn.xml this might be
+different and you don't want to be
+updating the docker file every time this
+changes so i'm basically copying like
+any whatever jar is in the target
+directory
+rename it as app.jar and copy it over
+okay and then i'm going to run this jar
+i'm going to say entry point
+wait
+should i do entry point or should i do
+command
+well i'm leaning towards entry point
+because we want this jar to run no
+matter what right and command can be an
+argument to the jar file when it is run
+okay so i what i want to do is do a
+entry point
+i'm going to say java
+i want the java cli to run and since
+it's running a jar file i'm going to do
+a dash jar argument
+and then i'm going to do slash
+app.jar
+i can of course create a directory
+inside this right now this is going to
+the root right because i haven't created
+a working directory i can create like a
+jar directory and then make that the
+working directory copied over there
+and then have the entry point be that
+directory like sash jar slash
+app.jar it's up to you what you want to
+do so this is it
+and guess what this is it now i can
+create a docker container
+which contains the jar file that i have
+created over here right so i'm going to
+do a docker build here again
+docker build
+dash t i'm going to give it a tag which
+is my spring
+boot app and then dot because i want the
+docker file in the current location to
+be used i'm going to hit enter now since
+i've given an entry point when i start a
+container that i've created from this
+docker image it is going to execute this
+jar okay so if i were to do
+a docker run
+and i'm going to give it the
+the image name what did i call this my
+spring boot app
+all right
+notice it's creating it's running that
+spring uh boot application right it
+started the tomcat container it's
+running the springboot application and
+now i have my spring boot application
+run in a controlled environment which is
+exactly what we want right so we've kind
+of achieved our goal here this is
+exactly what we wanted to do
+okay
+the problem here though is i cannot
+access
+this application
+where to go here and then try refreshing
+it it's not going to work why because we
+haven't forwarded port all right so
+here's what i'm going to kill this
+and then
+i'm going to map the port over here i'm
+going to say
+well of course i don't need interactive
+terminal over here i'm going to do a
+dash p
+and then
+8080 in the
+container in the host maps to 88 in the
+container right the first one is the
+host maps to 8080 in the container now
+if i run this
+i should be able to
+access this again right i'm getting
+hello world but this is actually run
+inside a container
+okay
+now what is the workflow here the
+workflow is you work on your springboard
+application just like normal okay you're
+not really depending on docker for
+building the application but once you've
+completed building the application
+you're going to package the application
+using docker right so first you're going
+to run a maven command to generate the
+jar file and then you're going to
+run the docker cli to create an image
+out of the jar file anytime you change
+the application you have to generate a
+new jar file and then generate a new
+image but this is
+automatable right you can have a single
+command which can automate the whole
+thing there is actually a maven docker
+plugin which allows you to set this up
+in palm.xml itself so that you don't
+have to do this multiple times right you
+just run a maven target and it is going
+to both package it as well as set up a
+docker image so you're ready to go right
+here this your final output your
+distributable is no longer your jar it
+is going to be your container and that's
+what you're going to hand to somebody
+else to deploy

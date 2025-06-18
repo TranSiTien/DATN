@@ -1,0 +1,169 @@
+okay i'm going to try um
+answering a couple more questions that
+have come up
+in the real world how is docker image
+used
+in production well i mean is
+docker image deployed on cloud vendors
+like gcp aws etc yes that is a very
+common pattern a lot of these cloud
+providers have docker hosting solutions
+okay so you know they have
+containerization solutions as well as
+container orchestration solutions like
+kubernetes okay what you do is you
+define an image and then you tell aws
+hey
+run this image for me rather than
+setting up a vm and doing all that stuff
+yourself okay so
+aws has services which basically spins
+up a container in the cloud and then you
+configure that container you can figure
+all the ports and all that so your
+container is running an application that
+you can
+access outside
+okay when you
+when your docker pull image runs when
+where is that image stored it is
+operating system specific i don't
+exactly know the path in windows it's
+it's in program data in
+mac it's in some location in the home
+directory it
+you you can probably google i don't i
+don't have the answer on the tip of my
+tongue right now but it's basically
+saving it somewhere on your hard disk
+can we specify a docker hub container
+dependency in our local spring boot
+dependency like we use
+the container ourselves manually i mean
+an image dependency no you don't specify
+an image dependency on in an application
+what you do is you have the darker image
+wrap your application okay it's not the
+other way your image is not invoking so
+your application is not invoking an
+image you're having an image that wraps
+your application and runs your
+application inside it for that you need
+to be able to create your own images i'm
+going to talk about that later by
+default at docker hub are
+need to be mentioned explicitly for your
+own repo hub yeah by default docker hub
+is what's used you can configure docker
+to point to your own private repository
+but i'm not going to cover that for the
+for the scope of the session because
+honestly i don't even remember how to do
+it it's it's some simple configuration
+that you have to set up but you can
+point it to other repositories it just
+needs to know where to fetch it from if
+you don't provide a repository it's
+docker hub by default what if my spring
+boot requires kafka then i can't
+leverage docker image for it why not
+you can kafka is a binary is a library
+that you spring boot depends on so when
+you create a darker image with your
+springboard application that springboard
+application a fad jar is going to have
+the kafka jar in it so
+you can use docker obviously you just
+need to make sure the right ports are
+open so that when the message is going
+it's it's able to go out of your
+container to maybe somewhere else but
+yeah doctor is fine
+okay
+okay see one more question i see for the
+first time docker runs an image if not
+available it pulls the image but how can
+we make docker have all these images
+available
+installed before
+running docker run without using docker
+pool well docker pull is the way to do
+it why would you not want to use it if
+you want the images available on your
+machine when you do docker run and not
+have it download on docker run you use
+docker pull oh i see a follow-up
+question here i want to address that
+because this has this has come up before
+as well
+is that a waste of space
+perhaps
+if you have two versions of java
+yes there is duplicate stuff there but
+that's your intention you want two
+versions of java don't you well then you
+need to have those two on your machine
+it is not completely a waste of space
+because of the way darker images work
+darker images work as layers and i'll be
+covering that later so when you have you
+know jdk 11 image
+and jdk 15 image
+do you mean that each of those images
+are basically duplicating the whole
+thing
+well no there's actually common stuff
+which is separated out as a layer and
+when you're running docker it kind of
+intelligently reuses it it's the only
+difference between the jdk 11
+image and the jdk 17 image is basically
+that the different version of the java
+binaries are not like bash for example
+it's basically how you build your image
+you can build it in terms of layers so
+that previous layers can be reused
+we're getting ahead of ourselves but yes
+it is not uh it's not a complete
+duplication
+when the container is killed space is
+reclaimed right
+yes well not not initially you're gonna
+have to remove the container
+so when you remove it then space is
+reclaimed i'll talk about how you remove
+a container in a bit what if one docker
+container process is using up all the
+ram because we never specified anything
+in memory that's a good point we haven't
+specified about memory restrictions you
+can do that by specifying flags we don't
+do this during uh demonstration time so
+for example when you do docker run you
+can say
+docker let me exit this
+you can say docker run and then
+cpu equals one i don't remember the
+exact command but you can say i want
+this to hold just one cpu and then i can
+specify something for ram as well and
+then i say
+alpine so anything that this runs
+anything that this terminal runs now is
+going to basically be restricted to the
+hardware restrictions that i've provided
+over here so it is possible it's just
+not the initial concern when when you
+know when anybody is teaching docker to
+software developers because it's mostly
+like a deployment concern for you for
+you when you're running it on your
+machine
+you usually don't tend to use those
+flags
+nothing persists
+beyond the life cycle of the container
+yeah yeah if you have a file in the
+container and then you remove the
+container it's gone that's the point of
+the container it's like it's removed

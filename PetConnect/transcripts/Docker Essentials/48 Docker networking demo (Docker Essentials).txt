@@ -1,0 +1,143 @@
+so i'm going to give you a demo of how
+this networking works with a docker
+container by using the http example i'm
+going to start a container with the
+httpd image so i'm going to say docker
+run
+httpd you know that httpd is apache and
+when you do docker run httpd you're
+basically running an apache process
+in a container
+now since this is being run inside a
+container and now we know that by
+default a container is connected to like
+this fake network right virtualized
+network which is the bridge network and
+not your host network
+i cannot access this on my host okay so
+we were to open a browser and access
+localhost this is not going to work if i
+had run apache locally i would have been
+able to access localhost and i would
+have gotten this working message but i
+don't get that here in order to make it
+work we know the drill what do we need
+to do we need to map the port i need to
+say dash p
+and then the port 80 maps to the port 80
+on the host right the port 80 on the
+host sorry maps to the port 80 in the
+container and now if i were to run this
+command
+this is going to expose the port and now
+i can access apache locally now again
+the reason behind this is because we are
+not sharing the same network right when
+you run apache by default it runs on its
+own network called the bridge network
+and i can demonstrate that let's say i
+remove
+this
+port mapping and i just run httpd okay
+now we know that apache is running but
+it is running on
+the default network for all docker
+containers all docker containers have a
+network and this is exposed over there
+well now i cannot obviously access this
+on my
+host
+browser because this is not in the
+docker network but perhaps i can spin up
+another container and access it from
+there since all containers connect to
+the default network that container
+should be able to access what's exposed
+in this container right because they're
+sharing that same default network well
+let's try that out
+i'm going to switch to another tab over
+here and i'm going to run
+another container docker run and i'm
+going to run
+busy box busy box is a typical linux
+container that's that has a handful of
+utilities and one of the utilities that
+i'm interested in using right now is
+wget because i want to make a
+get request so i'm going to run docker
+busy box and i'm going to use the
+interactive terminal flag so that i can
+um run a command there right so here i
+have wget utility and i can make an http
+request now i need to make an http
+request to
+whatever is over here right whatever is
+being run in this container now how do i
+find out what is being run over there
+well i can run the inspect command to
+figure out what is the ip of this
+container since these containers are
+running in the virtualized network
+docker's bridge network these containers
+get their own individual ip inside this
+virtual network right we can figure out
+what that ip is by running the inspect
+command
+so i do docker
+container ls and here are the two
+containers that we are running now i
+want to inspect the httpd container okay
+so i'm going to
+say docker
+inspect and then i'm going to give it
+this
+hash
+and now it has a lot of information but
+what i'm interested in is at the very
+bottom here you see this there is a
+network section and there is ip address
+right there is an ip address over here
+which is 172 17 0 and 2. okay this is
+the ip address
+off
+of what of this httpd container okay but
+this is not the ip address that's
+available on my
+host machine like i can't i access that
+ip address over here right that's not
+gonna work because it's inside the
+docker's network what i can do is i can
+go to another container which is running
+inside the docker network inside the
+bridge network and i can access it over
+here right so if i were to do wget
+and then i type that ip address
+it is able to connect to that thing and
+get index.html right so if i were to
+echo index.html i should get that it
+works message right
+or
+not really echo i need to print out the
+contents and here you see here is the
+contents for the it works message so
+here's the thing if you run containers
+without having to deal with networking
+right no ports nothing of the chart
+two docker containers can talk to each
+other in that bridge network because if
+there is a virtual network but if you
+want something accessible in the host
+only then you need to say well i want
+some kind of a forwarding from this
+bridge network to my host so that i can
+make http requests and go to that
+network so that's basically what the
+port forwarding is you're mapping a port
+from a container in your bridge network
+to the host network but as long as you
+have containers within the network in
+the same network
+they should be able to communicate and
+access each other just fine hope that
+makes sense

@@ -1,0 +1,129 @@
+a good use case for daca compose is when
+you're trying to work on a project and
+you want some containers which are
+associated with that project but not
+necessarily a part of your code so
+imagine you're working on a springboard
+app and you need postgres database to be
+available well
+you can of course run docker run
+commands in order to start up a postgres
+but we don't want to do that all the
+time so here's an example of a spring
+boot application
+that depends on postgres database and
+you want to make sure that they're both
+available and up and running at the same
+time using docker compose so this is how
+it works here you have the same version
+3
+line in your yaml file this is a docker
+compose yaml file so in services you
+have two services here one is called app
+and the other is called your database
+postgres database okay so your app is
+not a pre-built image that you can
+fetching just like we did earlier we did
+ and readers right but we're not
+doing that we want this app to be our
+app so what we do is we say we give it a
+container name and then we say we build
+it from local so it is going to look for
+a docker file in the same directory and
+it's going to build it which is which is
+very handy when you're building like a
+springboard application and you're
+containerizing it well it's going to
+build the docker file when you
+have docker compose up it is going to
+start from there right it's not looking
+at an external image it is looking at
+the source in the same directory and
+then this should be familiar we're going
+to have ports 8080 mapped to 8080 so we
+know that this is exposing a port in
+8080 but now notice this depends on here
+here we are specifying an order in which
+these containers need to run okay our
+springboot application depends on our
+database to be up and what is our
+database service this is just another
+you know container in our docker compose
+file the images postgres we have the
+port mapping and we have some
+environment variables we've already seen
+these right you have a password user and
+the db name okay
+so if you had just done this if you had
+removed this guy here
+we just done this this is just one
+container in this docker compose file
+right if you say docker compose app it
+would just run this
+database container but now we have one
+more container here which is called app
+and where is this app coming from what's
+the image for it this doesn't have an
+image tag right instead it has a build
+property which means it's going to build
+it from the docker file in that same
+directory and then it says it depends on
+this other container this other service
+okay so it's a hint for docker compose
+to say okay run this thing first and
+then run this container and then again
+all the other environment properties and
+all that
+works just the same way here what we're
+doing is we're providing an environment
+variable which is a spring data source
+url to be this postgres url so for
+instance if you're using something like
+jpa over here
+you have the data source url configured
+nicely in spring so that when the
+springboard application starts up it is
+going to connect to this database that
+you have specified here notice how it
+all fits nice and clean here right all
+you don't have to worry about okay do i
+have to start the database first what
+database do i need to start nope just
+run one command docker compose up and it
+is going to first start the database
+container it is going to build this
+spring container spring image from your
+core from your docker file and it's
+going to start this up and it's going to
+make sure that this runs only after
+this runs so this is a handy way in
+which you can manage dependencies to
+your project and have the project be the
+only thing that's built everything else
+gets pulled in from some registry like
+you're seeing over here so a couple of
+quick examples to uh docker compose that
+we've seen this should give you an idea
+about how docker compose works i highly
+recommend going to the documentation to
+look up more details there are a lot of
+other things you can do with docker
+compose which are analogous to cli i
+hopefully have explained all the
+concepts associated with it the rest is
+just the syntax so for example
+network there is a way in which you can
+specify the network over here uh you
+know
+volume mounts you can specify volume
+amounts it's basically just syntax at
+this point
+you have all the concepts associated
+with running containers in the cli
+pretty much all of those command line
+arguments work one-on-one with syntax
+that you specify over here when you're
+starting a container via docker compose
+so i highly recommend going to the
+documentation to look this up so this is
+docker compose with docker

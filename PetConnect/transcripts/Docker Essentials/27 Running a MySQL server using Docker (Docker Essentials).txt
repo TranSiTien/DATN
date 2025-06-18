@@ -1,0 +1,228 @@
+i want to show you a really cool demo
+of
+running a software
+without
+like we had this theme of running java
+without installing java running a node
+without installing node well here is a
+cool trick you can run mysql without
+installing mysql
+and this is interesting but you might go
+well it's kind of the same thing isn't
+it well the difference is
+with java and node what you have are
+kind of
+a
+stateless
+containers right you don't have anything
+in the container you're using it to
+using it as a proxy for a runtime right
+you don't want to install a java program
+you use the container as a program
+instead but with mysql it's not just a
+program it's also
+data that you store right you insert
+something in mysql it's going to
+actually save it so how do you do this
+with docker there are a couple of things
+that you're going to learn that kind of
+makes it
+simple but i'm going to start with the
+very first step where you're just using
+it as a process right running mysql you
+know and connecting to it without
+installing mysql and this is how it
+works okay i'm going to clear
+this
+thing over here and let's actually go
+look at
+the image
+again you go to docker hub and you need
+to know what what image to use just go
+to docker hub and there should be a
+mysql
+image here oh here you go okay it's just
+called mysql okay so if you need a
+specific version again you can use the
+label i'm just gonna go with the
+go with the latest for now
+okay
+so here's how i do it
+i'm gonna get docker run mysql right
+it's pretty obvious so i do docker
+run i'm gonna give it a name
+my
+mysql
+okay
+and then
+i'm gonna detach
+and then i'm going to run the container
+i'll run the image
+mysql okay
+now the thing that you need to do with
+mysql is also to set a password because
+like you yeah you start my container but
+then what's the password for it you have
+to set a password somehow you have to
+send something information
+to the container in order to create it
+and this is where things get tricky
+right you don't want to have like a
+default password that every mysql
+container is going to have that's not
+useful so right now we have for the very
+first time we have encountered a
+situation where
+not only do we want to send information
+to docker to tell it what container to
+create you also want to send some
+information to the application that runs
+inside that container now how do you do
+it well there are a bunch of ways you
+can do it one way is to set environment
+variables you have a flag which allows
+you to set environment variables in a
+container when you're running docker you
+have this flag called
+dash e and then you can say
+environment variable name
+equals
+value and what docker is going to do is
+it's going to create a container and
+it's going to set this environment
+variable in that container with a value
+that you specify which is perfect
+because this is exactly what we want for
+mysql so what i'm going to do is i'm
+going to say
+mysql
+root
+password i'm going to set the mysql root
+password to be i'm just going to call it
+secret okay so i'm setting an
+environment variable and the docker
+container the mysql container is going
+to use this environment variable to set
+the root password for the mysql instance
+that it creates okay so it's just an
+illustration of a way in which you can
+kind of give hints to the application
+that's running so that it can do
+different things and you can control
+that up front when you're starting the
+container right you can easily imagine i
+create another docker mysql container
+where the secret is you know password is
+something else and that's the password
+that that container is going to use you
+see it's
+fairly powerful
+so i'm going to hit enter and
+obviously it's not going to find my
+scale locally because i haven't run it
+so far we haven't seen it in the docker
+images so it is going to go and
+fetch that image
+and it is going to
+set the environment variable for the
+container and then it is going to run
+the mysql application okay
+okay so it is run
+and now i have this container hash over
+here it's the container id the full
+container id
+and it is basically running in the
+background guess why because i've used
+the dash d option right i said detach
+from it don't don't show me that thing
+so if i were to do
+a docker ps
+you will see
+the mysql container running okay and
+okay this is good but now how do i
+connect to it well i can use docker exec
+for right say docker
+exec
+and then i want it to be interactive i
+give it the name of my
+container which is my
+dash mysql
+and then the image my sql no this is not
+the image this is the command that i
+want to run i'm going to say mysql p
+which is basically i'm running the mysql
+client
+over here the mysql client mysql.p
+in this
+container and i'm using dash id because
+i want it to be interactive so now it's
+going to say hey tell me the password
+i'm going to type
+the password that i provided over here
+i hit enter and now i'm connected to
+mysql
+okay so i can create tables and all that
+stuff i don't know if describe works
+describe tables
+no i'm going to describe
+database
+okay i'm a bit rusty on my skill command
+so i'm not going to try and play around
+with it but you know you get the idea
+right i have my skill client that i've
+connected to over here
+and i'm running that mysql command over
+here i'm going to say show
+databases
+there you go
+so this is uh this is a mysql
+client running and a mysql server
+running
+all right so what i was going to say is
+with a stateless container like when you
+run when you used a java container for
+running java commands it's fine if that
+container ends
+but
+with this thing when you
+insert something you create a table
+this data is all saved in the container
+so when i remove the container all the
+data is gone
+i see a related question there yes it is
+it is a problem right so
+here's what happens now let's say i i
+stop this container right so docker
+ps
+i'm going to stop this container i'm
+going to say docker
+stop
+my
+mysql
+okay so i have run the docker ps command
+i have these two running i'm going to
+say docker stop and i'm going to stop
+this mysql thing
+so it has stopped but the files haven't
+been removed you remember when you stop
+a container it stops the running process
+but the files that were created when the
+image was extracted and the container
+was created that still exists now i can
+run docker start and this comes back up
+so
+when you've created tables in this mysql
+and you've inserted records when you do
+a docker start
+well you're back
+okay because all the files that were
+created are in that same
+container
+however when you delete the container
+when you say docker remove that's gone
+right so all that data is gone i'm gonna
+show you how you can kind of persist
+that as well but you have to remember
+the files are in the container
+the when you remove the container that's
+gone

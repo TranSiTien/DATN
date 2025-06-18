@@ -1,0 +1,205 @@
+// use case 
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+skinparam usecase {
+  BackgroundColor #EEF
+  BorderColor black
+  ArrowColor Navy
+  ActorBorderColor Black
+  ActorFontSize 14
+  UsecaseFontSize 14
+}
+
+actor "Chủ nuôi" as Owner
+actor "Người tìm thấy\nthú cưng" as Finder
+actor "Quản trị viên" as Admin
+
+rectangle "Hệ thống tìm kiếm thú cưng thất lạc" {
+    usecase "Báo cáo thú cưng\nbị thất lạc" as UC1
+    usecase "Báo cáo thú cưng\nđược tìm thấy" as UC2
+    usecase "Xem chi tiết\nthú cưng" as UC3
+    usecase "Tìm kiếm thú cưng bằng AI" as UC4
+    usecase "Xem bản đồ\nthú cưng thất lạc/\ntìm thấy" as UC5
+    usecase "Quản lý báo cáo" as UC6
+}
+
+Owner --> UC1
+Finder --> UC2
+
+Owner --> UC3
+Finder --> UC3
+
+Owner --> UC4
+Finder --> UC4
+
+Owner --> UC5
+Finder --> UC5
+
+Admin --> UC6
+@enduml
+
+// sequence report lost pet
+@startuml
+hide footbox
+autonumber
+
+actor "Chủ nuôi" as User
+participant "Frontend" as FE
+participant "LostPetController" as Controller
+participant "LostPetService" as LostPetService
+participant "UserService" as UserService
+participant "DbContext" as DB
+participant "StorageService" as Storage
+participant "PetRecognitionController" as AI
+participant "EmbeddingService" as Embedding
+participant "VectorDB (Pinecone)" as VectorDB
+
+User -> FE : Điền form + chọn ảnh\n+ xác định vị trí
+FE -> Controller : POST /api/lostpets\n(form-data: mô tả, vị trí, ảnh...)
+
+Controller -> LostPetService : createLostPetReport(requestDto)
+
+LostPetService -> UserService : Lấy thông tin người dùng
+UserService --> LostPetService : Trả về User
+
+LostPetService -> DB : Tạo LostPet (Pending)
+DB --> LostPetService : LostPet entity
+
+loop với mỗi ảnh
+    LostPetService -> Storage : Upload ảnh
+    Storage --> LostPetService : Trả về metadata
+    LostPetService -> DB : Lưu metadata ảnh
+end
+
+LostPetService -> AI : POST /upload/lost-cat\n(cat_id + ảnh)
+AI -> AI : Kiểm tra ảnh hợp lệ
+loop với mỗi ảnh
+    AI -> Embedding : Xử lý ảnh (process_image)
+    Embedding --> AI : Trả về embedding vector
+    AI -> VectorDB : Upsert vector với metadata
+    VectorDB --> AI : Xác nhận lưu vector
+end
+AI --> LostPetService : 200 OK
+
+LostPetService --> Controller : LostPetDto
+
+Controller --> FE : Trả LostPetDto (200 OK)
+
+FE -> User : Hiển thị "Báo cáo thú cưng\nthất lạc thành công"
+FE -> FE : Điều hướng đến trang chi tiết\nthú cưng mới tạo (LostPetDto.Id)
+@enduml
+
+
+// sequence search lost pet
+@startuml
+hide footbox
+autonumber
+
+actor "Người dùng" as User
+participant "Frontend" as FE
+participant "LostPetController" as Controller
+participant "LostPetService" as Service
+participant "DbContext" as DB
+participant "GisService" as GIS
+participant "HttpClientFactory" as Http
+participant "PetRecognitionController" as AI
+participant "EmbeddingService" as Embedding
+participant "VectorDB (Pinecone)" as VectorDB
+
+User -> FE : Tải ảnh + nhập bộ lọc\n(vị trí, khoảng cách tìm kiếm, khoảng ngày mất)
+FE -> Controller : POST /api/lostpets/search\n(form-data: image + filter)
+Controller -> Service : Gọi SearchLostPets(searchLostPetDto)
+
+alt Có thông tin vị trí
+    Service -> GIS : Chuyển đổi sang WGS84
+    GIS --> Service : Tọa độ trên hệ WGS84
+end
+
+Service -> DB : Truy vấn LostPets theo filter
+DB --> Service : Trả về danh sách LostPets
+
+alt Có ảnh tìm kiếm
+    Service -> AI : POST /search/similar-pets-by-image\n(ảnh + list pet_id)
+
+    AI -> Embedding : Xử lý ảnh thành vector
+    Embedding --> AI : Trả về query vector
+
+    AI -> VectorDB : Truy vấn top K vector tương tự\nlọc theo cat_id list
+    VectorDB --> AI : Trả về danh sách (pet_id, score)
+
+    AI --> Service : Danh sách pet_id và similarity_score
+
+    Service -> Service : Lọc danh sách LostPets theo kết quả
+end
+
+Service --> Controller : Danh sách LostPetDto + similarity_score
+Controller -> FE : Trả về danh sách LostPetDto
+FE -> User : Hiển thị kết quả theo similarity_score
+
+@enduml
+
+// ErD
+@startuml
+entity GeneralUsers {
+  * Id : UUID <<PK>>
+  --
+  Name : varchar
+}
+
+entity ContactInfos {
+  * Id : UUID <<PK>>
+  --
+  Value : varchar
+  Type : varchar
+  UserId : UUID <<FK>>
+  IsPrimary : boolean
+}
+
+entity LostPets {
+  * Id : UUID <<PK>>
+  --
+  Name : varchar
+  Description : text
+  LastSeenLocation : varchar
+  LastSeenDateTime : datetime
+  Status : varchar
+  ModeratorFeedback : text
+  FinderId : UUID <<FK>>
+  LocationName : varchar
+}
+
+entity LostPetImages {
+  * Id : UUID <<PK>>
+  --
+  Metadata : text
+  LostPetId : UUID <<FK>>
+}
+
+entity FoundPets {
+  * Id : UUID <<PK>>
+  --
+  Description : text
+  FoundLocation : varchar
+  FoundDateTime : datetime
+  Status : varchar
+  ModeratorFeedback : text
+  FinderId : UUID <<FK>>
+}
+
+entity FoundPetImages {
+  * Id : UUID <<PK>>
+  --
+  Metadata : text
+  FoundPetId : UUID <<FK>>
+}
+
+' Relationships
+GeneralUsers ||--o{ ContactInfos : has
+GeneralUsers ||--o{ LostPets : owns
+LostPets ||--o{ LostPetImages : has
+GeneralUsers ||--o{ FoundPets : owns
+FoundPets ||--o{ FoundPetImages : has
+
+@enduml
+

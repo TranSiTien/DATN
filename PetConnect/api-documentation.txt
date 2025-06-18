@@ -1,0 +1,287 @@
+# Lost Pet Finder API Documentation
+
+## Authentication Endpoints
+
+### 1. User Registration
+- **Endpoint**: `/api/auth/register`
+- **Method**: POST
+- **Description**: Register a new user
+- **Request Body**:
+  ```
+  {
+    "name": "string",
+    "email": "string",
+    "password": "string"
+  }
+  ```
+- **Response**: User object with token
+  ```
+  {
+    "id": "string",
+    "name": "string",
+    "email": "string",
+    "avatarUrl": "string",
+    "token": "string"
+  }
+  ```
+
+### 2. User Login
+- **Endpoint**: `/api/auth/login`
+- **Method**: POST
+- **Description**: Authenticate a user
+- **Request Body**:
+  ```
+  {
+    "email": "string",
+    "password": "string",
+    "rememberMe": "boolean"
+  }
+  ```
+- **Response**: User object with token
+  ```
+  {
+    "id": "string",
+    "name": "string",
+    "email": "string",
+    "avatarUrl": "string",
+    "token": "string"
+  }
+  ```
+
+### 3. Social Login (Facebook)
+- **Endpoint**: `/api/auth/social/facebook`
+- **Method**: POST
+- **Description**: Authenticate via Facebook
+- **Request Body**:
+  ```
+  {
+    "accessToken": "string"
+  }
+  ```
+- **Response**: User object with token
+
+### 4. Get Current User
+- **Endpoint**: `/api/auth/me`
+- **Method**: GET
+- **Description**: Get current authenticated user information
+- **Authentication**: Required
+- **Response**: User object
+
+### 5. Logout
+- **Endpoint**: `/api/auth/logout`
+- **Method**: POST
+- **Description**: Invalidate the user's session
+- **Authentication**: Required
+- **Response**: Success message
+
+## Pet Endpoints
+
+### 1. Report Lost Pet
+- **Endpoint**: `/api/pets/lost`
+- **Method**: POST
+- **Description**: Create a new lost pet report
+- **Authentication**: Required
+- **Request Body**:
+  ```
+  {
+    "name": "string",
+    "petType": "string",
+    "breed": "string",
+    "color": "string",
+    "size": "string",
+    "gender": "string",
+    "age": "string",
+    "location": {
+      "address": "string",
+      "latitude": "number",
+      "longitude": "number"
+    },
+    "date": "date",
+    "description": "string",
+    "photos": ["base64 or file uploads"],
+    "contactMethods": [
+      {
+        "type": "string (email|phone|facebook|instagram|twitter)",
+        "value": "string"
+      }
+    ]
+  }
+  ```
+- **Response**: Created pet object with ID
+
+### 2. Report Found Pet
+- **Endpoint**: `/api/pets/found`
+- **Method**: POST
+- **Description**: Create a new found pet report
+- **Authentication**: Required
+- **Request Body**:
+  ```
+  {
+    "foundLocation": "string",
+    "currentLocation": "string (with-me|shelter|vet|other)",
+    "dateFound": "date",
+    "description": "string",
+    "photos": ["base64 or file uploads"],
+    "contactMethods": [
+      {
+        "type": "string (email|phone|facebook|instagram|twitter)",
+        "value": "string"
+      }
+    ]
+  }
+  ```
+- **Response**: Created pet object with ID
+
+### 3. Get Pet Details
+- **Endpoint**: `/api/pets/:id`
+- **Method**: GET
+- **Description**: Get details for a specific pet
+- **Parameters**:
+  - `id`: Pet ID
+- **Response**: Pet object with all details
+
+### 4. Update Pet Status
+- **Endpoint**: `/api/pets/:id/status`
+- **Method**: PATCH
+- **Description**: Update the status of a pet (active/resolved)
+- **Authentication**: Required (must be owner)
+- **Parameters**:
+  - `id`: Pet ID
+- **Request Body**:
+  ```
+  {
+    "status": "string (active|resolved)"
+  }
+  ```
+- **Response**: Updated pet object
+
+### 5. Delete Pet Report
+- **Endpoint**: `/api/pets/:id`
+- **Method**: DELETE
+- **Description**: Delete a pet report
+- **Authentication**: Required (must be owner)
+- **Parameters**:
+  - `id`: Pet ID
+- **Response**: Success message
+
+### 6. List User's Pets
+- **Endpoint**: `/api/pets/user`
+- **Method**: GET
+- **Description**: Get all pets reported by the authenticated user
+- **Authentication**: Required
+- **Query Parameters**:
+  - `type`: Filter by pet type (lost/found)
+  - `status`: Filter by status (active/resolved)
+- **Response**: Array of pet objects
+
+### 7. Search Pets
+- **Endpoint**: `/api/pets/search`
+- **Method**: GET
+- **Description**: Search for pets
+- **Query Parameters**:
+  - `type`: Filter by pet type (lost/found)
+  - `petType`: Type of animal (cat/dog/etc.)
+  - `location`: Location search string
+  - `lat`: Latitude for geo search
+  - `lng`: Longitude for geo search
+  - `radius`: Search radius in km/miles
+  - `dateFrom`: Start date
+  - `dateTo`: End date
+  - `sortBy`: Sort by (time/relevance)
+- **Response**: Array of pet objects
+
+### 8. Image Search
+- **Endpoint**: `/api/pets/search/image`
+- **Method**: POST
+- **Description**: Search for similar pets by image
+- **Request Body**:
+  ```
+  {
+    "image": "base64 encoded image"
+  }
+  ```
+- **Response**: Array of pet objects with match scores
+
+## User Profile Endpoints
+
+### 1. Update User Profile
+- **Endpoint**: `/api/users/profile`
+- **Method**: PATCH
+- **Description**: Update user profile information
+- **Authentication**: Required
+- **Request Body**:
+  ```
+  {
+    "name": "string",
+    "email": "string",
+    "avatarUrl": "string"
+  }
+  ```
+- **Response**: Updated user object
+
+### 2. Get User Contact Methods
+- **Endpoint**: `/api/users/contacts`
+- **Method**: GET
+- **Description**: Get user's saved contact methods
+- **Authentication**: Required
+- **Response**: Array of contact method objects
+
+### 3. Update User Contact Methods
+- **Endpoint**: `/api/users/contacts`
+- **Method**: PUT
+- **Description**: Update user's contact methods
+- **Authentication**: Required
+- **Request Body**:
+  ```
+  {
+    "contactMethods": [
+      {
+        "type": "string (email|phone|facebook|instagram|twitter)",
+        "value": "string"
+      }
+    ]
+  }
+  ```
+- **Response**: Updated array of contact method objects
+
+## Statistics Endpoints
+
+### 1. Get Pet Statistics
+- **Endpoint**: `/api/stats/pets`
+- **Method**: GET
+- **Description**: Get statistics about pets (views, responses)
+- **Authentication**: Required
+- **Parameters**:
+  - `petId`: Pet ID
+- **Response**: Statistics object
+
+## File Upload Endpoint
+
+### 1. Upload Pet Images
+- **Endpoint**: `/api/upload/pet-images`
+- **Method**: POST
+- **Description**: Upload images for a pet report
+- **Authentication**: Required
+- **Request Body**: Multipart form data with images
+- **Response**: Array of image URLs
+
+## Additional Notes
+
+1. All endpoints should return appropriate HTTP status codes:
+   - 200: Success
+   - 201: Created
+   - 400: Bad Request
+   - 401: Unauthorized
+   - 403: Forbidden
+   - 404: Not Found
+   - 500: Server Error
+
+2. Authentication should be implemented using JWT tokens sent in the Authorization header.
+
+3. The API should include rate limiting to prevent abuse.
+
+4. Implement proper validation for all input data.
+
+5. Consider implementing image recognition capabilities for the image search feature.
+
+6. Geolocation services will be needed for the location-based search functionality. 

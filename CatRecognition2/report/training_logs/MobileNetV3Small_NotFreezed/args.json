@@ -1,0 +1,1 @@
+{"model": "MobileNetV3Small_NotFreezed", "transform": "train_1", "input_size": 224, "n_epochs": 20, "n_workers": 5, "batch_size": 32, "log_folder": "report/training_logs/MobileNetV3Small_NotFreezed"}

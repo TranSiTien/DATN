@@ -1,0 +1,94 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Báo cáo kết quả huấn luyện</title>
+        <style>
+            body { font-family: Arial, sans-serif; line-height: 1.6; max-width: 1000px; margin: 0 auto; padding: 20px; }
+            h1 { color: #2c3e50; }
+            h2 { color: #3498db; }
+            table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+            th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+            th { background-color: #f2f2f2; }
+            tr:nth-child(even) { background-color: #f9f9f9; }
+            img { max-width: 100%; height: auto; margin: 20px 0; }
+        </style>
+    </head>
+    <body>
+        <h1>Tóm tắt kết quả huấn luyện các mô hình</h1>
+<h2>Bảng so sánh hiệu suất tốt nhất</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Model</th>
+<th style="text-align: right;">Best Test Accuracy</th>
+<th style="text-align: right;">Epoch of Best Accuracy</th>
+<th style="text-align: right;">Best Test Loss</th>
+<th style="text-align: right;">Epoch of Best Loss</th>
+<th style="text-align: right;">Final Test Accuracy</th>
+<th style="text-align: right;">Final Test Loss</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">MobileNetV3Small_NotFreezed</td>
+<td style="text-align: right;">0.913866</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">0.216249</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">0.913603</td>
+<td style="text-align: right;">0.219641</td>
+</tr>
+<tr>
+<td style="text-align: left;">MobileNetV3Small_Freezed</td>
+<td style="text-align: right;">0.875788</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0.332158</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0.855567</td>
+<td style="text-align: right;">0.33695</td>
+</tr>
+<tr>
+<td style="text-align: left;">MobileNetV3Small_Freezed2</td>
+<td style="text-align: right;">0.849527</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">0.375706</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">0.848214</td>
+<td style="text-align: right;">0.375706</td>
+</tr>
+<tr>
+<td style="text-align: left;">ModelB</td>
+<td style="text-align: right;">0.702994</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.80942</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">0.699317</td>
+<td style="text-align: right;">0.80942</td>
+</tr>
+<tr>
+<td style="text-align: left;">ModelA</td>
+<td style="text-align: right;">0.676208</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1.01138</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">0.639443</td>
+<td style="text-align: right;">1.14419</td>
+</tr>
+</tbody>
+</table>
+<h2>Phân tích kết quả</h2>
+<ul>
+<li>Mô hình có accuracy cao nhất là <strong>MobileNetV3Small_NotFreezed</strong> với accuracy <strong>0.9139</strong>.</li>
+<li>accuracy trung bình của các mô hình: <strong>0.8037 ± 0.1070</strong>.</li>
+<li>Thời gian hội tụ trung bình (epoch): <strong>9.0</strong>.</li>
+</ul>
+<h2>Biểu đồ</h2>
+<p><img alt="So sánh accuracy" src="./test_accuracy_comparison.png" /></p>
+<p><img alt="So sánh loss" src="./test_loss_comparison.png" /></p>
+<p><img alt="accuracy tốt nhất" src="./best_accuracy_comparison.png" /></p>
+    </body>
+    </html>
+    

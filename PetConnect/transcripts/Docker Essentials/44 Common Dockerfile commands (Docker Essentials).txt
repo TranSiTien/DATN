@@ -1,0 +1,198 @@
+all right now i'm going to teach you a
+few other commands that you can use in
+your docker file there are actually a
+lot and it's obviously not in the scope
+of a course to cover every docker
+command there is that you can put in a
+docker file but i want to cover some of
+the important ones uh in this video so
+one thing that you would commonly
+encounter is the maintainer command and
+what this allows you to do is specify
+who is the kind of owner of the docker
+file or the author of the docker file
+who you can contact in case you want to
+have a conversation about it you want to
+submit a change you want to ask them
+there is a bug that you want to fix kind
+of like a
+an author tag right this maintainer you
+can specify the
+first name last name middle name
+whatever else and then the email id in
+this angle bracket notation
+there is also an add command that people
+normally tend to confuse
+with copy okay add
+is similar to copy when you're copying a
+file from your project into
+the image that's specified in your
+docker file so for example here we have
+a copy command this could very well be
+an add command and it works exactly the
+same way all right then what's the
+difference between the two well add has
+a couple of other things that it can do
+right first if you want to add a zip
+file or a compressed file you want to
+extract it and put it into your
+image you can actually do
+this using add all right rather than
+extracting it and then copying
+individual file so let's say i had a zip
+file over here and i want to extract it
+and put it into an image whenever i want
+to create that image i just do add or
+what the ad does is if it's just a
+simple file it is going to copy it as is
+but if it's a zip file it is going to
+extract it and copy it to the location
+that you specify right that's what makes
+ad a little unique if you want if you
+have that use case i recommend using add
+and also allows you to specify a url and
+it's going to download that location uh
+you know a file from that location and
+you can use it to copy it to a certain
+location here what i'm doing is i'm
+going to github.com
+getting a certain
+jar file from online and i'm copying it
+into the slash lib location so this is
+also possible with add copy doesn't do
+that
+but for that you can specify a zip file
+it's going to get extracted or you can
+specify a url it's going to get
+downloaded and then it's going to get
+save it into the location that you
+specify so that is add and that's how
+it's different from copy
+there is an env command which allows you
+to specify the environment variables
+that you want to use for
+either when you're creating your image
+or when you're running a container so
+let's say you want when you every time
+you start a container you want tv host
+url to be a certain url you can specify
+env and say this variable needs to be
+this url and it is going to provide this
+it's going to make this environment
+variable available to you in the
+container and also when you're running
+subsequent steps in your docker file all
+right so anytime you're running a you
+know a step afterwards you can depend on
+db host url to have to be an environment
+variable which contains this value so
+you can kind of leverage that and depend
+on that thing existing that's that's the
+env uh command you cannot set the
+operating system style of setting env
+variables right you know you cannot set
+that and i'm going to explain to you why
+in the next video when you want to deal
+with environment variables you have to
+use env
+okay
+next there is the expose command an
+exposed command allows you to expose a
+certain port in a container that spins
+up from an image you kind of bake it
+into the image so you must be familiar
+with the uh the dash p parameter that we
+set earlier to expose a certain port uh
+to the host right we kind of looked at
+that with the httpd uh image well this
+is how they do it they say okay i i'm
+creating an image where the server is
+gonna run on port 8080 so i'm going to
+expose port 8080 so that is the expose
+command
+and then you have also have a volume
+command which is again replica you know
+replicating the functionality that we
+did with the volume mounts that we've
+tried out earlier using cli this is
+again burning that fact into the image
+so that anytime you start up a container
+it is going to do that mapping the
+volume mapping so here i'm specifying
+that this is the host directory this
+host the directory on the machine where
+the container runs and this is mapped to
+this specific location in the container
+okay so this allows you to do that
+mapping and kind of burn it into the
+image so anytime you start up a
+container it is going to do this mapping
+i recommend being a little careful with
+this thing because this kind of assumes
+that this host directory exists right
+because anything like let's say you
+create this docker file and then you
+create an image you give that image to
+somebody else
+well they are going to have to have this
+host directory right without that host
+directory this is not going to work so
+this is not recommended i usually don't
+suggest having a
+volume command
+in your docker file usually it's
+something that you would want to have
+users of your image set that up using
+the cli and better still if there is
+something that you want to make
+available in your image you should just
+keep it over here and then use the add
+command or the copy command to copy that
+over to the image right and don't use
+the volume
+finally i have the user command here
+which allows you to specify what is the
+current logged in user when you start up
+a container right when you start a
+container there's always like a
+currently logged in user linux requires
+that so who is the current logged in
+user well you can specify that using the
+user command and say what the username
+is or the user id and that is going to
+be the currently logged in user for that
+container of course you need that user
+to be available in the image but once
+it's available you can set that as the
+current user and that is going to be
+available in the container it's going to
+be the currently logged in user in the
+container when a container spins up from
+this image that's created using this
+docker file right so these are some
+common commands i highly recommend you
+check out the docker documentation to
+get some more commands that you can use
+uh i'm just covering some of the
+important stuff over here
+now in the next video i want to touch
+upon this thing that i mentioned when i
+explained the env command i said don't
+set the env using like a run right don't
+set a run and then use the bash command
+to set the environment variable v and
+that's not going to work if you want to
+set environment variables you have to do
+this now why is that well i will explain
+a fundamental fact of how the docker
+file gets crea converted into an image
+and it's something that's we're going to
+look at how docker cli does this behind
+the scenes and that will clarify why
+this works and a couple of other
+behaviors as well so we'll go to the
+next video where we'll kind of
+understand
+the inner workings of how a docker file
+gets converted into a darker image so
+see you in the next video

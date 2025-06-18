@@ -1,0 +1,266 @@
+i want to start with
+one
+common problem when when doing software
+development
+all right we have
+we have a whole lot of problems we need
+to software development this is this is
+like uh probably among the top problems
+that we face you must have come across a
+lot of situations where you encounter
+the uh well it runs in my machine
+problem or an excuse right the developer
+works on a
+works on an application they test it out
+works perfectly fine on their machine
+they apply it somewhere else and then it
+fails right or it doesn't quite work
+like they expect it to i was like yeah
+well it worked for me i don't know
+what's going on right
+so there's this concept of deterministic
+applications when you build an
+application
+you can kind of determine what the
+output will be what the output should be
+right you write system out printel in
+hello world what do you expect you
+expect that thing to print hello world
+on the console right looking at the
+application you can determine what
+it'll do right so by definition
+when you run it repeatedly it should
+result in the same output right that's
+what it means by deterministic
+applications well you might say well you
+don't want to do the same thing every
+time well different people use it you
+want it to do different things right but
+even that part needs to be deterministic
+so i guess a better term for it is
+predictable applications right you have
+an application it is predictable in what
+it does right so what does it mean it
+means that first of all it runs exactly
+the same from different environment to
+different management you run it in dev
+it works a certain way you've tested it
+which means that there should be a good
+guarantee that it works fine in qa right
+but there are a lot of times where
+things happen like you know in one
+environment it works fine and then
+another it doesn't work fine right so
+you want to make sure that it runs the
+same on all deployed instances as well
+all right so one thing is from dev to
+clear to prior it needs to work the same
+way and in prior you might have multiple
+deployed instances it needs to work the
+same way in all those different
+instances right
+now this is the goal but then
+there are
+challenges to this this doesn't quite
+work right why does it not work well
+typically your application is more than
+just your source code all right so let's
+take an example like this it's like this
+is a simple
+java class right you're uh if you're a
+java developer this should be like java
+101 you start learning java with this
+thing all it does is print hello world
+all right
+now assume you take this class you
+compile it and in the directory that has
+the class file you run
+java hello
+what do you think gets printed on the
+console well prince hello world yes
+that's one option
+it cannot find the class file yes that's
+another option so
+yeah you would imagine that this prints
+hello world
+right
+but
+it could also print
+java not found in the path
+that's another valid output what do i
+mean by valid up it's like you you you
+might have to expect that well java
+might not be available in the path
+another thing
+jre might not be installed properly all
+right java home like i guess this
+doesn't need java home but
+that's another problem it could also
+result in an error which says no
+permission to read the class file right
+so maybe the user that's
+running this command doesn't have read
+permission on that file
+that's another problem that is another
+possibility
+right and i could go on there are lots
+of things that can possibly happen so
+it's not obvious that well this is going
+to print hello world right so this is
+what i mean our application is more than
+our source code our application is also
+the environment in which it runs it
+okay so we have a lot of processes to
+test our application we got dev we have
+ci cd
+uh all the jazz for testing our
+application well how about the
+environment how can we test our
+environment how can we make sure that
+that part is good too because that is a
+part of our deployed product a part of
+our deployed application we take so much
+care for our code but environment is
+like yeah make sure all these things are
+installed and well let's hope for the
+best well that's not really scalable
+right so with our environment if you
+think about it what are the components
+involved well we got we got hardware
+resources right we have the machine the
+hardware on which the application runs
+we have our operating system that is
+going to run the process what else we
+have to make sure system paths are all
+in align right we have to make sure all
+the path variables are exactly the way
+the application needs to be exactly how
+it was in dev when the developer tested
+it and made sure it was fine right it
+has to make sure
+the same system values apply or
+everywhere that this application is
+meant to run you have to make sure
+installed software and runtimes are kept
+up to date with the same versions of a
+different version might result in a
+different value as well there are lots
+of other variables there
+maybe another configuration
+right other settings files somewhere if
+you're running like a tomcat instance or
+an nginx instance you need to make sure
+that configuration is also propagated
+there's a whole lot and we are not doing
+testing for any of these we are not
+doing ci cd for any of these right
+that's a big problem
+well in addition to this
+there is another problem
+environment
+is usually global in scope let's say you
+have uh
+an application which is running
+java java 8 and another application
+that's running java 16 right that needs
+jeff java 16.
+well you can say
+well i have two applications deployed on
+my machine one that needs java
+8 and one that needs java 16 but then
+if you ask the question
+what is the version of java installed on
+this machine it's always one answer
+right it's either java 8 or java 16 or
+java 11 or whatever else so that
+the fact of a version of java being
+installed on the machine is global
+okay so not only do we have this problem
+of environment and the related aspects
+of environment not being a part of this
+whole build test ci cd process
+you also have this problem where it is
+global
+which means that you also have a problem
+with making sure that you know
+all the programs all the applications
+that run on a machine
+need the environment the environment
+that runs on the machine right so let's
+say you have some configuration foo
+instead of a bar you cannot have any app
+that runs on the machine that expects
+configuration foo right that's ruled out
+well depends on the behavior depends on
+what happens
+when the app doesn't get the
+configuration that it needs but
+basically since it's global
+you essentially rule out any
+application
+that doesn't
+uh work with one of those several things
+that i listed in the environment right
+so the path the
+you know the program in the versions
+installed
+well if any one of those don't work well
+your application doesn't work
+right with varying results it might it
+might do different things this is
+like i said the problem one of the
+biggest problems with software
+development okay and this is the problem
+that we're going to address in this
+course
+we have code tested qaed cicd
+what do we do with the environment we're
+going to address that the other thing
+that i want to mention is isolation and
+security okay this is a very important
+need for the cloud when you have an
+application running in the cloud do you
+run it on its own or can you run it with
+some other application well if you run
+two applications together even if they
+have all of the environment requirements
+met right they have the exact same
+version of jdk required they have the
+exact same path variables required great
+but how do you make sure that they are
+not interfering with each other that is
+also another thing which results in
+unpredictable performance so for example
+let's say application a application b
+all
+settings match all configuration match
+they're running the application a ends
+up consuming a lot of memory okay it
+takes up a lot of memory takes up a lot
+of disk space and now application b is
+left with no memory to run and it is
+like if you if all the things work fine
+and you still run that application you
+know system.printer in hello world that
+might fail saying hey no memory right it
+needs memory to actually instantiate the
+object in the jre right it's that is
+another problem so even if you have
+everything working fine
+when you start the application things
+might change afterwards so you want to
+make sure that if there are multiple
+applications running on a single machine
+they are isolated and there is
+security so that one doesn't mess with
+the other right so this is a very
+critical
+need
+so for addressing all these problems
+there is an option which is using vms
+all right so this is kind of the reason
+why people started using vms they needed
+predictable performance and they also
+needed some kind of isolation for
+multiple processes that run on a single
+machine all right

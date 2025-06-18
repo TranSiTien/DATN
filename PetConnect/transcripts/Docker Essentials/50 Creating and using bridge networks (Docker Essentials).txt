@@ -1,0 +1,174 @@
+i've already talked about the different
+network types if you run docker network
+ls on a fresh install of docker you will
+probably see these three networks as you
+can guess docker network ls lists all of
+the networks that are available
+and here you see there are network ids
+with a name and a driver driver is the
+type of network that we've talked about
+so you typically have bridge which is
+the default you have the host network
+which is your host machines network and
+then you have none so you can assign
+a container to any one of these networks
+by default bridge is what gets applied
+so if you were to run something like
+this
+docker run
+httpd of course with interactive
+terminal or whatever right you run it
+without specifying a network well then
+it connects to the bridge network you
+can inspect the bridge network
+by
+running the command docker
+network
+inspect
+bridge
+and it kind of gives you the entire
+information about this particular
+network so here's the bridge network and
+the drivers bridge and we have some
+configuration items for this bridge
+network what is the mac address ipv
+address and so on okay you can create
+your own network so if i were to just
+run this docker network
+ls it will show me what are the
+different networks that i have available
+i'm going to run a docker network
+prune so i'm going to remove the other
+networks and have it be
+what you would see as the default you i
+you notice there was a docker-composed
+network that i did there kind of hint
+towards something that's coming up later
+in this course but i just did a prune
+over here so that it removes all of the
+other things that i've been working on
+so when you run docker network ls
+you're going to see these three networks
+okay so you have the bridge you have the
+host and then you have none
+you can create your own network if you
+like okay let's say you want to create
+your own bridge network you want to have
+bunches of containers running on
+different bridges okay you want to say
+like a b and c containers are going to
+run in one network d and f are going to
+run on another network well that is
+possible by creating your own network
+okay so i can do something like this i
+could say docker
+network
+create
+i'm going to do dash d
+bridge i want it to be a bridge network
+and i give it a name i'm going to call
+it my
+bridge
+right i'm going to hit enter and i get a
+hash as you would expect just like with
+containers but now if i run docker
+network ls you see here i have created a
+new network called mybridge
+the driver is still bridge same as this
+guy but this is now a new network that i
+can spin up containers on again if i
+were to just run a container it is still
+going to go to the default bridge
+network over here of type bridge because
+that's the default right but you can say
+i want my container to get connected to
+this new network of mine and here's how
+i do it let's say i want to run httpd
+but i want to connect to this network
+right so i'm going to say docker
+run
+and then
+dash dash net
+equals
+my bridge okay
+net allows me to tell what network i
+want to connect to here i'm gonna say
+connect it to this guy
+right and i'm gonna do
+httpd
+[Music]
+all right now i have httpd running but
+it is not connected to the bridge
+network over here it's connected to my
+bridge which is my custom network i'm
+going to kill this container over here
+so there should be only one http running
+this is in my bridge network now if i
+were to go and run the busy box again
+let's say i do docker
+run
+busy box i cannot access
+this
+httpd process over here like i used to
+before okay so let me
+let me
+do a docker
+container ls now here is my httpd
+container and i'm going to do a docker
+inspect
+this container to get the ip address so
+this is the ip address
+i'm gonna copy and let's say i do a
+docker run with interactive terminal
+busy box now when i run busy box like
+this guess written which network it's
+going to it's going to the default
+bridge network right if i were to do
+wget and i provide this ip address you
+see it doesn't work anymore because this
+is in a different network this is a
+default network this httpd is in my
+bridge so it doesn't work anymore in
+order to make it work i'm going to kill
+this because that never
+comes through
+exit in order to make this work i have
+to connect this busy box to the same
+network or i should have started this in
+the default okay so i'm going to copy
+this flag which is dash dash net equals
+this
+and now if i run
+busy box
+now if i were to do this w get command
+again
+see this works now because this is in
+the same bridge network that we have
+over here right so this is the basically
+the idea behind networks and customizing
+your networks you can run a docker
+network
+dash help ah i'm in the container i need
+to exit the container if i run docker
+network dash dash help
+you're gonna see all of the uh commands
+that are available to you you can
+connect to a network you can create a
+new network we already did this we can
+inspect the network which we already did
+i already showed you how to do a prune
+basically it removes all the unused
+networks i kind of removed that to show
+you
+like the default state
+on a fresh install you can also remove a
+network using the rm command so this is
+docker networking some basics that you
+need to know as well as how to create
+your own bridge network and connect to
+it but this should also clarify
+why you needed to do that port
+forwarding because you needed some kind
+of a tunnel between the bridge network
+and your host network and port
+forwarding was the way to do it

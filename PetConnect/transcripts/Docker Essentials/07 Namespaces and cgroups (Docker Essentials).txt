@@ -1,0 +1,172 @@
+now i talked about how there are three
+different features ch root is one thing
+there are other variants of this feature
+which allow you to do
+a lot of similar stuff the second thing
+i want to talk about is something called
+namespaces all right
+namespaces
+are a feature of a linux kernel again
+that partitions kernel resources so that
+one set of processes sees one set of
+resources while another set of processes
+sees another set of resources
+perfect this is what we want right there
+is this feature called namespaces in
+linux already
+now don't get me wrong with the
+popularity of containers a lot of these
+features have been updated and they've
+gotten better to handle the container
+use case
+but people have been doing namespaces in
+quite a while
+and if you don't believe me i'll give
+you some examples of namespace types
+okay for example
+you are you're logging in as a user
+and you have your own top level process
+and you create a child process okay
+there is another user who's creating
+another child process and both of you
+are not admins right you have your own
+user rights
+can you as a user kill the child process
+that some other user created they
+probably don't have rights to do that
+okay you can set it in such a way that
+you don't even see the process that
+someone else is created multiple users
+are logging into the same machine you
+have your world view of just the process
+that you create you cannot see the
+process of someone else's street right
+you're kind of doing process level
+virtualization already right you have
+your own world view of your processes
+right so user id name spaces process id
+name spaces right you you have child
+parent processes and child process a
+parent process creates a child process
+now that parent process can kill it but
+that parent process cannot see a child
+process created by some other process
+now we have process level isolation
+right so this is already there and this
+affects things other than you know just
+creating processes right it affects the
+ability to see processes the visibility
+it affects the ability to stop processes
+and so on so
+namespaces are a thing in linux which we
+kind of already know
+but we haven't quite applied it to the
+idea of isolation in in an application
+level that we have been talking about
+here right
+so namespaces yeah there are different
+types of namespaces
+linux starts with a single process
+namespace per type okay so you have
+different like user id name spaces
+process namespaces like e linux and
+starts or unix has one process per
+namespace and it kind of starts with
+that
+and each process can create or join more
+namespaces like i talked about you
+create a process you have your own user
+id prop you know namespace for that
+process and you can go from there you
+can create children and children and so
+on
+so now we've looked at two of them right
+we have ch rule which provides path and
+file isolation and you have name spaces
+which provide process and resource
+isolation
+again like i said ch2 does not use
+anymore it is just something that i
+chose for illustration whatever
+technology that containers use you have
+a way for achieving attend file level
+isolation
+now closely associated with the
+namespace isolation is something called
+c groups okay c group is technically
+a flavor of name spaces so c group is
+basically control groups is a linux
+kernel feature that limits accounts for
+and isolates resource usage like cpu
+memory disk io network etc of a
+collection of processors you can say i'm
+going to take these set of processes and
+this is going to get just two off the
+cores of my cpu the other three cores
+goes to this set of processes all right
+so this is possible using control groups
+similarly you can partition a memory
+disk io network and all that stuff now
+we have these three features
+file and path isolation name spaces and
+c groups technically interdependent
+features but these are super important
+for containers now with these three
+we can have applications that run in its
+own file system its own process space
+and its own resources
+okay now let's look back at our
+requirements for
+what we needed from containers right we
+needed separation of file system
+separation of installed apps and
+runtimes and separation of processes and
+resource usage right we saw this before
+and we said well this is what we need to
+run containers run isolated environments
+okay but we've got this we've got the
+first one the first two are achievable
+with ch root or whatever is the flavor
+of this feature that we are using with
+containers these days
+second and third
+are namespaces
+c groups
+we've got this okay so now using this
+feature you can make imagine you run a
+process applying all of these things
+right applying ch root applying name
+spaces and all that stuff
+well now you technically got
+containerization right yeah let's say
+you run your app inside this guy
+this is containerized okay this is going
+to run this is going to contain only the
+libraries and binaries that you have
+installed in your series like if you
+want java where you got to install the
+java binaries in the directory that you
+are ch rooting into right and it just
+sees that doesn't see what's going on in
+your linux os so your app is essentially
+containerized
+okay
+but this can be a lot of work okay if
+you have to do this on your own you have
+to run all these commands wield all
+these unix linux commands you don't want
+to do that and this is where
+docker enters the picture docker has
+basically made it easy to do
+things that you could mostly already do
+anyway with linux tools and cli however
+it does a whole lot more okay and a lot
+of features that we're gonna
+learn about which makes it super easy
+for anybody to get started and use
+docker spin up containers and really get
+that kind of isolation without having to
+use without having to basically simulate
+a whole set of hardware run a whole os
+in order to just run your single app
+okay

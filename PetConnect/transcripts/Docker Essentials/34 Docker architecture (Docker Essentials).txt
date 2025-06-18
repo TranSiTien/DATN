@@ -1,0 +1,231 @@
+i want to talk about the uh
+docker architecture we've we've covered
+enough docker so that we are com we
+should be comfortable talking about
+architecture at this point
+i talked about how docker is a client
+server model and uh we've seen enough of
+docker to kind of get familiar with what
+that is right so
+you're at a high level the docker
+architecture consists off you have a
+docker
+client over here
+and you have what's referred to as a
+docker engine okay at a high level this
+is the docker
+engine
+docker engine is comprised of
+uh a couple of things
+let me get rid of myself here
+docker engine is comprised of a couple
+of things the first thing that you will
+have here is something called the docker
+daemon
+okay so docker daemon is this thing that
+keeps running in the background
+listening to your request this is
+basically the thing that the client
+talks to when you say docker run client
+is going hey docker demon somebody asked
+me to do a run so go ahead and do it
+right
+so
+docker daemon
+is basically something that receives
+instructions it's all it's almost like
+it provides an api endpoint for the
+client to call okay this is all
+happening through using grpc by the way
+okay so this is uh
+g r b c
+for all practical purposes just just
+another protocol okay it's using this
+protocol and calling the docker daemon
+the docker daemon basically says okay
+what is actually requested by the client
+is the client requesting to start
+another container well okay
+whatever it is it is going to pass on
+this instruction to something called
+container d
+okay container d
+is a process that runs which
+kind of receives these instructions to
+like hey go ahead and create the
+container don't create the container
+whatever right stop a container whatever
+now when container d
+needs to create a container okay when it
+has to create an instance of a new
+container it calls one more thing
+called
+run c okay these are all names that i'm
+just introducing over here one after
+another don't worry i'll explain in a
+little bit in detail what these do
+so think about
+what needs to happen when you say hey i
+want to create this container and that
+image itself doesn't exist on your
+machine okay
+docker daemon is an endpoint an api
+endpoint for your client to send a
+request but when that request happens
+docker demon is going to go okay this is
+a request for container d to create a
+new container from docker hub and then
+create a new instance so
+it sends this instruction to container d
+and container d is then responsible
+for
+making that call to docker hub it's
+going to be like okay this image doesn't
+exist it makes a call to docker hub
+gets the image downloads it and all that
+stuff once it gets the image and all
+does all that stuff this it issues a
+request to run c and run c is actually
+responsible for starting the container
+okay container d is responsible for
+downloading the image
+getting it in and then you know saying
+hey ranci go start this container
+instance for me okay
+now the
+run c
+basically is responsible for starting
+and making sure that the images you know
+the contents of the image are put there
+and all that stuff so run c is just even
+though if the name is container d it's
+run c which actually starts the
+container container d is basically
+responsible for receiving that
+instruction and passing it on to run c
+and say hey do the right thing okay run
+c is going to then go ahead and
+create that container
+for you okay imagine this is the
+container it's going to actually go
+ahead and create that
+now the thing is run c doesn't stick
+around okay run c is not a daemon what
+it does is the minute it starts running
+the container it actually ends the
+process what it does is it actually let
+me get rid of this it is going to
+end that process and replace it with
+another process a super lightweight
+process called
+shim okay hashem is going to be
+responsible for let me actually there is
+a better way to do this actually hang on
+so
+it's going to
+spawn this small process
+called
+shim and the shim is responsible for
+this container okay now you want to
+start a new container again there's
+going to be
+a new instance of run c
+it is going to
+start this container
+and then it is going to get out of the
+way it's going to disappear and it's
+going to
+create a new instance of shim
+and that
+shim is responsible
+lightweight process which is responsible
+for the container from now on so for
+example this this container stops it is
+shim is going to go to container d and
+say hey this container got stopped or uh
+you want to kill this container shim is
+going to be like okay it's going to kill
+this particular container right so
+basically run c is a is kind of like
+it's there only to run the container the
+very first time and after that it it
+stops
+this architecture is intentional okay
+the reason this architecture exists is
+because
+the goal is to decouple
+the running container
+from the daemon
+what happens now is the daemon is kind
+of
+not related to the container at all so
+the container is kind of like
+there's actually a term for it it's
+called demon-less containers now imagine
+what would happen if i were to kill the
+docker demon well this container is
+still running because it's kind of handy
+i've delegated it to shim and it's still
+running
+this has a very important implication
+the implication is
+you can have a container running and
+let's say there's a new update to docker
+desktop and a new program needs to run
+docker daemon needs to restart you can
+do all of that
+while your container is running without
+affecting your container so that makes
+it super powerful right so this is the
+architecture so when you run
+a docker cli command like docker run so
+this client
+is issuing
+a command a grpc command to the docker
+daemon
+the docker daemon is calling container d
+which is another daemon which is
+responsible for making sure all the
+images are there making sure it's
+fetching it from there and all that
+stuff and then spawns a new instance of
+ranci ranci is specialized in running
+containers hence the name run c it
+starts a container runs it and then
+hands it delegates it to a shim process
+and gets out of the way it stops
+so shim is lightweight so it's okay
+that's all it needs right once you have
+a container set up this is all that
+needs to happen
+and then you have a container running
+container d is going to spawn new run c
+instances whenever a new container needs
+to be created and from there on it is
+going to hand it off to shim
+so in a nutshell
+container d manages container lifecycle
+operations like starting stopping you
+can also pause containers by the way not
+very widely used it's basically using
+the pas signals it kind of offloads the
+memory but it kind of freezes the
+process you can remove
+image pulls all the volume mounts then
+you know the the port forwarding the
+networks all that stuff is managed by
+container d okay that's going to take
+care of it
+run c is what actually starts the
+container once it's done that it hands
+it off to a shim
+shim is so that the daemon doesn't have
+to keep running it's like the you know
+demon list containers example that i
+gave it makes updates and restarts of
+darker daemons possible when the
+containers are actually running right i
+hope that makes sense it's kind of like
+a high level architecture off what's
+happening behind the scenes with docker
+desktop and with your docker cli

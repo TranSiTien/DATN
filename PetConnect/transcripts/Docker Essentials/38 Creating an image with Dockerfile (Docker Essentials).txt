@@ -1,0 +1,352 @@
+now that you've learned the different
+layers that a docker image is comprised
+of it's time to start creating those
+images and as you can imagine when you
+create an image you're going to be
+specifying what layers you'd like and
+then you're also going to be creating
+new layers for the things that you would
+need in a darker image
+now the first question that comes to
+mind is why would you want to create a
+darker image we have images that are
+available like alpine ubuntu open jdk
+aren't they enough why would we want to
+create a new docker image well the thing
+is we looked at a couple of workflows
+for using existing docker images where
+you you get a docker image spin up a new
+container so for example let's say you
+want to build a node.js application or a
+java application you get the node.js
+container from a node.js image or java
+container from an openjk image and then
+you put the source code in there you
+build it and then you run it in that
+image and then once you close it well
+that source code is gone right so you
+kind of have this additional burden of
+setting up the source code in the
+runtime environment every time right so
+we've been using containers
+mainly as instances of images
+that provide the runtime environment and
+not so much a place where the core or
+your application itself resides
+however on the other hand we've looked
+at something like httpd which not only
+contains the runtime but it also
+contains the application that needs to
+run
+in that runtime so we would like to do
+that too we would like to have our own
+applications sit in a container with the
+java runtime all set up so that anybody
+who wants to run our application can
+just get that image
+spin up a new container from that image
+and then they're good to go right the
+app your app runs exactly like it's
+supposed to because you're providing the
+runtime along with that app all right so
+that's the purpose and now we're going
+to be looking at how to create a new
+image which is a combination of the
+runtime which is the alpine or open jdk
+or node or whatever else that defines
+the operating system and some generic
+runtimes and you're going to add your
+code on top of it it could either be a
+source code that gets compiled by the
+user or it could be a complete binary
+the built binary that user can just go
+ahead and run right now how do you
+create a new docker image
+you have this idea of a docker image
+being a zip file that contains all of
+the files that needs to be present in a
+container that you start from that image
+so does creating a docker image
+basically mean putting all those files
+in a zip file and distributing that well
+thankfully that's not the case it is
+much simpler than that you don't want to
+be picking all the files one by one and
+distributing it because it's
+very error prone what if you forget a
+file
+so we looked at how there is a concept
+of a base image and then you have all
+these different images which are based
+off of a different base image well that
+works for creating our own custom images
+too so you can say hey i like alpine
+alpine has all of the basic tools
+necessary for my application to run so
+i'm going to base my image off of alpine
+and i'm just going to add my application
+as an extra layer on top of it that's
+cool that's really how you create docker
+images right you're basically going to
+create instructions you're going to
+create a source code file which is what
+a docker cli is going to take and create
+and generate an image out of right so
+you're going to give instructions to
+docker and say
+hey my base image is alpine and i'm
+going to put this one file in here i
+want to put these three files i'm going
+to rename this thing whatever right put
+those operations in a file a code file
+and give that code to docker and docker
+is going to look at that and generate an
+image out of it right so here's how you
+do this so i have a visual studio code
+open over here any text editor should do
+i recommend visual studio code because
+it's it has some cool extensions which
+help you work with docker as well so
+open an empty folder in any text editor
+and i'm going to create a file and this
+file is going to contain the
+instructions for docker to generate an
+image and this file has a specific name
+and it is called
+docker file it's literally
+called docker file with d caps that's a
+it's a very creative name that the folks
+have come up with for creating docker
+files it's literally called dockerfile
+uh there's no extension here so you just
+hit enter and now you have a file that
+you know that can contain instructions
+to docker and that you give it to docker
+cli and then say hey create me an image
+now docker file can contain a lot of
+different instructions and we'll take a
+look at a bunch of those but the very
+first line of a docker file needs to
+specify what your base image is look at
+the previous video how every image has a
+base image right you don't you're not
+going to do everything from the scratch
+right you don't reinvent the wheel you
+say this is the image that i'm basing my
+image out of and then add the additional
+layers on top of it okay so the way to
+specify a base image and this is going
+to be the very first line in every
+docker file right in order to ask docker
+to do something it needs to know like
+what am i doing that thing on right any
+instruction needs to follow
+what the base images the base image very
+first line of a docker file all right
+the way to specify a base image is by
+using this keyword
+from and then you specify the name of
+the base image right here let's say i
+want to base my image out of alpine so
+i'm going to say i'll
+from alpine right this is going to be my
+very first line and this is going to
+tell docker that i am basing my image
+that i'm going to generate from this
+docker file i'm going to start with
+alpine and then i'm going to do things
+on top of that image and this is how
+this works
+so this is a valid docker file and i can
+give this to docker and ask it to create
+an image from this dockerfile what is
+that image gonna be
+well i have asked it to base the image
+out of alpine and haven't asked it to do
+anything else so this image is going to
+be exactly the same as alpine no
+difference okay but still it's valid i
+can open a console here and i can give a
+command to docker and say hey docker
+build an image from this docker file
+okay so the way to specify that is by
+using the docker cli
+and then i use the build command to
+build an image okay the build command
+takes a couple of options the first
+option is what i want the image to tag
+it as i'm going to say dash t and then
+uh let me just call it test okay so i'm
+tagging the image that i create from
+this docker file as the name test really
+called it anything i want here and then
+i have to specify where the docker file
+is available right now it's available in
+the current directory right this is
+where i am currently so i can i'm going
+to put dot over here and i'm going to
+say look at the current directory
+to build the docker image right the
+dockerfile is going to be
+there in the current directory which is
+what this dot signifies so i'm going to
+hit enter and docker is now going to
+look at this docker file and it is going
+to download the image as necessary okay
+so it says okay i've pasted my image out
+of alpine so if alpine is not available
+it is going to download it
+again from docker hub because
+just a name descriptor without anything
+it assumes it's the docker hub and it's
+going to go find it well it's founded
+it's loaded the metadata you know
+created all the image and now if i were
+to
+darker
+images of here you see there is one
+image called test i've cleared out
+everything else so i just have this one
+image that i have created now i can
+start the container from this image and
+guess what it's going to be exactly like
+alpine okay no difference there
+see
+docker
+run i'm going to remove this because i
+don't want to have it stick around
+i'm going to do interactive terminal
+and then i'm going to specify the name
+of the image that i tagged when i run
+this thing now i am in
+my image right this is going to be
+exactly the same as alpine you're not
+going to see anything different here
+because i did base my image out of
+alpine but this is our image right we've
+created a container from an image that
+we created from the scratch right it
+doesn't do much but we can fix that i'm
+going to exit this
+and
+we are going to
+do something here we can put something
+in the image over here in the docker
+file and then when i spin up a container
+from that image that thing is going to
+be there okay so one example is i can
+create a file i can run a touch command
+to create a file and then have that be
+available like let me give you let me
+show you what i mean so if i connect to
+this container right this is my home
+directory where i have all the default
+folders that come with alpine so i can
+run a command here called touch
+hello
+dot txt and now my hello.txt is going to
+show up in my
+home directory in this container right
+now what i want to do is run this
+command
+when i'm creating the image so that this
+is not showing up in my container but it
+actually shows up in the image so every
+container that i spin from that image is
+going to have this file how do i do that
+well i do that by using another
+directive in the docker file called run
+okay run allows me to run an arbitrary
+command in the shell
+when the image is being created and this
+is going to run on top of whatever i've
+specified as the base image right so
+let's say here i'm going to run
+touch
+hello.txt okay and i'm going to save
+this now what i'm saying to docker is if
+i were to ask docker to create an image
+from this dockerfile i'm going to say i
+want an image which is based out of
+alpine but which also has this command
+run on it from the alpine base image so
+it's going to
+be created start creating a new image
+paste it out of outline and it's going
+to be like hey this developer wants me
+to run this command it is going to run
+this command on the thing that's the
+image and then it's going to tag that as
+whatever i want it as all right so if i
+were to run this
+uh command again to build again it's
+docker build
+t i'm going to tag it with the same name
+and i'm going to provide a dot here to
+indicate it's the same docker file i've
+saved this
+new command added to the docker file now
+if i hit enter it is going to build a
+new image again and it's going to tag it
+with the same name but notice here it
+has done a couple of things first step
+it has
+gotten the from
+docker i o library alpine right it's got
+this from docker hub and then it has run
+this command touchhallow.txt right and
+then it has exported that state whatever
+is the resulting state it has exported
+that to an image now if i were to create
+a new container from that image which is
+what i do by using docker run
+dash rm remove interactive terminal and
+the test which is the which is the image
+that we just created
+now no surprises if i do ls hello.txt
+sitting right there because this was
+created not after the container was spun
+up this was created in the process of
+creating the image itself so if you were
+to create 10 containers from my hello
+image they're all going to have
+hello.txt which is what we added over
+here during the image create process and
+that happened just once all right
+so this is how you create a docker file
+and use the docker cli command to
+generate an image from it most of the
+docker image creation process is
+basically figuring out what you can do
+over here what are the things you can
+put over here how do you download files
+how do you add files how do you rename
+how do you move it all those things have
+commands and as you can imagine the run
+directory is pretty powerful you can run
+any shell command so if you want to
+create an image and then have um
+you know create an image from alpine and
+then have like three or four commands
+run well you can put them all over here
+run hello.txt
+touchhello.txt and i'm going to put one
+more and then touch hello one dot txt
+now save it if i were to create an image
+from this docker file now it's gonna
+have two files where it's gonna run this
+command and then it's gonna run this
+command so the fact that you can create
+and run these arbitrary shell commands
+on the docker image
+before it's stacked as such is super
+powerful you can pretty much do anything
+you want with it but in the next video
+we're going to dive into a little bit
+more about what are the other things you
+can do in a docker file and you know
+what are the things that you can
+make an image to contain and do before
+you tag it as an image right so that's
+we'll take a look at that in the next
+video

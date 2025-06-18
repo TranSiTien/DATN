@@ -1,0 +1,113 @@
+all right i see it i see another
+question here so let's see
+how do we get inside the shell we just
+covered it since container gets
+terminated if process being used
+by the containers kill let us say i
+would like to run a java program to
+listen for requests then
+how is it to be done moreover if a
+container is terminated is there a
+notification mechanism which can be used
+to send a notification that the
+container is down or terminated
+okay i'm going to answer your first
+question you want to run a java process
+which listens to requests you're
+probably running an ongoing process it
+cannot start up at an arbitrary point
+and listen to requests right it has to
+be continuously running like a daemon so
+that is going to be apparent process and
+that's going to keep running if you want
+something that starts up and stops
+intermittently well you need a parent
+process which is going to instantiate
+that thing to start up and stop
+something has to get it to start right
+you want to do some intermittent step be
+job or whatever you have one parent
+process which is constantly running and
+it's going it's instantiating those
+things
+notification
+for um
+the container being down i don't know if
+docker
+desktop has features for it it's not a
+part of the native containerization
+features you don't have notification as
+a part of it maybe docker desktop has
+something or you can build something
+using the docker apis but it's not it's
+not a part of at least the the common
+specification for containers used
+all right follow-up question to alpine
+so alpine is the mechanism same as c h
+root well alpine
+is an image
+okay i can run docker run ubuntu
+okay it's
+it has the same experience because all
+these docker run
+commands like when you run a docker run
+it's basically leveraging
+the
+these features in the linux kernel to
+jail these processes to containerize
+these processes so alpine just happens
+to be
+the
+set of files in your container when you
+start the container because i said hey
+put this here right
+it could very well be something else
+alpine is just a random choice in case i
+terminate the container will it still
+exist in the system or do i have to
+create a new image to run in the
+container well it still exists well it's
+a good question let me actually switch
+over to this
+you folks are going ahead of me i was
+going to show this later okay so here
+you have a command called docker
+ps
+which shows all of the
+currently running containers okay so
+here
+it shows me that there is an ubuntu
+container that's running it's been up
+for three hours and the name of the
+container happens to be cs3 demo just as
+just a side note this thing that i
+showed you the ch root demo that i
+showed you here
+with these two files well guess what
+this is actually a docker container so
+actually created a container and i did
+see h root in that container because
+guess what i have to demonstrate these
+the ch root capability and i'm on
+windows i guess what i just spin up a
+docker container ensure so i was kind of
+containerizing in a container okay so
+just a just a side note that's the
+container that's currently running okay
+so right now this one container is
+running but i can use the docker ps dash
+a command
+to say show me all of the containers
+okay so here are all the containers that
+have run in the past and i will talk a
+little bit more about how to get to the
+how do you use these things but hold on
+to that thought
+if you want to start a new container you
+can either pick up a container and say
+hey start that again or you can use the
+image you already downloaded the image
+you can just use that image and spin up
+a new container when you do that it is
+not going to
+ask you to download again

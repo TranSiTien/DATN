@@ -1,0 +1,179 @@
+moving on to more
+docker cli fun
+okay we did docker rm
+here's another thing we can also do
+docker
+detach which is a very useful uh use
+case all right let me let me actually
+kill this thing okay or maybe stop this
+thing docker
+stop
+i'm going to stop httpd
+okay so you remember when we last ran
+http it's a it's a web server so it
+constantly runs so
+you don't want it to like if you leave
+it it's going to take up your console
+and it is going to basically just print
+the log on your console but what if you
+don't want that you want to just have it
+run and have your prompt to do other
+stuff
+you can do that by using docker
+run
+and then let's say
+actually i'm going to give you another
+example this is this i'm actually in two
+minds right now
+maybe http for this one and open jdk for
+another one okay so let's do this docker
+run
+httpd now if i run this it is going to
+basically start up the http process and
+it's going to take away your prompt
+right now i'm going to say hey i don't
+want it to run i want it i want to
+detach from it i don't want this to take
+up my prompt so when i run this dash d
+it is running the http process right so
+this is still running but it is in the
+background okay so it gives you the hash
+and then it's running in the background
+you still you've got your prompt to do
+other stuff okay so i say docker ps
+let me see here http is still running
+okay it's actually running httpd
+foreground but since i've done dash d i
+have pushed it to the background thanks
+to docker's detached command okay so
+this is this is a way for me to detach
+and like i start a pro start a docker
+process which runs and then kind of
+detach from it so i have my prompt back
+okay
+all right another cool thing that we can
+do is you can have multiple
+terminal shells connecting to the same
+container this is super handy especially
+when you're using shell let me show you
+one of us do a docker stop
+off this container
+so that it's not running and now i'm
+going to start
+a
+maybe an open jdk one okay so i'm going
+to docker run dash id
+open jdk
+bash
+okay so i'm in bash in open jdk now i
+want to open another prompt and then use
+the same container right i don't want to
+open a new container in the same
+container i want another like i'm like
+i'm going to open a tab over here and i
+want to connect to that same running
+container okay you can connect to a
+container and use the shell
+from outside in fact you can run any
+command
+in this container from another prompt
+and here's how you do it right you use
+the docker
+exec command okay the docker exec
+is a command which
+runs
+a command in a running container you can
+provide a command and then it's going to
+run it so for example i can say
+docker exec i'm going to get the
+container and name our
+the the container id well i don't have
+the container id here so let's actually
+look that up
+let's say docker ps
+and there's a container id so i'm going
+to copy that and say docker exec
+and then
+provide the container id
+and then i type ls now i'm getting the
+listing of files in that container i
+haven't connected to it i just ran a
+command in that container from somewhere
+else and i got the output i can also
+just open a shell right instead of
+running ls i'm going to run bash but of
+course when i run bash i need to do
+dash ti okay interactive terminal right
+i need that because i want docker to
+hold and not just end back when i do
+this
+i'm here in the same
+location
+where this container is right so if i do
+touch
+hello.txt this is a hello.txt file
+saved in this container
+okay and here i'm in that same container
+so i can also see that same hello.txt
+here okay so it's basically a way for
+you to
+attach or connect to an existing
+container you can run an arbitrary
+command using exec or you can just open
+up a shell like this
+all right i'm going to exit this guy
+i'm going to
+exit the sky
+and now that
+uh container ends because the last
+process the parent process has to end so
+if i do darker
+ps i see there's just one running
+the one thing i want to highlight is
+that you why we do this especially when
+you're playing with docker you
+accumulate a lot of images okay dr ps
+dash a you see here i just did a little
+bit of cleanup and now i've already
+accumulated so many images because i've
+done so many containers because i was
+demonstrating this so there is a way for
+you to like instead of removing this
+here i'm coming and say docker rm
+i want to remove this guy
+and remove this guy like instead of
+doing all that what you can do is when
+you're running a container you can say
+well i just want this container to try
+something out just remove it when i'm
+done okay the way to do that is by using
+the dash dash rm flag okay
+this is a flag to indicate to docker
+like i create this container for me but
+when the container ends i don't want it
+to stick around just just delete it okay
+so now i have this container here which
+is great i can do run my commands and
+when i exit it not only is this
+container stopped it is also removed so
+when i do docker ps dash a
+see no trace of me doing that this one
+was three minutes ago no trace of the
+container that i just created a few
+seconds ago right
+so this is another interesting flag that
+you use i typically tend to use this
+especially when i'm playing around just
+do dash dash rm so you don't have to
+deal with this list of closed containers
+you have to go and clean up afterwards
+just use dash dash i mean you should be
+good so we looked at a bunch of a bunch
+of darker commands i hope or you've been
+following along as you see this i highly
+encourage you to replay the video and uh
+kind of play along with these commands
+there once you get them like once you
+get your fingers familiar with these
+commands it'll be really useful you'll
+be familiar with docker as a result

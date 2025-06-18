@@ -1,0 +1,341 @@
+let's take a look at virtual machines
+what what is it about them that made
+them so
+popular and so appealing
+here's what virtual machines do
+they
+simulate hardware
+that runs a full operating system right
+when you run an operating system the
+operating system expects to run on
+hardware right there's no program that
+runs an operating system at least not
+before virtual machines right which
+operating systems are expected to run on
+bare metal now that term should be
+familiar to you bare metal is runs on
+the hardware directly
+but virtual machines allow you to
+simulate the hardware so that the
+operating system is running thinking hey
+i'm running on bare metal but it's
+actually fake metal
+that is being simulated by virtual
+machines right which machines allow you
+to run one os inside another os okay the
+windows always thinks it's executing on
+hardware and there's nothing that's
+changing on the operating system to make
+this happen okay the vm software is
+basically simulating or providing that
+virtual hardware to make this happen all
+right
+so the way this works
+you have a physical hardware and you
+have something called hypervisor okay
+hypervisor is either software or
+hardware that is capable of running
+virtual machines right running operating
+systems and simulating this right so if
+hypervisor is hardware it's basically a
+chip which knows how to simulate virtual
+machine you know application or it can
+be software in which case it's running
+on the operating system so you basically
+like virtualbox is a good example or
+even vmware solutions you you run
+windows or mac or linux or whatever you
+install the virtualbox software and the
+virtualbox software is what's referred
+to as hypervisor here okay it's it's the
+emulator
+what it does is it emulates
+uh hardware for an operating system to
+run and now you can run something like
+windows or linux in that virtual
+software right and now what you have
+here is two virtual machines being run
+by one hypervisor which is basically a
+complete operating system that's running
+over here and another complete operating
+system that's running over here right
+it's two virtual machines
+so again this can be uh software running
+on a noise or directly on bare metal so
+now what you have is not just one app
+per server what you have is one app per
+virtual machine right so you want to run
+so you are the same ct or whatever you
+want to run multiple applications on the
+same machine so you don't have to worry
+about provisioning okay what is the
+capacity for this guy let's look at the
+load and all that no just get the best
+machine that you can get right that you
+can afford and run virtual machines on
+it right so let's say one application
+has you know become viral a lot of
+people using it will just scale the
+capacity of that virtual machine right
+that virtual machine is still going to
+borrow memory from your actual hardware
+so let's say you have a vm very
+provision like okay i'm gonna unlock it
+like 32 gb of ram well it can only take
+a portion of your physical capacity you
+can't have it be more than your physical
+capacity of that machine right but as
+long as you do that you can partition
+the capacity well so you like one
+application becomes popular well you can
+steal ram from the other application so
+that that's running on low load at a
+certain point of time or whatever you
+can manage that you have more
+flexibility that way
+all right so the advantages are you can
+share summary sources you can shift vms
+among servers which is another big
+benefit right so you have you have a vm
+running on one machine and suddenly you
+realize well this vm is you know this
+application has become super duper
+popular now we can promising a much
+bigger machine and basically just lift
+and shift that vm to run on that
+different machine it's going to work
+perfectly fine because it is not
+dependent on the machine that it's
+running on it's a simulation you just
+simulate another machine it's it's not
+going to know anything right it's going
+to work just the same way
+and here's another key you have multiple
+operating systems that can work on the
+same
+server right you can provision a linux
+host operating system and on virtual
+machine on virtualbox you can run
+windows or vice versa you can have a
+windows which hosts linux mac is not
+very conducive to being a guest
+operating system so you cannot run a
+virtual machine which runs mac or at
+least it's not legally allowed to run
+you can technically run it but it's not
+legally allowed but you can run a
+mac host like a mac running on bare
+metal which runs virtual machine which
+holds windows or linux that's that's
+possible too so we have all these
+combinations and permutations that are
+possible with virtual machines which is
+super useful
+the other a very important benefit is
+you have machine images you can you can
+take a snapshot of a machine and then
+you can make multiple copies of it so
+you don't have to install like let's say
+you need to provision a certain linux
+right you need centos eight with these
+binaries installed well you just create
+a virtual machine take a snapshot of it
+and then now you can instantiate
+multiple virtual machines with that
+exact same configuration exact same
+snapshot which is which is super useful
+as well
+okay
+so
+these are all the benefits
+great
+and this was super popular because of
+the popularity of the cloud with aws and
+azure and all that stuff but you want to
+provision something on the machine well
+you can't just click a button and have
+some human being go and set up hardware
+right that's not going to happen but
+virtual machines are software you can
+have a web interface where somebody
+clicks a button you go run some scripts
+which basically creates a new vm well
+that's all possible because now we are
+in the software and now so you can the
+whole vm phenomenon
+enabled provisioning via software it was
+unheard of before it was not possible
+before but since we are now in the
+software realm we have cloud providers
+that aws and azure um
+create vms and there is a possibility
+and this is i'm sure this has happened
+with something like aws there's a
+possibility of having competitors
+running on the same machine competitors
+running their websites super secure
+websites running on the same machine
+because vm is like a complete isolation
+right it's like a separate virtual
+machine in itself
+i see a question here can you please
+elaborate but on hypervisor as hardware
+and as software
+so here is the thing software is
+basically a set of instructions to
+hardware right any software is so when
+you think about vm software running on
+windows for example
+if you're running a machine which uses
+windows that you need to do a bunch of
+other things with nvm happens to be one
+of those well you can install something
+like virtualbox and have it virtualize
+the operating system that you're running
+however if the sole purpose of your
+hardware is to just run a virtual
+machine well then what's the point of
+installing windows right why not just
+install just the bare minimum
+virtualization solution okay so what
+people have done is they've actually
+created specialty hardware
+where the goal of that hardware is
+basically to run vms okay just like you
+have a typical computer hardware which
+takes an operating system in order to
+run well that particular hardware is is
+basically you know chips and uh circuits
+which don't take an operating system to
+run what they need is they need like a
+virtual machine image okay that's all
+you need to do right the the software
+required to run a virtual machine is
+actually in the chip it's actually in
+the hardware so it makes it super
+efficient and you don't have the other
+steps that you need to run windows or
+linux or anything else your goal is
+basically to just run uh virtual
+machines i hope that makes sense
+so what are the disadvantages of vms
+there are a few right so let's take this
+screenshot
+can you tell me how many copies of
+windows are running in this picture
+there are three
+yeah possibly three copies can you
+identify them well
+you see here this is a windows virtual
+machine there is behind there is one
+more windows virtual machine this one is
+an ubuntu virtual machine
+well there's a third one
+well there is one machine which is
+hosting all these different vms right so
+that could possibly be windows there is
+one ubuntu
+there is two windows virtual machines
+and there is a possible third operating
+system which is either windows or linux
+or whatever else right so totally there
+are four operating systems in the screen
+chat okay for complete oss running
+um
+i i want to make sure you understand the
+terminology right so the host os is
+basically what is running all these
+different virtual machines it's the host
+right it's it's invited those other vms
+to its house and it's running it the
+guest operating system is basically
+what's running inside the
+inside the host inside this vms so there
+are four operating systems here in this
+midi screenshot that's a problem right
+if you want to run four uh four
+applications you want to run three
+applications you need to run for
+operating systems on a single piece of
+hardware or you need to get more
+hardware right so this is this is a
+problem
+so take a look at this
+this is a kind of like a high level
+diagram of what it takes to run three
+operating systems using vms you have the
+hardware server at the very bottom
+right this is the bare metal server when
+you have a host operating system windows
+or linux whatever it cannot be mac here
+like i said and then you have your
+hypervisor this can be virtualbox it can
+be vmware player or anything more
+elaborate and now in this hypervisor you
+set up one guest os right this is let's
+say this is windows you install all the
+binaries libraries on it then you set up
+your app you set up another guest os
+install all the binaries set up your app
+and so on right the problem is this case
+os is repeated everywhere right you have
+three copies to run these applications
+so the disadvantages of vms are we have
+wasted computing resources with multiple
+os instances
+we are um we're getting a little bit
+greedy here right we went from having to
+run
+uh one application per server to here
+this is an improvement but innovation
+doesn't stop if you're satisfied with it
+right now you're like yeah this is great
+we've made improvement but this is not
+good because now we're running multiple
+operating systems right is there
+something better is the question right
+so this is a problem and then here is
+another problem which like i've worked a
+little bit with virtual machines and
+this is the biggest pain i tell you you
+have to maintain all these operating
+systems i told you how you have machine
+images where you can kind of start out
+with the perfect configuration which is
+great but now you're running the vm for
+a bit and now you know there's a new
+update from windows your new you know
+you have to run apt-get again for your
+ubuntu image like you have to constantly
+keep updating this thing and which is a
+pain
+and now you have always a licensing cost
+as well for people in suits you have to
+pay for these operating systems which is
+a problem
+and then here's another problem which is
+it's slow to start up you want to start
+up an application what do you need to do
+you need to start windows first or you
+need to start linux first have the
+operating system start up and then start
+your application it is it's obviously
+slow right
+so again the question is is there a
+better solution if there wasn't a better
+solution they would have been like yeah
+these are the disadvantages but at least
+it's better than bare metal so we are
+happy with it
+but there is thankfully a better
+solution which is
+containers all right
+so
+think about
+what does it need to do what's the ideal
+solution here right like if you were to
+come up with an ideal picture of what
+you need in order to be able to run an
+application
+what do we really need
+from a container

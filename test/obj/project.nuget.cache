@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "XXKB/FQldK76BbwLUj1plzUNPMu7Zdd1RVTG80hEPWo69m8ifdgy/82AyJQKQrCMh0upcXsWnWoRNzp+yJytpA==",
+  "success": false,
+  "projectFilePath": "/mnt/d/DATN/test/test.csproj",
+  "expectedPackageFiles": [],
+  "logs": [
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Unable to load the service index for source https://api.nuget.org/v3/index.json.",
+      "libraryId": "Microsoft.AspNetCore.OpenApi"
+    }
+  ]
+}

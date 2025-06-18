@@ -1,0 +1,98 @@
+can we run a java jar or application
+directly using alpine you can but you're
+going to have to install java on it so
+you would rather
+use an image which has java installed
+and then run a jar and i'm going to
+demonstrate how to run this
+in job
+okay
+from this i can understand two things
+for docker installation install docker
+to get docker cli and docker daemon
+install the docker cli in one machine
+and install docker demon another machine
+makes them communicate but how docker
+cli talks with dr daemon
+docker cli and docker daemon are on the
+same machine here
+i'm sure there's a way you can get it to
+talk to a demon in some other machine
+but this workflow is basically cli and
+daemon on the same machine docker daemon
+is basically the darker engine which i
+talked about right you run it by using a
+docker desktop which is what i
+demonstrated over here right when you
+run this you have a docker
+or daemon and the docker engine running
+okay how does the cli talk to the daemon
+it uses a grpc protocol so there is an
+api that the daemon exposes grpc is one
+of the ways two machines can talk over
+the network it just happens to use that
+which is probably why it's scalable to
+multiple machines as well in this case
+the daemon and the cli are in the same
+machine when i run the cli command
+cli the client issues a grpc call and
+talks to the demon so if we use the
+image to create a container and it
+contains the app in the os kernel to run
+the app for example image of jdk also
+contains the os kernel well it does not
+contain the kernel it uses the kernel on
+your on the linux machine on which it is
+running
+okay on a linux os it just uses the os
+kernel itself on mac and windows it uses
+a virtualized linux machine full os and
+the kernel of that os
+so basically that's what's happening
+here when i run the docker run here
+okay when i run this there we go
+okay when i run this docker
+alpine sh when i run a command over here
+what is what's happening is this is a
+client right this client is making grpc
+calls to the docker daemon the docker
+daemon is translating it into a
+container that's inside that vm here in
+windows it happens to be a wsl or it can
+be a linux vm it's translating it to a
+container on that vm and like whatever
+that container responds with like the ls
+runs in that container whatever that
+responds with it's basically sending it
+back to the client and the client is
+showing it over here okay don't think
+about it so much in detail like you know
+it's it can be hard to kind of wrestle
+that idea in your mind just think about
+it as you are inside a container
+on that linux machine that you have
+running virtually okay so just think of
+it that way all or even
+you can even simplify your thinking and
+say oh you're just running a container
+on your windows os it just happens to be
+a linux container you need that level of
+abstraction if you think about it in the
+complete detail every time
+it can be a bit of an overload for your
+you know for you to think and especially
+when you're learning docker so think
+about it like you're in the container
+that's all that matters right you're
+you're isolated out if possible can you
+please talk about docker architecture
+yes i'm going to be talking about that
+docker architecture in a bit uh the by
+kind of
+being a bit hand wavy and said okay
+here's a docker client here is uh docker
+engine docker engine itself has a bunch
+of different paths right it has the
+demon it has run c it has container d
+i'm going to talk a little bit about
+that later

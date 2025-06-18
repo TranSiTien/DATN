@@ -1,0 +1,1000 @@
+  996  dotnet clean WebServer.sln
+  997  dotnet watch
+  998  dotnet watch --help
+  999  dotnet watch --project PetConnect.csproj --help
+ 1000  dotnet watch --project PetConnect.csproj
+ 1001  dotnet --version
+ 1002  dotnet watch --help
+ 1003  dotnet build
+ 1004  dotnet watch --help
+ 1005  dotnet watch
+ 1006  cd ..
+ 1007  dotnet watch
+ 1008  dotnet watch --project PetConnect.csproj
+ 1009  cd WebServer/
+ 1010  dotnet watch --project PetConnect.csproj
+ 1011  dotnet watch --project PetConnect.csproj --no-restore~
+ 1012  dotnet watch --project PetConnect.csproj --no-restore
+ 1013  dotnet run
+ 1014  cd ..
+ 1015  cd PetConnect/
+ 1016  ls
+ 1017  dotnet watch
+ 1018  cd WebServer/
+ 1019  dotnet watch
+ 1020  cd ..
+ 1021  ls
+ 1022  mkdir test
+ 1023  ls test
+ 1024  dotnet new list
+ 1025  dotnet new webapi superD
+ 1026  dotnet new webapi
+ 1027  ls
+ 1028  cd /mnt/d/DATN/
+ 1029  ls
+ 1030  cd lost-pet-finder/
+ 1031  npm run dev
+ 1032  code .
+ 1033  npm run dev
+ 1034  npm run build
+ 1035  npm run dev
+ 1036  exit
+ 1037  . "\home\tient\.cursor-server\bin\0781e811de386a0c5bcb07ceb259df8ff8246a50\out\vs\workbench\contrib\terminal\common\scripts\shellIntegration-bash.sh"
+ 1038  . "\home\tient\.cursor-server\bin\0781e811de386a0c5bcb07ceb259df8ff8246a50\out\vs\workbench\contrib\terminal\common\scripts\shellIntegration-bash.sh"
+ 1039  python lost_and_found_cat.py
+ 1040  npm run dev
+ 1041  cd d
+ 1042  cd D
+ 1043  ls
+ 1044  cd ..
+ 1045  ls
+ 1046  cd d
+ 1047  s
+ 1048  ls
+ 1049  cd DATN/
+ 1050  ls
+ 1051  cd test
+ 1052  ls
+ 1053  dotnet new webapi
+ 1054  npm run dev
+ 1055  npx shadcn-ui@latest add combobox
+ 1056  npx shadcn@latest add combobox
+ 1057  npm run dev
+ 1058  npm run db:push
+ 1059  npm run dev
+ 1060  git add .
+ 1061  git commit -m "update"
+ 1062  git push
+ 1063  npm run dev
+ 1064  npm install @chakra-ui/react @emotion/react @emotion/styled framer-motion
+ 1065  npm run dev
+ 1066  git stash -u
+ 1067  npm run dev
+ 1068  git stash pop
+ 1069  npm run dev
+ 1070  git add .
+ 1071  git commit -m "push"
+ 1072  git push
+ 1073  npm run dev
+ 1074  git add .
+ 1075  git commit -m "update"
+ 1076  git push
+ 1077  python lost_and_found_cat.py
+ 1078  python train.py --model MobileNetV3Small_NotFreezed
+ 1079  python lost_and_found_cat.py
+ 1080  npm run dev
+ 1081  node test.js
+ 1082  �exit
+ 1083  exit
+ 1084  npm run dev
+ 1085  python lost_and_found_cat.py
+ 1086  source ./venv/bin/activate
+ 1087  python lost_and_found_cat.py
+ 1088  npm run dev
+ 1089  clear
+ 1090  npm run dev
+ 1091  npm run db:push
+ 1092  npm run dev
+ 1093  npm run db:push
+ 1094  npm run dev
+ 1095  clear
+ 1096  npm run dev
+ 1097  git add .
+ 1098  git commit -m "update"
+ 1099  git push
+ 1100  npm run dev
+ 1101  git add .
+ 1102  git commit -m "update"
+ 1103  git push
+ 1104  npm run dev
+ 1105  ls ~/.ssh
+ 1106  history
+ 1107  cat ~/ssh_key
+ 1108  ssh -v -i ~/ssh_key root@178.128.118.54
+ 1109  source venv/bin/activate
+ 1110  python lost_and_found_cat.py
+ 1111  mkdir -p client/src/components/ui
+ 1112  cd /mnt/d/Omar/safe && ls -la client/src/components/ui
+ 1113  grep "sql.*drizzle" server/routes-fixed.ts
+ 1114  grep -n "sql.*drizzle" server/routes-fixed.ts
+ 1115  grep -n "import.*count" server/routes-fixed.ts
+ 1116  head -n 50 server/routes-fixed.ts
+ 1117  grep -A5 -B5 "updatedResult" server/routes-fixed.ts
+ 1118  cd /mnt/d/Omar/safe && tsc --noEmit
+ 1119  npm run dev
+ 1120  npm run db:push
+ 1121  npm run dev
+ 1122  exit
+ 1123  source venv/bin/activate
+ 1124  python lost_and_found_cat.py
+ 1125  curl -X PUT -H "Content-Type: application/json" -d '{"amenities":[57,59],"neighborhoods":[],"budgetRange":"","minBeds":null,"maxBeds":null,"minBaths":null,"maxBaths":null,"bedType":"bedrooms","moveInDate":"2025-08-01","minSqft":null,"maxSqft":null}' http://localhost:5000/api/user/preferences --cookie "connect.sid=test-cookie" -v
+ 1126  git add .
+ 1127  git commit -m "update"
+ 1128  git push
+ 1129  npm run dev
+ 1130  npm run db:push
+ 1131  npm run dev
+ 1132  git add .
+ 1133  git commit -m "update"
+ 1134  git push
+ 1135  node --v
+ 1136  node --version
+ 1137  echo 'GET Request Example:\ncurl -X GET "http://localhost:5000/api/public/user/preferences?email=test@example.com"\n\nPUT Request Example:\ncurl -X PUT "http://localhost:5000/api/public/user/preferences?email=test@example.com" -H "Content-Type: application/json" -d '"'"'{"amenities":[{"id":1,"requirement":"must have"},{"id":2,"requirement":""}],"preferredNeighborhoodIds":[1,2],"minBudget":1000,"maxBudget":2000,"moveInDate":"2023-12-01","minBeds":1,"maxBeds":2,"minBaths":1,"maxBaths":2,"bedType":"bedrooms"}''"'"''
+ 1138  echo 'curl -X PUT "http://localhost:5000/api/public/preferences?email=test@example.com" -H "Content-Type: application/json" -d '"'"'{"amenities":[{"id":1,"requirement":"must have"},{"id":2,"requirement":""}],"preferredNeighborhoodIds":[1,2],"minBudget":1000,"maxBudget":2000,"moveInDate":"2023-12-01","minBeds":1,"maxBeds":2,"minBaths":1,"maxBaths":2,"bedType":"bedrooms"}''"'"''
+ 1139  echo "# Test GET request (fetch user preferences with DTO mapping)" && echo "curl -X GET \"http://localhost:5000/api/user/preferenceses?email=test@example.com\"" && echo && echo "# Test PUT request (update preferences and get DTO mapped response)" && echo "curl -X PUT \"http://localhost:5000/api/public/preferences?email=test@example.com\" -H \"Content-Type: application/json\" -d '{\"amenities\":[{\"id\":1,\"requirement\":\"must have\"},{\"id\":2,\"requirement\":\"\"}],\"preferredNeighborhoodIds\":[1,2],\"minBudget\":1000,\"maxBudget\":2000,\"moveInDate\":\"2023-12-01\",\"minBeds\":1,\"maxBeds\":2,\"minBaths\":1,\"maxBaths\":2,\"bedType\":\"bedrooms\"}'\"
+ 1140  sudo docker ps
+ 1141  sudo docker rm d5684f4e211d -f
+ 1142  sudo docker ps
+ 1143  exit
+ 1144  curl -X PUT "http://localhost:5000/api/test/preferences?email=test@example.com" -H "Content-Type: application/json" -d '"'"'{"amenities":[{"id":1,"requirement":"must have"},{"id":2,"requirement":""}],"preferredNeighborhoodIds":[1,2],"minBudget":1000,"maxBudget":2000,"moveInDate":"2023-12-01","minBeds":1,"maxBeds":2,"minBaths":1,"maxBaths":2,"bedType":"bedrooms"}''"'"'
+ 1145  echo 'curl -X PUT "http://localhost:5000/api/test/preferences?email=test@example.com" -H "Content-Type: application/json" -d '"'"'{"amenities":[{"id":1,"requirement":"must have"},{"id":2,"requirement":""}],"preferredNeighborhoodIds":[1,2],"minBudget":1000,"maxBudget":2000,"moveInDate":"2023-12-01","minBeds":1,"maxBeds":2,"minBaths":1,"maxBaths":2,"bedType":"bedrooms"}''"'"''
+ 1146  curl -X PUT "http://localhost:5000/api/test/preferences?email=test@example.com" -H "Content-Type: application/json" -d '"'"'{"amenities":[{"id":1,"requirement":"must have"},{"id":2,"requirement":""}],"preferredNeighborhoodIds":[1,2],"minBudget":1000,"maxBudget":2000,"moveInDate":"2023-12-01","minBeds":1,"maxBeds":2,"minBaths":1,"maxBaths":2,"bedType":"bedrooms"}''"'"'
+ 1147  curl -X GET http://localhost:5000/api/amenities/simple | json_pp
+ 1148  curl -X PUT "http://localhost:5000/api/public/preferences?email=test@example.com"   -H "Content-Type: application/json"   -d '{"amenities":[{"id":1,"requirement":"must have"},{"id":2,"requirement":""}],"preferredNeighborhoodIds":[1,2],"minBudget":1000,"maxBudget":2000,"moveInDate":"2023-12-01","minBeds":1,"maxBeds":2,"minBaths":1,"maxBaths":2,"bedType":"bedrooms"}'
+ 1149  curl -X GET "http://localhost:5000/api/user/preferenceses?email=decodeend0541@gmail.com"
+ 1150  docker volume create n8n_data
+ 1151  sudo
+ 1152  docker volume create n8n_data
+ 1153  sudo
+ 1154  docker volume create n8n_data
+ 1155  sudo docker volume create n8n_data
+ 1156  sudo docker run -it --rm --name n8n -p 5678:5678 -v n8n_data:/home/node/.n8n docker.n8n.io/n8nio/n8n
+ 1157  rm -rf node_modules package-lock.json
+ 1158  npm install
+ 1159  npm run build
+ 1160  exit
+ 1161  corepack enable
+ 1162  corepack prepare pnpm@latest --activate
+ 1163  pnpm install
+ 1164  npm run dev
+ 1165  npx n8n
+ 1166  exit
+ 1167  npm run dev
+ 1168  git add .
+ 1169  git commit -m "update"
+ 1170  git push
+ 1171  npm run dev
+ 1172  git add .
+ 1173  git commit -m "update"
+ 1174  git push
+ 1175  npm run dev
+ 1176  git add .
+ 1177  git commit -m "update"
+ 1178  git push
+ 1179  npm run dev
+ 1180  git add .
+ 1181  git commit -m "update"
+ 1182  git push
+ 1183  npm run dev
+ 1184  git add .
+ 1185  git commit -m "update"
+ 1186  git push
+ 1187  git add .
+ 1188  git commit -m "update"
+ 1189  git push
+ 1190  npm run db:push
+ 1191  curl localhost:5000/api/user/preferenceses
+ 1192  curl localhost:5000/api/user/preferenceses?email=decodeend0541@gmail.com
+ 1193  git add .
+ 1194  git commit -m "update"
+ 1195  git push
+ 1196  npm run dev
+ 1197  git add .
+ 1198  git commit -m "update"
+ 1199  git push
+ 1200  npm run dev
+ 1201  git add .
+ 1202  git commit -m "update"
+ 1203  git push
+ 1204  git add .
+ 1205  git commit -m "update"
+ 1206  git push
+ 1207  npm run dev
+ 1208  docker volume create n8n_data
+ 1209  docker run -it --rm --name n8n -p 5678:5678 -v n8n_data:/home/node/.n8n docker.n8n.io/n8nio/n8n
+ 1210  sudo docker volume create n8n_data
+ 1211  docker run -it --rm --name n8n -p 5678:5678 -v n8n_data:/home/node/.n8n docker.n8n.io/n8nio/n8n
+ 1212  sudo docker run -it --rm --name n8n -p 5678:5678 -v n8n_data:/home/node/.n8n docker.n8n.io/n8nio/n8n
+ 1213  wsl
+ 1214  sudo docker ps
+ 1215  sudo docker exec -it n8n /bin/sh
+ 1216  sudo docker ps
+ 1217  sudo rm adf8f390a68c -f
+ 1218  curl -X PUT "https://houstontexasapartments.com/api/public/preferences?email=decodeend0541@gmail.com"   -H "Content-Type: application/json"   -d '{
+ 1219      "id": 12,
+ 1220      "email": "decodeend0541@gmail.com",
+ 1221      "name": "1 Trần a",
+ 1222      "phone": null,
+ 1223      "minBudget": 1000,
+ 1224      "maxBudget": 2000,
+ 1225      "minBeds": 1,
+ 1226      "maxBeds": 3,
+ 1227      "bedType": "bedrooms",
+ 1228      "minBaths": 1,
+ 1229      "maxBaths": 5,
+ 1230      "minSqft": 700,
+ 1231      "maxSqft": 1000,
+ 1232      "moveInDate": null,
+ 1233      "contactPreference": "email",
+ 1234      "requiredAmenities": [
+ 1235        {
+ 1236          "id": 59,
+ 1237          "displayName": "Cabinet Style",
+ 1238          "requirement": "Big Cabinet"
+ 1239        },
+ 1240        {
+ 1241          "id": 58,
+ 1242          "displayName": "Kitchen Appliances",
+ 1243          "requirement": "Luxury kitchen"
+ 1244        },
+ 1245        {
+ 1246          "id": 57,
+ 1247          "displayName": "Wine Fridge",
+ 1248          "requirement": "Big Wine Fridge"
+ 1249        },
+ 1250        {
+ 1251          "id": 61,
+ 1252          "displayName": "Faucet Style",
+ 1253          "requirement": "Gooseneck faucet"
+ 1254        },
+ 1255        {
+ 1256          "id": 100,
+ 1257          "displayName": "Housekeeping",
+ 1258          "requirement": "Housekeeping services"
+ 1259        }
+ 1260      ],
+ 1261      "preferredNeighborhoods": [
+ 1262        {
+ 1263          "id": 7,
+ 1264          "name": "Museum District"
+ 1265        },
+ 1266        {
+ 1267          "id": 6,
+ 1268          "name": "Rice/Medical Center"
+ 1269        }
+ 1270      ],
+ 1271      "ammenities": [
+ 1272        {
+ 1273          "id": 59,
+ 1274          "displayName": "Cabinet Style",
+ 1275          "requirement": "Big Cabinet"
+ 1276        },
+ 1277        {
+ 1278          "id": 58,
+ 1279          "displayName": "Kitchen Appliances",
+ 1280          "requirement": "Luxury kitchen"
+ 1281        },
+ 1282        {
+ 1283          "id": 57,
+ 1284          "displayName": "Wine Fridge",
+ 1285          "requirement": "Big Wine Fridge"
+ 1286        },
+ 1287        {
+ 1288          "id": 61,
+ 1289          "displayName": "Faucet Style",
+ 1290          "requirement": "Gooseneck faucet"
+ 1291        },
+ 1292        {
+ 1293          "id": 100,
+ 1294          "displayName": "Housekeeping",
+ 1295          "requirement": "Housekeeping services"
+ 1296        }
+ 1297      ],
+ 1298      "preferredNeighborhoodIds": [
+ 1299        7,
+ 1300        6
+ 1301      ]
+ 1302    }'
+ 1303  curl -X PUT "https://houstontexasapartments.com/api/public/preferences?email=decodeend0541@gmail.com"   -H "Content-Type: application/json"   -d '{
+ 1304      "id": 12,
+ 1305      "email": "decodeend0541@gmail.com",
+ 1306      "name": "1 Trần a",
+ 1307      "phone": null,
+ 1308      "minBudget": 1000,
+ 1309      "maxBudget": 2000,
+ 1310      "minBeds": 1,
+ 1311      "maxBeds": 3,
+ 1312      "bedType": "bedrooms",
+ 1313      "minBaths": 1,
+ 1314      "maxBaths": 5,
+ 1315      "minSqft": 700,
+ 1316      "maxSqft": 1000,
+ 1317      "moveInDate": null,
+ 1318      "contactPreference": "email",
+ 1319      "requiredAmenities": [
+ 1320        {
+ 1321          "id": 59,
+ 1322          "displayName": "Cabinet Style",
+ 1323          "requirement": "Big Cabinet"
+ 1324        },
+ 1325        {
+ 1326          "id": 58,
+ 1327          "displayName": "Kitchen Appliances",
+ 1328          "requirement": "Luxury kitchen"
+ 1329        },
+ 1330        {
+ 1331          "id": 57,
+ 1332          "displayName": "Wine Fridge",
+ 1333          "requirement": "Big Wine Fridge"
+ 1334        },
+ 1335        {
+ 1336          "id": 61,
+ 1337          "displayName": "Faucet Style",
+ 1338          "requirement": "Gooseneck faucet"
+ 1339        },
+ 1340        {
+ 1341          "id": 100,
+ 1342          "displayName": "Housekeeping",
+ 1343          "requirement": "Housekeeping services"
+ 1344        }
+ 1345      ],
+ 1346      "preferredNeighborhoods": [
+ 1347        {
+ 1348          "id": 7,
+ 1349          "name": "Museum District"
+ 1350        },
+ 1351        {
+ 1352          "id": 6,
+ 1353          "name": "Rice/Medical Center"
+ 1354        }
+ 1355      ],
+ 1356      "ammenities": [
+ 1357        {
+ 1358          "id": 59,
+ 1359          "displayName": "Cabinet Style",
+ 1360          "requirement": "Big Cabinet"
+ 1361        },
+ 1362        {
+ 1363          "id": 58,
+ 1364          "displayName": "Kitchen Appliances",
+ 1365          "requirement": "Luxury kitchen"
+ 1366        },
+ 1367        {
+ 1368          "id": 57,
+ 1369          "displayName": "Wine Fridge",
+ 1370          "requirement": "Big Wine Fridge"
+ 1371        },
+ 1372        {
+ 1373          "id": 61,
+ 1374          "displayName": "Faucet Style",
+ 1375          "requirement": "Gooseneck faucet"
+ 1376        },
+ 1377        {
+ 1378          "id": 100,
+ 1379          "displayName": "Housekeeping",
+ 1380          "requirement": "Housekeeping services"
+ 1381        }
+ 1382      ],
+ 1383      "preferredNeighborhoodIds": [
+ 1384        7,
+ 1385        6
+ 1386      ]
+ 1387    }'
+ 1388  curl -X PUT "https://houstontexasapartments.com/api/public/preferences?email=decodeend0541@gmail.com"   -H "Content-Type: application/json"   -d '{
+ 1389      "id": 12,
+ 1390      "email": "decodeend0541@gmail.com",
+ 1391      "name": "1 Trần a",
+ 1392      "phone": null,
+ 1393      "minBudget": 1000,
+ 1394      "maxBudget": 2000,
+ 1395      "minBeds": 1,
+ 1396      "maxBeds": 3,
+ 1397      "bedType": "bedrooms",
+ 1398      "minBaths": 1,
+ 1399      "maxBaths": 5,
+ 1400      "minSqft": 700,
+ 1401      "maxSqft": 1000,
+ 1402      "moveInDate": null,
+ 1403      "contactPreference": "email",
+ 1404      "requiredAmenities": [
+ 1405        {
+ 1406          "id": 59,
+ 1407          "displayName": "Cabinet Style",
+ 1408          "requirement": "Big Cabinet"
+ 1409        },
+ 1410        {
+ 1411          "id": 58,
+ 1412          "displayName": "Kitchen Appliances",
+ 1413          "requirement": "Luxury kitchen"
+ 1414        },
+ 1415        {
+ 1416          "id": 57,
+ 1417          "displayName": "Wine Fridge",
+ 1418          "requirement": "Big Wine Fridge"
+ 1419        },
+ 1420        {
+ 1421          "id": 61,
+ 1422          "displayName": "Faucet Style",
+ 1423          "requirement": "Gooseneck faucet"
+ 1424        },
+ 1425        {
+ 1426          "id": 100,
+ 1427          "displayName": "Housekeeping",
+ 1428          "requirement": "Housekeeping services"
+ 1429        }
+ 1430      ],
+ 1431      "preferredNeighborhoods": [
+ 1432        {
+ 1433          "id": 7,
+ 1434          "name": "Museum District"
+ 1435        },
+ 1436        {
+ 1437          "id": 6,
+ 1438          "name": "Rice/Medical Center"
+ 1439        }
+ 1440      ],
+ 1441      "ammenities": [
+ 1442        {
+ 1443          "id": 59,
+ 1444          "displayName": "Cabinet Style",
+ 1445          "requirement": "Big Cabinet"
+ 1446        },
+ 1447        {
+ 1448          "id": 58,
+ 1449          "displayName": "Kitchen Appliances",
+ 1450          "requirement": "Luxury kitchen"
+ 1451        },
+ 1452        {
+ 1453          "id": 57,
+ 1454          "displayName": "Wine Fridge",
+ 1455          "requirement": "Big Wine Fridge"
+ 1456        },
+ 1457        {
+ 1458          "id": 61,
+ 1459          "displayName": "Faucet Style",
+ 1460          "requirement": "Gooseneck faucet"
+ 1461        },
+ 1462        {
+ 1463          "id": 100,
+ 1464          "displayName": "Housekeeping",
+ 1465          "requirement": "Housekeeping services"
+ 1466        }
+ 1467      ],
+ 1468      "preferredNeighborhoodIds": [
+ 1469        7,
+ 1470        6
+ 1471      ]
+ 1472    }'
+ 1473  curl -X PUT "https://houstontexasapartments.com/api/public/preferences?email=decodeend0541@gmail.com"   -H "Content-Type: application/json"   -d '{
+ 1474      "id": 12,
+ 1475      "email": "decodeend0541@gmail.com",
+ 1476      "name": "1 Trần a",
+ 1477      "phone": null,
+ 1478      "minBudget": 1000,
+ 1479      "maxBudget": 2000,
+ 1480      "minBeds": 1,
+ 1481      "maxBeds": 3,
+ 1482      "bedType": "bedrooms",
+ 1483      "minBaths": 1,
+ 1484      "maxBaths": 5,
+ 1485      "minSqft": 700,
+ 1486      "maxSqft": 1000,
+ 1487      "moveInDate": null,
+ 1488      "contactPreference": "email",
+ 1489      "requiredAmenities": [
+ 1490        {
+ 1491          "id": 59,
+ 1492          "displayName": "Cabinet Style",
+ 1493          "requirement": "Big Cabinet"
+ 1494        },
+ 1495        {
+ 1496          "id": 58,
+ 1497          "displayName": "Kitchen Appliances",
+ 1498          "requirement": "Luxury kitchen"
+ 1499        },
+ 1500        {
+ 1501          "id": 57,
+ 1502          "displayName": "Wine Fridge",
+ 1503          "requirement": "Big Wine Fridge"
+ 1504        },
+ 1505        {
+ 1506          "id": 61,
+ 1507          "displayName": "Faucet Style",
+ 1508          "requirement": "Gooseneck faucet"
+ 1509        },
+ 1510        {
+ 1511          "id": 100,
+ 1512          "displayName": "Housekeeping",
+ 1513          "requirement": "Housekeeping services"
+ 1514        }
+ 1515      ],
+ 1516      "preferredNeighborhoods": [
+ 1517        {
+ 1518          "id": 7,
+ 1519          "name": "Museum District"
+ 1520        },
+ 1521        {
+ 1522          "id": 6,
+ 1523          "name": "Rice/Medical Center"
+ 1524        }
+ 1525      ],
+ 1526      "ammenities": [
+ 1527        {
+ 1528          "id": 59,
+ 1529          "displayName": "Cabinet Style",
+ 1530          "requirement": "Big Cabinet"
+ 1531        },
+ 1532        {
+ 1533          "id": 58,
+ 1534          "displayName": "Kitchen Appliances",
+ 1535          "requirement": "Luxury kitchen"
+ 1536        },
+ 1537        {
+ 1538          "id": 57,
+ 1539          "displayName": "Wine Fridge",
+ 1540          "requirement": "Big Wine Fridge"
+ 1541        },
+ 1542        {
+ 1543          "id": 61,
+ 1544          "displayName": "Faucet Style",
+ 1545          "requirement": "Gooseneck faucet"
+ 1546        },
+ 1547        {
+ 1548          "id": 100,
+ 1549          "displayName": "Housekeeping",
+ 1550          "requirement": "Housekeeping services"
+ 1551        }
+ 1552      ],
+ 1553      "preferredNeighborhoodIds": [
+ 1554        7,
+ 1555        6
+ 1556      ]
+ 1557    }'curl -X PUT "localhost:5000/api/public/preferences?email=decodeend0541@gmail.com"   -H "Content-Type: application/json"   -d '{
+ 1558      "id": 12,
+ 1559      "email": "decodeend0541@gmail.com",
+ 1560      "name": "1 Trần a",
+ 1561      "phone": null,
+ 1562      "minBudget": 1000,
+ 1563      "maxBudget": 2000,
+ 1564      "minBeds": 1,
+ 1565      "maxBeds": 3,
+ 1566      "bedType": "bedrooms",
+ 1567      "minBaths": 1,
+ 1568      "maxBaths": 5,
+ 1569      "minSqft": 700,
+ 1570      "maxSqft": 1000,
+ 1571      "moveInDate": null,
+ 1572      "contactPreference": "email",
+ 1573      "requiredAmenities": [
+ 1574        {
+ 1575          "id": 59,
+ 1576          "displayName": "Cabinet Style",
+ 1577          "requirement": "Big Cabinet"
+ 1578        },
+ 1579        {
+ 1580          "id": 58,
+ 1581          "displayName": "Kitchen Appliances",
+ 1582          "requirement": "Luxury kitchen"
+ 1583        },
+ 1584        {
+ 1585          "id": 57,
+ 1586          "displayName": "Wine Fridge",
+ 1587          "requirement": "Big Wine Fridge"
+ 1588        },
+ 1589        {
+ 1590          "id": 61,
+ 1591          "displayName": "Faucet Style",
+ 1592          "requirement": "Gooseneck faucet"
+ 1593        },
+ 1594        {
+ 1595          "id": 100,
+ 1596          "displayName": "Housekeeping",
+ 1597          "requirement": "Housekeeping services"
+ 1598        }
+ 1599      ],
+ 1600      "preferredNeighborhoods": [
+ 1601        {
+ 1602          "id": 7,
+ 1603          "name": "Museum District"
+ 1604        },
+ 1605        {
+ 1606          "id": 6,
+ 1607          "name": "Rice/Medical Center"
+ 1608        }
+ 1609      ],
+ 1610      "amenities": [
+ 1611        {
+ 1612          "id": 59,
+ 1613          "displayName": "Cabinet Style",
+ 1614          "requirement": "Big Cabinet"
+ 1615        },
+ 1616        {
+ 1617          "id": 58,
+ 1618          "displayName": "Kitchen Appliances",
+ 1619          "requirement": "Luxury kitchen"
+ 1620        },
+ 1621        {
+ 1622          "id": 57,
+ 1623          "displayName": "Wine Fridge",
+ 1624          "requirement": "Big Wine Fridge"
+ 1625        },
+ 1626        {
+ 1627          "id": 61,
+ 1628          "displayName": "Faucet Style",
+ 1629          "requirement": "Gooseneck faucet"
+ 1630        },
+ 1631        {
+ 1632          "id": 100,
+ 1633          "displayName": "Housekeeping",
+ 1634          "requirement": "Housekeeping services"
+ 1635        }
+ 1636      ],
+ 1637      "preferredNeighborhoodIds": [
+ 1638        7,
+ 1639        6
+ 1640      ]
+ 1641    }'
+ 1642  curl -X PUT "localhost:5000/api/public/preferences?email=decodeend0541@gmail.com"   -H "Content-Type: application/json"   -d '{
+ 1643      "id": 12,
+ 1644      "email": "decodeend0541@gmail.com",
+ 1645      "name": "1 Trần a",
+ 1646      "phone": null,
+ 1647      "minBudget": 1000,
+ 1648      "maxBudget": 2000,
+ 1649      "minBeds": 1,
+ 1650      "maxBeds": 3,
+ 1651      "bedType": "bedrooms",
+ 1652      "minBaths": 1,
+ 1653      "maxBaths": 5,
+ 1654      "minSqft": 700,
+ 1655      "maxSqft": 1000,
+ 1656      "moveInDate": null,
+ 1657      "contactPreference": "email",
+ 1658      "requiredAmenities": [
+ 1659        {
+ 1660          "id": 59,
+ 1661          "displayName": "Cabinet Style",
+ 1662          "requirement": "Big Cabinet"
+ 1663        },
+ 1664        {
+ 1665          "id": 58,
+ 1666          "displayName": "Kitchen Appliances",
+ 1667          "requirement": "Luxury kitchen"
+ 1668        },
+ 1669        {
+ 1670          "id": 57,
+ 1671          "displayName": "Wine Fridge",
+ 1672          "requirement": "Big Wine Fridge"
+ 1673        },
+ 1674        {
+ 1675          "id": 61,
+ 1676          "displayName": "Faucet Style",
+ 1677          "requirement": "Gooseneck faucet"
+ 1678        },
+ 1679        {
+ 1680          "id": 100,
+ 1681          "displayName": "Housekeeping",
+ 1682          "requirement": "Housekeeping services"
+ 1683        }
+ 1684      ],
+ 1685      "preferredNeighborhoods": [
+ 1686        {
+ 1687          "id": 7,
+ 1688          "name": "Museum District"
+ 1689        },
+ 1690        {
+ 1691          "id": 6,
+ 1692          "name": "Rice/Medical Center"
+ 1693        }
+ 1694      ],
+ 1695      "amenities": [
+ 1696        {
+ 1697          "id": 59,
+ 1698          "displayName": "Cabinet Style",
+ 1699          "requirement": "Big Cabinet"
+ 1700        },
+ 1701        {
+ 1702          "id": 58,
+ 1703          "displayName": "Kitchen Appliances",
+ 1704          "requirement": "Luxury kitchen"
+ 1705        },
+ 1706        {
+ 1707          "id": 57,
+ 1708          "displayName": "Wine Fridge",
+ 1709          "requirement": "Big Wine Fridge"
+ 1710        },
+ 1711        {
+ 1712          "id": 61,
+ 1713          "displayName": "Faucet Style",
+ 1714          "requirement": "Gooseneck faucet"
+ 1715        },
+ 1716        {
+ 1717          "id": 100,
+ 1718          "displayName": "Housekeeping",
+ 1719          "requirement": "Housekeeping services"
+ 1720        }
+ 1721      ],
+ 1722      "preferredNeighborhoodIds": [
+ 1723        7,
+ 1724        6
+ 1725      ]
+ 1726    }'
+ 1727  docker ps
+ 1728  sudo docker ps
+ 1729  sudo docker rm adf8f390a68c -f
+ 1730  curl -X PUT "localhost:5000/api/public/preferences?email=decodeend0541@gmail.com"   -H "Content-Type: application/json"   -d '{
+ 1731      "id": 12,
+ 1732      "email": "decodeend0541@gmail.com",
+ 1733      "name": "1 Trần a",
+ 1734      "phone": null,
+ 1735      "minBudget": 1000,
+ 1736      "maxBudget": 2000,
+ 1737      "minBeds": 1,
+ 1738      "maxBeds": 3,
+ 1739      "bedType": "bedrooms",
+ 1740      "minBaths": 1,
+ 1741      "maxBaths": 5,
+ 1742      "minSqft": 700,
+ 1743      "maxSqft": 1000,
+ 1744      "moveInDate": null,
+ 1745      "contactPreference": "email",
+ 1746      "requiredAmenities": [
+ 1747        {
+ 1748          "id": 59,
+ 1749          "displayName": "Cabinet Style",
+ 1750          "requirement": "Big Cabinet"
+ 1751        },
+ 1752        {
+ 1753          "id": 58,
+ 1754          "displayName": "Kitchen Appliances",
+ 1755          "requirement": "Luxury kitchen"
+ 1756        },
+ 1757        {
+ 1758          "id": 57,
+ 1759          "displayName": "Wine Fridge",
+ 1760          "requirement": "Big Wine Fridge"
+ 1761        },
+ 1762        {
+ 1763          "id": 61,
+ 1764          "displayName": "Faucet Style",
+ 1765          "requirement": "Gooseneck faucet"
+ 1766        },
+ 1767        {
+ 1768          "id": 100,
+ 1769          "displayName": "Housekeeping",
+ 1770          "requirement": "Housekeeping services"
+ 1771        }
+ 1772      ],
+ 1773      "preferredNeighborhoods": [
+ 1774        {
+ 1775          "id": 7,
+ 1776          "name": "Museum District"
+ 1777        },
+ 1778        {
+ 1779          "id": 6,
+ 1780          "name": "Rice/Medical Center"
+ 1781        }
+ 1782      ],
+ 1783      "ammenities": [
+ 1784        {
+ 1785          "id": 59,
+ 1786          "displayName": "Cabinet Style",
+ 1787          "requirement": "Big Cabinet"
+ 1788        },
+ 1789        {
+ 1790          "id": 58,
+ 1791          "displayName": "Kitchen Appliances",
+ 1792          "requirement": "Luxury kitchen"
+ 1793        },
+ 1794        {
+ 1795          "id": 57,
+ 1796          "displayName": "Wine Fridge",
+ 1797          "requirement": "Big Wine Fridge"
+ 1798        },
+ 1799        {
+ 1800          "id": 61,
+ 1801          "displayName": "Faucet Style",
+ 1802          "requirement": "Gooseneck faucet"
+ 1803        },
+ 1804        {
+ 1805          "id": 100,
+ 1806          "displayName": "Housekeeping",
+ 1807          "requirement": "Housekeeping services"
+ 1808        }
+ 1809      ],
+ 1810      "preferredNeighborhoodIds": [
+ 1811        7,
+ 1812        6
+ 1813      ]
+ 1814    }'
+ 1815  curl -X PUT "https://houstontexasapartments.com/api/public/preferences?email=decodeend0541@gmail.com"   -H "Content-Type: application/json"   -d '{
+ 1816      "id": 12,
+ 1817      "email": "decodeend0541@gmail.com",
+ 1818      "name": "1 Trần a",
+ 1819      "phone": null,
+ 1820      "minBudget": 1000,
+ 1821      "maxBudget": 2000,
+ 1822      "minBeds": 1,
+ 1823      "maxBeds": 3,
+ 1824      "bedType": "bedrooms",
+ 1825      "minBaths": 1,
+ 1826      "maxBaths": 5,
+ 1827      "minSqft": 700,
+ 1828      "maxSqft": 1000,
+ 1829      "moveInDate": null,
+ 1830      "contactPreference": "email",
+ 1831      "requiredAmenities": [
+ 1832        {
+ 1833          "id": 59,
+ 1834          "displayName": "Cabinet Style",
+ 1835          "requirement": "Big Cabinet"
+ 1836        },
+ 1837        {
+ 1838          "id": 58,
+ 1839          "displayName": "Kitchen Appliances",
+ 1840          "requirement": "Luxury kitchen"
+ 1841        },
+ 1842        {
+ 1843          "id": 57,
+ 1844          "displayName": "Wine Fridge",
+ 1845          "requirement": "Big Wine Fridge"
+ 1846        },
+ 1847        {
+ 1848          "id": 61,
+ 1849          "displayName": "Faucet Style",
+ 1850          "requirement": "Gooseneck faucet"
+ 1851        },
+ 1852        {
+ 1853          "id": 100,
+ 1854          "displayName": "Housekeeping",
+ 1855          "requirement": "Housekeeping services"
+ 1856        }
+ 1857      ],
+ 1858      "preferredNeighborhoods": [
+ 1859        {
+ 1860          "id": 7,
+ 1861          "name": "Museum District"
+ 1862        },
+ 1863        {
+ 1864          "id": 6,
+ 1865          "name": "Rice/Medical Center"
+ 1866        }
+ 1867      ],
+ 1868      "amenities": [
+ 1869        {
+ 1870          "id": 59,
+ 1871          "displayName": "Cabinet Style",
+ 1872          "requirement": "Big Cabinet"
+ 1873        },
+ 1874        {
+ 1875          "id": 58,
+ 1876          "displayName": "Kitchen Appliances",
+ 1877          "requirement": "Luxury kitchen"
+ 1878        },
+ 1879        {
+ 1880          "id": 57,
+ 1881          "displayName": "Wine Fridge",
+ 1882          "requirement": "Big Wine Fridge"
+ 1883        },
+ 1884        {
+ 1885          "id": 61,
+ 1886          "displayName": "Faucet Style",
+ 1887          "requirement": "Gooseneck faucet"
+ 1888        },
+ 1889        {
+ 1890          "id": 100,
+ 1891          "displayName": "Housekeeping",
+ 1892          "requirement": "Housekeeping services"
+ 1893        }
+ 1894      ],
+ 1895      "preferredNeighborhoodIds": [
+ 1896        7,
+ 1897        6
+ 1898      ]
+ 1899    }'
+ 1900  chmod +x server/chatProxy/chat.js server/chatProxy/chat-command.js server/chatProxy/chat.sh
+ 1901  cd server/chatProxy && npm install
+ 1902  history
+ 1903  ssh -v -i ~/ssh_key root@178.128.118.54
+ 1904  . "\home\tient\.cursor-server\bin\02270c8441bdc4b2fdbc30e6f470a589ec78d600\out\vs\workbench\contrib\terminal\common\scripts\shellIntegration-bash.sh"
+ 1905  ssh -v -i ~/ssh_key root@178.128.118.54
+ 1906  git clone https://github.com/Womarali1992/find-your-houston-home.git
+ 1907  git clone git@github.com:Womarali1992/find-your-houston-home.git
+ 1908  npm run dev
+ 1909  kill -9 $(lsof -t -i:5000)
+ 1910  lsof -t -i:5000
+ 1911  npm run dev
+ 1912  sudo netstat -tulnp | grep :5000
+ 1913  sudo kill -9 1618 1627
+ 1914  npm run dev
+ 1915  git add .
+ 1916  git commit -m "update"
+ 1917  git push
+ 1918  git push --force
+ 1919  git add .
+ 1920  git commit - m "update"
+ 1921  git commit -m "update"
+ 1922  git push
+ 1923  git add .
+ 1924  git commit -m "update"
+ 1925  git push
+ 1926  git add .
+ 1927  git commit -m "update"
+ 1928  git push
+ 1929  git add .
+ 1930  git commit -m "update"
+ 1931  git push
+ 1932  git add .
+ 1933  git commit -m "update"
+ 1934  git push
+ 1935  git add .
+ 1936  git commit -m "update"
+ 1937  git push
+ 1938  git add .
+ 1939  git commit -m "update"
+ 1940  git push
+ 1941  git add .
+ 1942  git commit -m "update"
+ 1943  git push
+ 1944  npm run dev
+ 1945  npm run db:push
+ 1946  npx ts-node scripts/run-seeds.ts
+ 1947  npx ts-node --loader ts-node/esm scripts/run-seeds.ts
+ 1948  node --loader ts-node/esm scripts/run-seeds.ts
+ 1949  npm run dev
+ 1950  netstat -aon | findstr :5000
+ 1951  lsof -ti:5000 | xargs kill -9
+ 1952  lsof -ti:5000 | xargs kill
+ 1953  npm run dev
+ 1954  lsof -ti:5000
+ 1955  sudo lsof -ti:5000
+ 1956  sudo kill -9 2158
+ 1957  sudo kill -9 2165
+ 1958  npm run dev
+ 1959  exit
+ 1960  curl localhost:5000
+ 1961  npm run dev
+ 1962  python lost_and_found_cat.py
+ 1963  source venv/bin/activate
+ 1964  python lost_and_found_cat.py
+ 1965  docker ps
+ 1966  sudo docker ps
+ 1967  docker rm -f ad6b6d1a6af7
+ 1968  sudo docker rm -f ad6b6d1a6af7
+ 1969  npm run dev
+ 1970  git add .
+ 1971  git commit -m "update"
+ 1972  git push
+ 1973  git add .
+ 1974  git commit -m "oke
+ 1975  "
+ 1976  git commit -m "oke"
+ 1977  npm run dev
+ 1978  mkdir -p {
+ 1979  }
+ 1980  # Create main files
+ 1981  touch src/__init__.py
+ 1982  touch src/main.py
+ 1983  touch src/graph.py
+ 1984  touch config/settings.py
+ 1985  mkdir -p {
+ 1986  }
+ 1987  mkdir -p {src/agents,src/tools,src/models,src/utils,src/api,tests,config,data,notebooks}
+ 1988  touch src/__init__.py
+ 1989  touch src/main.py
+ 1990  touch src/graph.py
+ 1991  touch config/settings.py
+ 1992  source venv/
+ 1993  source venv/bin/activate
+ 1994  python lost_and_found_cat.py
+ 1995  history

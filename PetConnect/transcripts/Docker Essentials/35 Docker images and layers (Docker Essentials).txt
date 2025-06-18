@@ -1,0 +1,304 @@
+let's talk about the anatomy of a docker
+image
+i've kind of hinted
+i've kind of hinted at the
+layers option all right so let's take
+this example
+you have
+three images suppose you need these
+three images you have alpine
+ubuntu open jdk we have all three right
+now
+what is
+what is the difference between
+these three right and this size is not
+to scale by the way i'm not sure if
+ubuntu is bigger or open jdk is bigger
+but definitely ubuntu and open jtk are
+both bigger than alpine okay so
+what's what's common among them let's
+put it this way let's not think about
+the difference the difference is obvious
+there's no
+java in ubuntu right what's what's
+common across these three images
+well you have the basic shell and utils
+are common like for example sh is a
+common shell it's there in all three
+right so the basic shell and your very
+very basic shell in linux utils in
+alpine the same as the basic shell and
+neutrals in in ubuntu for example the ls
+command that's there in alpine is there
+an ubuntu right cat command it's there
+in alpine and ubuntu right
+open jdk probably is not not accurate
+probably but you know probably has most
+of the things in alpine right because
+alpine is like the bare minimum linux
+utilities
+right
+so there is a lot of commonalities here
+as you can tell and apart from that like
+think about difference between open jdk
+7 or open jdk 17 and open jdk 18 right
+or open jk 16.
+they are
+like apart from the jdk version
+everything else is the same right so
+docker has an image architecture which
+is optimized to make sure that you're
+not downloading the same thing over and
+over again and you're not even saving
+the same thing over and over again
+that's because docker
+images are made up of layers okay there
+are multiple layers to a docker image
+docker image
+is has multiple layers which are
+composable okay they're very composable
+and you start with the base image every
+docker image
+starts out with a base image
+and then image layers are
+optimized and
+reused okay i'm going to give you an
+example
+let's say you want to create an image
+for your custom cli you're working on a
+java cli application do you want to
+distribute it you want to create an
+image for your cli what do you do
+you can of course start from the scratch
+and say okay i want this image to have a
+list ls command okay you put that in
+there like we did earlier right so you
+type the ldd look up what are all the
+dependencies populate that one by one do
+it all yourself painstakingly start with
+the b or you can start with a base image
+you can say okay i'm going to pick
+alpine as the base image which is like
+just 5mb so it's great so it has some of
+the stuff already and i'm going to add
+my cli
+on top of it okay and then add any other
+files which are necessary for your cli
+to function and then you go okay now i'm
+going to
+build my image
+okay this is possible and now what ends
+up happening is when you download your
+image or base even when you're creating
+your image what what docker is going to
+do is it's going to be like okay the
+base image is alpine so i don't have to
+store all of the stuff in the alpine
+image i'm just going to refer to it so
+it's basically going to be like okay
+download the alpine image and then add
+these layers on top of that so that's
+the layered approach the docker manages
+for
+all of these images so when you're
+downloading your image
+docker sees the first layer okay the
+first layer is alpine so let me see if
+alpine is already available if you have
+your machine you know you've used alpine
+images download already it is going to
+skip that if you don't have it it is
+going to download the alpine image first
+okay it's going to download the image
+that's been tagged with alpine
+and then it's going to get the next
+layer it's going to add that and so on
+and once it's gotten all the layers then
+it's done with your image okay so if you
+look at docker
+like if you fetch fetch any image right
+so i'm going to show you one other thing
+that i didn't show you see
+okay so you run
+if you run docker
+images
+it shows you all the images that you've
+downloaded right let's say you don't
+want some of these you can clear it out
+and you use that by using doc you clear
+out by using
+docker rmi okay rmi stands for remove
+image and let's say i want to remove
+open jdk
+open
+jdk
+okay there is a container that's using
+it maybe i'll remove node
+you cannot remove an image when a
+container is actually using it right so
+you have to you have to terminate all
+the containers and only then use it
+right so if i do darker
+images here are all the images available
+let's say i want to delete open jdk okay
+i'm going to say docker
+rmi
+open
+jdk
+and now what it's done is it's untagged
+and delete it open jdk and it has the
+sha that is associated with it if i do
+docker images
+open jdk isn't there now here is the
+thing though when i open download open
+jdk
+what it's going to do is it's going to
+go through these different layers and
+it's going to see what is the what are
+the different layers that open jdk
+comprises of and it's going to download
+only the layers that aren't already
+there okay so if you go to docker hub
+this is alpines let's look for open
+jdk
+okay so you notice what happens when i
+download this now okay so i'm gonna say
+what are all the version okay
+all right let's try a couple of these
+okay so i have 11 jdk
+and maybe
+17-jdk i'm going to demonstrate what
+this looks like okay so i'm going to say
+docker
+pull
+docker pull
+open
+jdk
+colon
+11-jdk so i'm providing a version of jdk
+that i need need to pull now if you
+notice it doesn't just download one file
+it goes in
+layers it finds all the different layers
+that comprise of this image and it is
+going to download all of that notice how
+long it takes now we've cleared open jdk
+from my machine
+i've noticed how long this takes
+so you see here it's
+these are three layers that are four
+layers that it's found already exists
+okay i don't even have anything to do
+with jdk but it found it already exists
+so i'm guessing it has to do with either
+ubuntu that i've got or alpine it's
+based out of that so it has found these
+layers
+it doesn't download it it just downloads
+these three layers so
+open jdk lavender jdk is comprised of
+these many layers
+four of them already existed they didn't
+get it only three of them it got now
+here's the fun part now is notice what
+happens when i do i download
+open jdk 17
+okay
+most of the layers should already be
+there
+and it probably just downloads the small
+difference that it finds i've never
+tried it this is the first time i'm
+trying it so let's see how this looks
+i mean i haven't counted layers is what
+i'm saying
+notice what it did it says these layers
+already exist now what did what did it
+download i think it just
+did it download anything at all i don't
+know you notice how fast it was right it
+didn't have to download everything
+because most of it it already had
+maybe the same image had that with my
+some minor differences it just got
+like you know this happened super fast
+okay so this is the benefit of having it
+use multiple layers it doesn't download
+everything it reuses something that's
+that's already there
+this is a good question now if i delete
+alpine is it a soft delete or a hard
+delete because other images are
+referencing it well this is this is
+interesting now notice what happens if i
+do docker rmi
+alpine
+it untags it
+but
+these ones are already there so let's
+say here's the scenario i think that's
+the crux of this question okay you
+download an image you download another
+image which is dependent on this image
+and now you delete this one it is going
+to untag it but that layer is not going
+to go away the layer is still there
+and you will see this a lot when you are
+creating images on your own right so you
+basically have these temporary images
+that get created which are basically
+tagged as none okay there is no tag
+associated with it
+the image sole purpose on your machine
+is to serve
+open jdk so if you say i want alpine
+that is not going to be there but it is
+going to be an untagged
+image that is going to stay on your
+machine to serve the purposes of
+the image that is using it i hope that
+makes sense can we see the details of
+all the layers yes you can you can do
+docker
+inspect
+image
+open
+jdk
+colon 17-jdk
+okay so it gives you
+all of the details of all of the layers
+that is involved in this thing basically
+everything about this image really okay
+so it says so here is the repo tag
+some configuration about the containers
+but some of these things are are fairly
+obvious the image is over here any
+volumes any working directory working
+directory will cover when you do docker
+dockerfile okay so here are all the
+layers right here all the sha for all
+the layers you can kind of examine that
+and go into like okay what does each of
+those mean and and go from there
+so yeah you can you can examine layers
+for any of these any of these containers
+what does docker compose in docker
+network there are two very different
+things
+docker compose is a way of for you to
+write
+code to spin up different docker
+containers from images right so let's
+say you want to build an app or you want
+to run an app locally where you need
+three different docker containers to be
+running well yes you can of course
+create say docker run docker and docker
+run three times or you can create a
+docker compose file which describes all
+the different containers you need with
+all the different ports all the
+different volume mounts and then say
+docker compose up and then it's going to
+start all those different containers at
+once okay

@@ -1,0 +1,351 @@
+using an image
+in order to use an image you need to
+first
+find an image that you want to use all
+right so we looked at the docker image
+registry let's pick one image okay so
+i'm going to pick
+this guy
+called
+alpine okay alpine is my
+go-to image
+for when i want to just do something and
+i have no idea what i'm doing okay this
+is
+probably the smallest the best image
+it's a combination of it being small and
+it being good enough for most purposes
+okay so this is
+like the description says a minimal
+docker image based on alpine linux with
+a complete package index
+and only 5 mb in size this is why i use
+this okay you guys talked about there
+were a couple of questions about
+but if you're copying all the utilities
+well the image becomes pretty big right
+you're duplicating here again well here
+is a bunch of minimal linux utilities
+and the size of this image is 5mb okay
+so this that should kind of relieve the
+concerns that you have right so this is
+alpine and it has like a bunch of
+information about what this linux is and
+it has very basic utilities that you can
+use and we're going to we're going to
+get this and use this right you can
+create a doctor container with this
+image now how do you do this first
+you're going to get the image to your
+machine this image is basically a zip
+file right and it is on docker hub it is
+somewhere else it's not on your machine
+you need to get it to your machine well
+you have this command over here this
+docker pull alpine
+not necessary but let's start here all
+right i'm going to go to a new command
+line prompt here's my terminal
+and i should have the docker
+cli
+running if i type docker-help
+i'm going to get the docker help okay
+bunch of commands over here a lot of
+these will make sense by the end of this
+course now i need to first like we want
+to use alpine we want to create a
+container which uses that image so the
+first thing i'm going to do is say
+docker
+and then pull
+outline okay this is the name of
+the container that i want to pull okay
+when i do that it is going to download
+the alpine container from
+docker hub
+you notice there are a couple of
+assumptions that i'm making here first
+of all i'm giving it just one word name
+i'm not saying hey go get the alpine
+container from docker hub just giving it
+the name
+docker hub as it turns out is the
+default location for containers if you
+don't specify anything we just just
+pulls it from docker hub so
+this is this works fine if you're
+pulling it from somewhere else you're
+gonna have to configure it uh to get it
+from there but basically what it did is
+okay this is the image name i'm gonna go
+to docker hub and find that image and it
+is going to download this
+now here you notice there is this line
+at the very
+the very first line of the output it
+says using default tag latest so tags
+are a thing
+docker uses tags which are basically
+strings to tag images you have alpine
+you can have different flavors of the
+alpine image so you can tag it with
+these different tags to say hey i want
+alpine version 5 upon i want to find
+version four and so on okay so now you
+have the latest version of alpine
+because i didn't specify any version i
+could have specified a version with
+saying alpine colon and then four or
+whatever like i can look up the tags
+over here let's do that i'm gonna go
+here
+in alpine
+see here are all the tags so this is one
+tag i can use three point fourteen point
+three
+okay so this is uh there's a tiny if i
+pull that alpine
+colon 3.14.3
+it is going to download that image which
+is again another zip file that it
+downloads and saves to my library where
+it saves in the machine again it depends
+on the operating system i think for
+windows it saves it in program data i
+don't quite remember where it saves the
+image in mac but it's somewhere on your
+hard disk right it saves it and keeps it
+there and now see it downloaded alpine
+version 3.14.3
+all right so i have downloaded this
+what do i do i can run it so the way to
+run this is by using
+docker run
+and then i specify the name of the image
+all right let's see
+alpine there you go
+it ran the image what did it do
+it seems like it didn't do anything
+right i got by got back my prompt i'm
+here i'm on windows right i got back my
+prompt what does it do i run it again
+it just
+ends right there
+now this is an important thing to to
+remember because
+when we talked about
+all of the virtualization features or
+sorry the isolation features and they
+say you want you want to isolate a
+certain file system you want to isolate
+the processes you want to isolate
+resources
+here's a question you are isolating all
+those things for
+what
+what are you isolating all these things
+for
+with virtual machines it was very simple
+you were you were kind of virtualizing
+hardware for what it was for
+the operating system like the windows or
+linux that you're running inside the os
+but here
+when you're doing all this thing like
+you know you're doing file and folder
+isolation you're doing process isolation
+who is the thing that you who are what
+is the thing that you're doing all this
+isolation for
+you are doing all this for a process
+right because otherwise it doesn't make
+sense you you put a folder somewhere
+well that folder is isolated right what
+you're doing is you're setting these
+jails you're setting these barriers
+for
+processes
+without a process
+all this thing doesn't even make sense
+the the containerization the isolation
+doesn't make sense okay in order to
+protect something you need something to
+protect it from right and that thing
+that you're protecting stuff from is a
+process
+so here is the key that you need to
+remember
+a container is basically
+jailing
+of a process
+without a process a container doesn't
+make sense
+so when i say hey run alpine
+well
+alpine is this
+jail
+in which you need to run a process so it
+means like okay i cannot just run a jail
+right you need somebody to be in that
+jail that's what you're jailing the
+outside world from
+so you need a process in order to run a
+container so when i say docker run
+alpine it's like well there's nothing to
+do it just ends right away however
+i can have it run a process by adding
+giving that process the command
+to the docker run command so here's what
+i can do i can say instead of docker run
+alpine i can say docker and alpine and i
+can give it a process to run it can be a
+basic shell command okay i can say echo
+hello
+now you see here it has echoed hello but
+this echo hello is a process that it
+didn't run this in my windows machine it
+basically created a container with the
+image of alpine and then it ran this
+echo hello
+inside that alpine
+okay you don't believe me we'll give you
+another example
+i'm going to run ls here okay let me let
+me exit this out okay if i run ls here
+what happens it's showing my windows
+directory structure okay what i want to
+do is run ls inside of alpine so if i
+run this what happens is it's sick it
+starts a process ls inside this alpine
+container so what i should get back is
+the contents of that alpine container
+okay if i run this notice what happens
+it's printing all these linux
+directories okay this is the contents of
+this alpine image so when i do docker
+run alpine the container that gets
+created is going to contain all these
+directories so when i run ls this ls
+happens to run inside the container
+created by this run alpine and the
+contents that gets printed is the
+contents of that container does that
+make sense let me know if you have
+questions about this because this is
+this is a key thing to remember it's key
+to remember
+that you need a process in order to have
+a container otherwise what's what's the
+point of a container what are you
+protecting
+all these things from you're protecting
+all these things from
+a process you need the process
+so when the process
+ends
+the container ends you're jailing this
+process once the process ends
+the jail doesn't make sense anymore so
+the container
+the duration of a container run is as
+long as the process and as a result
+every container needs a process that is
+what's the parent process for the
+container okay that's kind of like
+process id number one for that container
+world that process can start a bunch of
+other processes which is fine but when
+that parent process ends that's when the
+container ends okay
+let's see have a question here so alpine
+has the core containerization features
+are those features part of the host os
+more specifically is like each container
+supposed to have its own
+containerization features library to
+interact with the os
+the containerization features need to be
+a part of the os and not of the
+container
+a container is what is going to be
+leveraging the containerization features
+of the os okay
+here i'm on windows
+so it's a little bit tricky it's
+actually leveraging the containerization
+features of wsl okay but imagine this is
+linux okay i'm running this on linux and
+i say docker run and i create a new
+container the containerization features
+being used is of my host
+okay it is creating a new process and it
+is using the host containerization
+features in order to jail that process
+okay the parent process of the container
+is just one of the several processes of
+the host
+it just happens to be process number one
+in the containers world view okay
+how do we get inside the shell very very
+good question that's exactly what i was
+going to show you next okay so here's
+what i can do
+now i can say docker run alpine
+let's say i want to run a shell right i
+say i type sh sh is a standard shell you
+can use bash some containers have bash
+some don't some use some other such as
+like the bare minimum shell that most
+containers have
+let's say i run this
+okay
+nothing happens i forgot to switch right
+so here's what i did was i did a docker
+run alpine and then sh running a simple
+shell
+well what happens it ends well because
+the shell really doesn't have anything
+to do okay what you need to do is to
+tell docker that i actually want to
+interact with the shell okay so there is
+a flag for it
+which is dash
+i t okay dash i stands for interactive
+and t stands for terminal you can
+actually spell that out dash dash
+interactive dash dash terminal or i
+think tty is the actual flag but i
+commonly use dash id okay i'm saying hey
+docker i want you to run a shell but i
+want to interact so hold on to it don't
+just end the shell because the shell has
+nothing to do okay so if i run this
+now i'm thrown into a prompt you see
+this prompt is a little different okay
+it has this
+slash and this hash here right so this
+indicates that this is a
+shell problem now i type ls now i'm in
+alpine so all the commands that i run
+here
+are in alpine again like with the ch
+root example i do current working
+directory it's root okay i can't go back
+okay cd done and again i look here i'm
+still in the root okay so now the world
+view of this
+shell process is that it's running
+inside the alpine container so this is
+the process that's being containerized
+now i can start new processes over here
+right which i just did when i typed ls i
+started a new process inside the shell
+process and it executed it completed but
+the main process the parent process
+which is
+sh is still waiting it's still
+containerized now i want to end this i
+just type
+exit and i'm out of the container and
+i'm back into my windows prompt
+i hope this makes sense

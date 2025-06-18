@@ -1,0 +1,163 @@
+i'm running docker cli in my windows
+there's something that you have to
+remember by the way if you're in a
+container you can't run the docker cli
+command okay so i've run docker on i'm
+in a container right this is my
+alpine container now i can't run
+docker commands here right it doesn't
+find docker obviously because the docker
+client is installed on your windows or
+mac or like host a machine
+and uh this container is now isolated it
+does not have access to docker and even
+if it has access to it like this is a
+completely different operating system
+you technically cannot run that windows
+executable here anyway so just keep that
+in mind make sure uh you don't get lost
+and these different prompts do help to
+find out where you are
+all right so docker
+images is the command which shows you
+what are the images that are
+installed on your machine that you have
+downloaded sometime in the past on your
+machine so here i have ubuntu httpd
+alpine and alpine two different tags of
+alpine and the latest of ubuntu and
+httpd right each image has an image id
+which uniquely identifies it you can use
+the image id in place of the image name
+and a bunch of different commands now
+let's see
+running an image i'm just i guess is a
+quick recap of what we did we ran an
+image using docker run just the
+image name well nothing happened because
+you know really that had nothing to do
+right but there was no parent process so
+it quit right away you run this command
+in order to have it do something your
+docker run give it an image and then
+give it the command that you want to run
+in that image okay so we tried with this
+docker run alpine ls well it runs for as
+long as
+ls runs i can also demonstrate this with
+docker
+run
+alpine
+maybe sleep five okay it's gonna wait
+for five seconds that process is still
+running the process ended
+and now the container is stopped okay so
+it's basically tied to
+the length of the process that that
+you're containerizing
+it's
+lasts as long as the root process and
+why is that because containerization
+makes
+sense
+only for
+the process right what is being
+containerized you can't containerize a
+file what else it has to be a process
+right you can contrast it with the vm
+where what is being containerized code
+and quote containerize is the whole os
+here you're just continuing the process
+so you need a process to contain a rise
+otherwise there's really no point
+we looked at docker run downloading the
+images automatically
+all right no questions here it's
+basically uh you don't have to do a pull
+and a run you just do run if it's not
+available
+docker does a pull for you so it has its
+own internal repository in your local
+machine where it saves all these images
+so it doesn't find something it's going
+to pull it
+running a shell we saw how to do this
+you know ubuntu here this example the
+ubuntu container has bash i don't have
+to do sh okay if i run alpine sh sorry
+alpine
+bash it probably doesn't have bash
+yeah see the this container doesn't have
+bash so it's like you know i don't get a
+linux error i get a docker error saying
+i'm not able to start your process that
+you've asked me to containerize right
+make sense that it's a darker process a
+docker error docker is not able to find
+this process in that container to start
+and for it to jail it so it gives you an
+error i have to do a alpine sh because
+it's the native
+shell however if i'm running the ubuntu
+container
+i can use
+bash because ubuntu has bash of course i
+have to do
+dash i t
+tell it it's an interactive terminal and
+now i am in
+ubuntu okay
+let's say
+cat
+you see that ubuntu
+20403 lts
+again you can use the tags in
+docker hub to identify which particular
+version you want
+now
+i want you to think about what we did
+here
+what did we do what actually happened
+when we ran those commands okay so when
+we ran the docker run like we did this
+for http right we said docker run httpd
+you did a bunch of things right
+downloaded the image from docker hub
+first
+it found out that this image okay it
+doesn't exist locally
+got it from docker hub and then
+it
+views the linux containerization
+features again here i'm running it on
+windows so it used the wsl
+containerization features to create a
+new container it created a new container
+from the files in that image the image
+was a tar tar file so it kind of
+extracted it set it up created a
+container in that context and it started
+that prompt like when you did the bash
+ubuntu bash it started the prompt the
+bash prompt with that particular
+container okay
+isn't this awesome
+is this cool like you don't have to do
+you don't have to deal with any program
+installation as long as you have a
+container like this you just run that
+container and you are in that shell
+right it's it's really awesome
+so i'm going to talk about a couple of
+kind of implications of this thing for
+example
+i'm going to show you
+how to run java without installing java
+and i promised it's a java and a node.js
+you know demonstration so i'm also going
+to show you how to run node.js without
+installing node.js and you can see the
+benefit of this thing like you don't
+have to worry about versions you just
+get the container which has that right
+version and and you're good to go

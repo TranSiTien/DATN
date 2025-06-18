@@ -1,0 +1,124 @@
+so what i'm going to do is first get rid
+of these
+folders that were created by mysql
+so that
+this location is empty
+and i want to show you a workflow of
+creating a java file
+and basically compiling it and running
+without
+needing to install java we we kind of
+talked a little bit about that at the
+you know earlier where we
+run the java like j shell and we were
+able to run java commands without
+installing java locally well one of the
+problems there was like yeah what if you
+build a java application no you don't
+have access to it because the container
+ends your code ends right it is too
+isolated too restricted well now with
+volume mount we now have a way to create
+a workflow
+and you can make this happen so here's
+here's how you do it now i'm going to
+create
+a java file
+hello
+java
+and i'm just using notepad here just for
+the sake of simplicity
+it shouldn't matter what editor you use
+okay so i'm going to say
+public
+class
+hello
+and uh
+public static wide mean and here i'm
+just going to do a system
+dot out
+hello okay
+simple java file
+i can use my my host operating systems
+editors so let's say i have you know
+obviously wouldn't use intellij if the
+constraint is to not have java installed
+in your machine maybe some simple editor
+like what i did notepad here or vs code
+or whatever right now i have this java
+file now i want to compile and run it
+without having to install
+java well you know the answer now what i
+can do is i can volume mount this
+folder
+into the container and i will have
+access to run this in the container i'm
+going to try this out okay i'm going to
+do a docker run
+and i'm going to remove this because i
+don't want this around like i'm just
+temporary container i need an
+interactive shell
+and i'm going to volume mount this i'm
+going to say
+this present working directory
+is going to be volume mounted to i don't
+know i'm going to call this slash
+java code okay some folder in my
+containers host containers file tree i'm
+going to say open
+jdk
+and i want the shell
+okay
+now i'm going this is going to
+darker and what happened
+invalid reference format
+ah there was an extra space here i need
+to get rid of the space right the
+both sides of the colon that should mean
+space
+now i'm thrown into the shell
+and here i have this folder called java
+code i'm gonna go to
+java code and here is my hello.java and
+now i have my java runtime java compiler
+and all that stuff i can say java
+hello.java this is a trick by the way if
+you're used to older versions of java
+you don't know this you can just write
+java and the java file it is going to
+compile and run it in one chat okay so i
+say java
+it runs it right and now i can exit
+let's say i want to compile it i can say
+java c
+hello.java now it has compiled it to
+that location i exit to the container
+and now here in my host location i have
+a compiled java
+file without having to install java
+right i'm able to compile it to run it
+and all that stuff okay so now this has
+a sense of kind of permanence now what i
+can do is i can you can imagine like i
+open the the project
+in my host location whatever favorite
+ide that i have start this container and
+then i compile and run while i edit it
+in my host editor right that makes it
+super powerful it's a good user workflow
+that i have and i can work on complex
+projects this way
+okay if you look at the kind of like the
+docker support or the container support
+that something like visual studio code
+uses for example they kind of basically
+doing the same thing right it's mounting
+this kind of making your host code
+directories available inside the
+container and use the containers
+runtimes for compiling and building and
+all that stuff while your code exists
+here you want to check into source code
+you can do it directly from your host
+operating system if you like okay

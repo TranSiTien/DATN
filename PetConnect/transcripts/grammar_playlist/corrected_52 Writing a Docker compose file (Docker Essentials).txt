@@ -1,0 +1,259 @@
+so i have an empty folder over here
+docker compose example and i'm going to
+create a file here called
+docker dash compose
+dot
+yaml right
+docker compose files are yaml files
+which contain all of the things
+necessary to start containers that you
+need right multiple containers that you
+need so there's going to be a shortcut
+for a bunch of docker run commands so
+i'm going to go with a hypothetical
+example here
+where you want
+two containers to be run a mongodb
+container and a redis container
+what would you do if you not using
+docker compose well what you typically
+do is do a docker run
+ and then you specify the ports
+dash b
+2 7 0 1 7 colon 2 7 0 1 7
+so on you just add all those different
+parameters and then you hit enter you're
+going to run the mongodb container and
+then you do another docker run for
+readers right we want to avoid doing
+this stuff and that's the reason why we
+use docker compose right docker compose
+allows me to specify all the containers
+that i need in one place and then i use
+the docker composer command to run them
+all at once
+so the very first line of the docker
+compose file is a version property right
+the version property i'm going to put
+three here i think the current version
+is three point something but it's okay
+you don't have to be that precise you
+just put the version three that's fine i
+think three had some backward and
+compatible changes basically it tells
+docker compose what is the format in
+which the syntax is written make sure
+you have a version line here because
+this is essential you usually stick to
+three at least for now when the version
+becomes four
+use that and so on
+so um once you have the version the rest
+of the code in the docker compose file
+indicates what are all the different
+containers that you need and the way you
+specify them is by using this property
+called services
+okay services allows you to say what are
+all the different services that you need
+so you can have my service one foo
+and then my service bar and so on and
+each service is going to have all the
+details within it and i'm going to hire
+say bar and it's going to have all the
+details within it in my case i need one
+mongodb service
+one mongodb container and one radius
+service slash container so i'm going to
+say it is right every container that you
+need to spin up is basically one service
+inside the services section all right so
+how do we how do you specify a container
+the very first thing you need to specify
+is the image that you need for that
+container right it should be obvious i'm
+going to say
+so
+what it's going to do is when you run
+this file it's going to say okay this
+file requires two services the first
+service is mongodb and the image is
+mongoose it's going to split up a
+container from there the second service
+is image
+readers so it's going to spin up a
+container from there it's really as
+simple as that so you're basically
+providing a bunch of different
+containers that you want and you're
+providing what's the source image for
+those containers and docker run is going
+to basically um sorry the docker compose
+command is basically going to start
+those containers up right
+now not only can you do this you can
+also specify some more details you can
+specify what the ports are you see here
+that we specify when you run the mongodb
+container you specify what the port
+mappings are right so docker compose
+also has syntax for specifying these
+kind of extra parameters that you need
+to pass so for instance it has
+a property called ports and then here
+you can specify an array of all the port
+mappings so in this particular case i
+need 27017 to be mapped to two seven
+zero one seven so i'm gonna say
+two seven zero one seven map two
+two seven zero one seven
+okay so now i've specified this port
+what i would have otherwise specified in
+the command line i'm putting it in the
+code here in docker compose all right
+similarly i can specify environment
+details
+for instance i can say the mongodb root
+username and password i can specify them
+as lines over here so i'm going to paste
+this over here so
+what i have here is two properties
+specified otherwise i would have to
+specify this dash e over here right so
+basically whatever i would do in the
+command line for docker run i'm putting
+it in one place in the docker compose so
+i have mongodb init root username and
+mongodb init root password
+all right so with this i have defined a
+mongodb container exactly the way i want
+it and i've specified the source image
+so docker has all the information
+necessary to spin up this mongodb
+container for me and similarly i can go
+here to read this i can again map the
+ports i can say for readers i want
+the port
+six three
+seven nine map two six three seven nine
+again this is equal and off
+doing um docker run readers dash p
+6379 colon 6379 all right and i can also
+specify the environment information here
+environment i'm going to say
+dash radius
+password
+equals
+root
+okay so now i have specified
+all the necessary information for docker
+to start a redus container i'm doing it
+like this right make sure you specify a
+space here after the dash
+so this is simple yaml syntax
+and with this i have given information
+about two containers and precisely all
+the command line arguments that i would
+need to run if i had to run docker run
+okay so now i don't need to run docker
+anymore because of this thing what i'm
+going to do is first switch to the
+the folder that i have docker compose
+example over here
+and
+now
+i'm going to do a docker
+dash compose
+up
+so this is one command which is going to
+start up
+all of the containers that are available
+in this docker compose file okay just
+one command that's that's the point of
+docker compose right you can use one
+command to manage everything here
+because you want both of them to start
+up well why have separate commands for
+it right so i can do this and it is
+going to start them all up so docker
+compose is a cli that gets installed
+when you run when you install docker
+desktop on your machine so you can do
+docker compose dash dash help and you're
+going to get all the
+commands that you can run with docker
+compose and here is up right creates and
+starts all the containers which is
+exactly what we want so i'm going to do
+docker dash compose
+up and i'm doing this in the same
+directory as the docker dash
+compose.yaml file if you have a
+different file you can specify the dash
+f and then the file name but since i
+have the default file name i don't have
+to do that i'm just going to hit enter
+and it is going to start up both these
+containers now if you look at the logs
+you will see that there are
+there are these prefixes you see here
+there is a prefix for db
+underscore one this is a name that it's
+picked uh you can specify a name and
+docker compose as well so here are all
+the readers one prefixes so it's
+essentially started up
+both these containers right so here is
+the container docker compose example
+underscore readers underscore one and
+docker compose example underscore
+mongodb underscore one i can start up a
+new terminal
+and run docker
+ps and here are
+the two
+containers that are running right here
+are the two containers they've been up
+for
+38 seconds now so now if i were to stop
+all of them i can do docker
+compose i don't know what the command is
+i just do
+help and it'll tell me that there is a
+stop command right so here you see there
+is a stop stop services i do docker
+dash compose
+stop and it is going to stop all of them
+now there is also a docker compose kill
+um see if i can find it yeah here it is
+going to do a four scale off the
+containers but that's not what we want
+we just want to stop it when you do a
+stop you need to make sure that you're
+in the same directory as the docker
+compose.yaml because again everything
+that it infers about the containers is
+from this yaml file so notice now i'm
+not in this directory so it is going to
+say hey i'm not able to find the
+configuration file so i'm going to
+switch
+to that directory
+and then i'm going to do docker compose
+stop and now
+notice it has stopped both these
+containers and if i were to do a docker
+ps those containers aren't running
+anymore so this was a quick look at how
+you can create these uh
+docker compose files
+basically a shortcut for having to run
+all these things again and again
+uh you can of course put this in a batch
+file and run it because all you're doing
+is
+having a proxy for command line but i
+think this is much more powerful and
+much more structured in the sense that
+you can easily see what's going on and
+you can manage it easily over time

@@ -1,0 +1,247 @@
+let's get into ports because that's
+another interesting implication of
+containers so far we've been doing cli
+applications like when we did the
+hello.java we printed something to the
+console we were able to see that in the
+console output
+but
+what if you're going to run a web
+application
+okay you want to be able to access that
+web application well that's not going to
+work by default before we do that i'm
+going to remove this volume using the
+docker volume rm
+command all right this is going to the
+docker volume rm is going to remove
+whatever volume you have over here i'm
+going to issue this and now that volume
+is gone okay docker volume unless it's
+still that my sequel volume which i'm
+going to let it be at this point
+so when you're
+running web applications
+what's going to be the what's going to
+be the flow so let's say i run a java
+container
+and i'm creating a web app of
+i want to be able to load that web
+application in a browser that's how you
+test it right you want to be able to
+access that url and see it load
+with a shell like this you're in a
+docker container you're in a you're in a
+shell how do you access a web
+application do you just do call well you
+can do call and see the html response
+but that's not ideal you want to be able
+to access it in your host application
+ideally what you want to do is be able
+to go to your browser right start this
+application over here in the cli and
+then go to your browser here and then
+access a url which contains which
+accesses that that's the server that
+you're running over there okay i'm going
+to demonstrate this right now and i'm
+going to show you what you need to do to
+get it to work
+i'm going to
+go to the
+nginx
+image
+okay
+if you folks don't know nginx is a bit
+of a you know a reverse proxy proxy
+web server kind of a thing there's a
+whole lot i can't summarize it in in a
+few sentences
+but okay let's see what these guys do
+open source
+reverse proxy server for http https as
+well as load balancer http cache web
+server yeah it does all of that stuff
+okay so it's it's a pretty you know
+powerful you can you can use it as a web
+server i can start nginx and have it
+running
+so i'm going to demonstrate the
+challenges with this with over here okay
+so let's say
+i'm going to run
+nginx okay so i'm going to say
+docker
+run
+nginx so what it's going to do is it's
+going to
+download the nginx image locally this
+shouldn't be a surprise now and it is
+going to
+run the nginx process
+okay so it started the workup process
+and nginx usually starts at uh localhost
+80. so i'm going to go to my browser i'm
+like yeah this should work right i'm
+going to go to
+localhost 80 or basically
+localhost because 80 is kind of the
+default
+port
+what happens it's trying to access
+but it doesn't work okay it's unable to
+connect
+why is that
+this is the case because what we want is
+not really access localhost 80 we wanted
+to access
+the container ip80
+you see what the difference is what is
+localhost here localhost is your machine
+okay so if you have a process running on
+your like here it's windows if i have a
+process running on windows which is
+providing something on
+port 80 well what i'm doing here is fine
+right i can do localhost 80 and it is
+going to work fine but that's not what
+we want to do what we want is to access
+the containers process and the 80 there
+so how do you do this well turns out
+docker has a way to
+forward that information forward the
+containers port 80 to the host port 80
+okay so that's possible and this is how
+you
+do this i'm going to kill this guy
+and switch over to here
+okay so that process is dead
+now what i'm going to do is run this
+again docker
+run i still want to run nginx
+but
+what i want to do is forward the 80 port
+in nginx to
+some port on my host operating system
+you can choose any port like port 8080
+okay you need port forwarding right so
+here's what i'm going to do i'm going to
+say use the dash
+p flag for port forwarding volume
+mounting is dash v i allowed a host
+volume to be accessed in the container
+port forwarding is dash p which allows
+me to connect the container's port to
+the host port basically the host port to
+the container port may kind of make it
+forwarded there again host to container
+remember even with dash v
+the first one was the host folder second
+was the container folder similarly i'm
+going to specify the host port and the
+container port i want the host the
+windows
+8080 port you can it could very well be
+in 1990 that's fine the 8080 port needs
+to be mapped to the containers
+80 port because that's where nginx runs
+okay
+and then i'm going to do dash d so that
+i can detect i don't want to see the log
+or maybe let's see the logs all right so
+i'm going to run this now what's going
+to happen is it's again going to run
+nginx but it has mapped
+the
+the windows like my windows operating
+systems 8080 port to the 80 port on the
+container so if i were to
+get my
+browser here again
+and put this over here so you can see it
+now i have my browser open
+and now i'm going to try localhost colon
+8080 okay so what this is going to do is
+it's going to
+docker is going to map this 8080 to the
+container's 80. so this request is
+actually going to go to the container
+process and when i run this oh it's not
+https it should be http this is not
+secure okay so now you see i see the
+nginx page okay so this request has
+actually gone to the container the
+container has provided a response docker
+is funneling that response channeling
+that response to this http request and
+returning it over here now we see here
+if you look at the logs see there was a
+get request made from mozilla windows nt
+this thing doesn't know it just thinks
+it's some external
+request that's coming from another
+process another machine
+but it is redirecting it over here okay
+and it has responded with the nginx kind
+of default thing this doesn't happen
+before because there was no port
+forwarding when i tried this before it
+was trying to access port 80 of my
+windows machine and there's nothing
+listening to port 80 on my windows
+machine now with the dashb there is
+something listening to port 8080 on my
+windows machine what is listening it's
+docker this listening and when docker
+receives a request it is going to
+silently forward it to the containers
+port 80 it's going to get that response
+and then send it back to me so docker is
+doing all this work so again like i said
+docker is not just about running
+containers it has all this other stuff
+so that you can kind of have this
+loop the feedback loop when it comes to
+building web applications as well
+okay
+any questions about this port forwarding
+this is usually a very confusing thing
+for people but the way i've explained it
+hopefully it makes sense any any
+questions please let me know and i can
+kind of course correct with my
+explanation
+okay i see a question here there has to
+be a better mechanism since multiple
+containers would have a conflict in
+directing traffic to a single port on
+the host
+well it wouldn't be the case if you have
+multiple ports so here what i did was i
+mapped
+a port 8080
+to
+the
+the container sport 80. okay i can spin
+up another nginx container or maybe a
+tomcat container where i map port 8081
+on the host to the container sport 80 or
+the container support 8080. so basically
+what i really need multiple ports on my
+host i can't have a single port on my
+host that takes traffic to two different
+containers that's not going to happen
+every time i need to try map a host port
+to a container for every new container i
+need to take a new port on my host so i
+can easily have 10 different nginx
+containers running okay the first nginx
+container is mapped to port 8080 on my
+host on windows second one mapped to
+8081 third map to 8082 and so on and now
+i can have these
+requests going from different ports and
+docker is actually going to different
+containers so that way it will work
+okay
+so that's port mapping

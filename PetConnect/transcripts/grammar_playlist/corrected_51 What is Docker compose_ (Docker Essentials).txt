@@ -1,0 +1,85 @@
+i want to introduce you to the concept
+docker compose this is something that
+people
+feel it's a little advanced but to be
+honest it is super duper simple right
+it's a very simple concept and a very
+simple uh idea that allows you to
+actually make docker work much better
+for you
+so especially as an application
+developer when you're building an app
+you
+tend to need multiple containers right
+you just don't build everything inside
+one container you're going to have
+multiple containers and you need all of
+them to be started and running for your
+application to work now when you have a
+situation like that say for example
+you're building a java application that
+connects to a database and it uses a
+radius cache and it uses some other like
+another micro service which is another
+container so you essentially have like
+around four or five containers in this
+use case
+how do you start all these different
+containers let's say you've used docker
+file and you've created these images and
+then you are ready to start up spin up
+these containers
+well how do you do it one option is to
+just use cli commands you've seen how to
+do docker run we've seen how to pass
+arguments so that the container works
+exactly like the way we it right what
+kind of ports are open
+what volumes you need to mount
+everything works exactly like we wanted
+to you can create a bunch of cli
+commands and have it working okay that's
+one option but the second option is to
+use docker compose okay tucker compose
+is basically a shortcut for running a
+bunch of commands for starting up and
+managing a bunch of containers right
+which is a typical use case for an
+application you have multiple containers
+that you're dealing with okay so here's
+what docker compose does okay docker
+compose takes in a yaml file so rather
+than have like a shell script that you
+run and you manage all your own well
+don't have to do that just use this
+docker compose it has a specific syntax
+about how to create all your uh you know
+to specify all the containers that you
+need running and then what configuration
+you need for those containers so rather
+than you know do a docker run a bunch of
+times with a bunch of arguments you just
+put everything inside a yml file and
+then use this docker compose cli then
+it's going to start them all up okay
+that's as simple as that okay so it
+takes an eml file and then this file
+contains the your information about the
+setup and this is could possibly be
+multiple containers a very common use
+case for docker composers when you want
+to spin up multiple containers right you
+put them all in one yammer file and then
+you have one command to manage them all
+okay notice that i don't say start it's
+managed okay so manage includes starting
+them all stopping them all killing them
+all pausing them all you can do them all
+in single commands right you can manage
+your whole
+application containers like bunch of
+containers that form your application
+you can manage them all together okay so
+in the next video we'll show you how you
+can create a docker compose file and
+start up multiple containers at once

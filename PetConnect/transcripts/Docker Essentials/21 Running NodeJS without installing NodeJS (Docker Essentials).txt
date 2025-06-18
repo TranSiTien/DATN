@@ -1,0 +1,62 @@
+moving on to
+running node.js without installing
+node.js i don't know how many of you
+folks are node.js developers here but i
+thought i'd cover this as well this is
+pretty
+simple as well okay
+we have an image called
+node so if you go again to docker hub
+they're among the top images like you
+want to run python without installing
+python well here's your answer
+okay uh node is over here right again
+look at the tags see what version you
+need oh man there are so many tags for
+this guy so you can pick one of these
+tags and say node colon and then put the
+tag there or you just say docker on node
+and that should be just fine so here
+is basically instead of open jdk
+node again it doesn't find it locally
+it's going to go ahead and download it
+and uh open bash now i can
+run node commands
+let's make sure this goes through
+okay notice a little bigger
+who'd have thought
+okay so here i am and then say uh
+node and i'm in note shell okay
+so i'm in note shell so this is this is
+basically how you can
+run
+uh node and again this can be this can
+be anything right you can you can have
+your files there you can create like a
+js file and say node and then run that
+file and it is going to print basically
+the output to the console and so on
+so this is how you can run these things
+and the same thing applies for any of
+these other technologies as well just
+get the container and use the container
+and you can mix and match
+and try all those different things
+all right docker is programming language
+agnostic yes very much so very much so
+you can really do whatever it's it's not
+even it's not even about programming
+languages like we looked at radius as an
+example you can run read as a you know a
+node of radius on your machine just by
+running that container that should that
+should do
+what if two containers use the same
+library like java well they're gonna
+have two copies of java installed
+on in the container
+so they're not gonna mess with each
+other because of the isolation
+guarantees that docker provides
+you're perfectly fine it's not gonna
+cause problems

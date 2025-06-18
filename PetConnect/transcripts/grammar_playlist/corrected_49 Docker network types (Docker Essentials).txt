@@ -1,0 +1,93 @@
+so i talked about how docker has this
+fake network a virtual network that is
+the default well that is one of several
+ways in which you can spin up a
+container you can
+omit any flags omit any configuration
+well the bridge network that one fake
+network is the default but then you can
+have it do different things by passing
+arguments okay so there are different
+network types that you need to be aware
+of the first one is the bridge and this
+is like you guessed the default there is
+a second network type which is called
+the host network okay you can specify a
+container to run in the host network in
+which case it is going to be exactly
+like what you would be used to if you
+were running a process locally like for
+example the apache container if you had
+run it in the host network
+no port forwarding needed you would be
+able to access localhost on your browser
+and you would be able to get that it
+works message okay because it is going
+to share the same network as the host
+this is something that we are used to if
+you're running
+processes
+locally this is not recommended it might
+be an easy way to solve these problems
+but it's not recommended because all
+these different containers are going to
+share the same network as your host and
+this might lead to problems in terms of
+security in terms of confusion about
+like water serving where you know it's
+it's a bit of a mess so host is like
+yeah use it just to try this out but i
+haven't found a good use case for using
+the host network on a consistent basis
+there is also a network type which is
+called none which basically means
+no network connection to you right you
+can start up a docker container with the
+network type as none and it does not
+have a network okay so that's one other
+way you can spin up you know a container
+right you don't want anything to do with
+networks well you can just say none and
+nothing happens there
+there is another network type called
+overlay and overlay is used when you're
+specifically dealing with docker swarms
+okay docker swarms is a way for you to
+spin up a bunch of different containers
+and have them scale up scale down talk
+to each other and all that so overlay
+network type is useful when you want to
+connect to docker swarms
+this is
+not typically used if you're just using
+it for development and you know use
+cases where you're not using docker
+swarms but just know that it's there
+there is also an ipvlan network type
+which gives you control over ip
+addresses for your
+container like ipv4 ipv6 you get access
+to the specific ip addresses that you
+need similarly there is a mac vlan
+network type which allows you to specify
+a mac address to your container so it
+almost treats it like its own device you
+can almost think of it as its own device
+if there is a use case for that you
+would use the mac vlan again these are
+not typically used as network type you
+know drivers in typical development
+workflows
+in addition to these there are also
+third-party drivers that you can plug
+and play there is it's very pluggable
+you can get party network drivers from
+docker hub and install them and set it
+up and say hey i want my network to be
+like this and then you can configure
+your network to be exactly the way you
+want this is beyond the scope of this
+course but i just want to highlight the
+fact that this is actually a plugable
+thing and you can add different network
+types for your for your containers

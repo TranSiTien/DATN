@@ -1,0 +1,199 @@
+let's get to
+what is docker
+what is docker
+docker is a containerization solution as
+you can imagine right docker
+helps make creating containers easy okay
+which is which is what i told earlier
+right all that you know cs root and
+processes and namespaces and all that
+you don't want to be doing all those
+unix
+uh and linux commands yourself you want
+a nice way to create spin-up containers
+easily well docker is perfect for that
+it does that
+but it actually does something more than
+that okay
+docker makes delivering software in
+containers easy and this is actually the
+primary focus for docker and this is
+what i you know you should be thinking
+of when you're learning doctor you're
+basically making delivering software
+easy right
+go back to our first discussion about
+the big problem that we have with
+software right delivering it making it
+run consistently is a problem
+predictability is a problem with docker
+solves that problem i'm going to mention
+three statements from wikipedia which is
+key and which is helpful in your
+understanding of docker
+the first one is docker is a set of
+platform as a service products pass
+products that use os level
+virtualization to deliver software in
+packages called containers
+okay so it's kind of straightforward
+they're telling you that the purpose of
+docker is to deliver software in
+packages called containers right it's
+not even about the key being
+virtualization the key here is
+software delivery with containers okay
+here's another statement containers are
+isolated from one another and they
+bundle their own software libraries and
+configuration files
+just like we did with chrome right we
+needed unless we had to put ls in that
+directory that we are using as a
+starting point containers
+need to do this they have to get
+everything it needs for an application
+to run the other thing is because all of
+the containers share the services of a
+single operating system kernel they use
+fewer resources than virtual machine and
+we've already identified that right when
+we did the file isolation we didn't spin
+up a new virtual machine you knew how
+fast it was to basically create a church
+environment it was super fast all you're
+doing is you're just having the
+operating system lie
+to the process that's running right you
+just you just want to lie to it and give
+it a different picture that's all you're
+doing you don't need to spin up a full
+operating system and create a new world
+where whatever you're telling is the
+truth right all you need to do is lie
+and you know
+these features help you lie to your
+application
+here's a definition on the docker
+website which i think is very
+illustrative the previous three
+statements i picked up from wikipedia
+this is a definition on the docker
+website a container is a standard unit
+of software a container
+let me highlight that a container is a
+standard unit of software that packages
+up code and all of its dependencies so
+the application runs quickly and
+reliably from one computing environment
+to another
+okay
+this is with this we have technically
+solved the problem that i started out
+this discussion with okay we have
+uh testing in qa for the code
+no testing qac icd for the environment
+well if you redefine
+your unit of software the standard unit
+of software to be an application inside
+a container well now you have all those
+benefits for
+the environment as well right
+effectively solving the problem
+okay and again notice the focus here is
+on software development and deployment
+this is why we do docker all right
+always keep that in mind this is why we
+do docker software development and
+deployment
+but docker does containerization it does
+a lot more than containerization but
+let's focus on the containerization part
+first
+okay so we've looked at
+this picture where you have you know all
+these duplicates right you have the
+hardware server the host os with vms
+this is there's a lot of stuff that's
+being wasted
+right we don't want that
+well how does docker compare to vms what
+is a picture that's docker
+well with docker it looks something like
+this
+okay we have the
+hardware server and then the whole store
+is running on it there's no
+virtualization none of that stuff
+you have docker running here or some
+containerized solution sitting here
+we're loading docker today of course
+and docker
+has these individual containers
+on top of it
+okay your docker creates these new
+containers again no operating system
+right you're not creating a new
+operating system
+so
+this is much simpler isn't it
+although i must say we are cheating a
+little bit here let's see let's see
+those two pictures side by side okay
+here are those two pictures side by side
+there's a little bit of cheating so here
+you see all these bin lip directory
+you know this blocks so these are still
+here but they are actually inside the
+container right you know run an
+application in a container you still
+need the binaries you still need the
+libraries you're just bundling it inside
+the container okay so you're completely
+skipping the
+the guest os part and we are kind of
+skipping hypervisor using something a
+little more lightweight with darker okay
+so
+all the duplicate os and kernels are
+bypassed okay the containers basically
+share the kernel with the host operating
+system this seems like okay well you're
+just getting rid of one block but that
+is big because you know you don't have
+those wasted resources you don't have
+the need to keep all those operating
+systems updated
+and pay licensing costs for it and all
+the drawbacks that we've seen
+so in a sense
+what we're doing
+is
+process virtualization not machine
+virtualization i should say operating
+system virtualization not machine
+virtualization right you're not
+visualizing the machine we are
+virtualizing the operating system
+but
+now here some of you might be thinking
+well hang on kosher you said
+these are linux features that help you
+do all this stuff well what if i'm not
+using linux can i not use containers i'm
+running windows okay and i want to run
+containers well
+how do i do this so far i've been saying
+hey this feature is available in linux
+doctor uses it
+what about windows what about mac right
+does
+docker work on windows and mac
+it obviously does right you have i told
+you to install docker on
+windows or mac or whatever operating
+system you're running in how does it
+work
+right
+let's take a look at that docker on
+non-linux operating systems

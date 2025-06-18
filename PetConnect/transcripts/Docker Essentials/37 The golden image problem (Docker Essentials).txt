@@ -1,0 +1,146 @@
+okay now i'm going to talk about what's
+commonly referred to as the golden image
+problem i have seen a few people run
+into this when they're working with
+darker images and this is not a good
+place to be in it looks like a very nice
+thing a golden image but it's actually a
+big problem and i'll tell you what the
+problem is
+now we learned about the docker comment
+and how we can commit a container to an
+image right so let's imagine this
+scenario let's say
+somebody spins up a container your
+colleagues principal container or even
+you do this right you
+try and work on it and you end up
+finding some issues right something is
+not right there are a few changes that
+need to be made
+so what you do is you actually fix them
+in your running container right you make
+some fixes you change stuff you make
+everything aligned and things start
+working so what you do is you say hey
+this is great now the original image
+sucked so this is my new container which
+which i've got everything working so i'm
+going to create a new image out of it so
+you do a docker commit
+get a new image and then you're gonna
+publish it to the repo somewhere right
+so your company knows that you have
+fixed all the problems your teammates
+know you've fixed all the problems and
+everybody uses your new image
+okay
+what's the issue here
+what's the problem
+let me give you an example which uh
+illustrates an example scenario which
+illustrates what the problem is right so
+your image is working fine everybody's
+using it but then after a few months
+it's time to update some libraries or
+update some binaries right some of the
+dependencies in your container are
+outdated you want to update it
+now what do you do
+you
+have to get a new container
+from that image from the newly created
+image and update it right
+there is no way you can have a new
+container from your original image
+anymore because that's way outdated so
+you're gonna have to spin up a new
+container from your image update it over
+there and then make it into a new image
+and so on right so this is like it's
+it's kind of like a one-way street right
+you want to repeat this let's say there
+is a new source image right let's say
+you started this whole process from
+ubuntu okay
+you used the ubuntu image created a
+container made some fixes and you have a
+docker committed image now you want to
+upgrade to the newer version of ubuntu
+how do you do it well you cannot use the
+newer image anymore because
+nobody knows what were the fixes that
+were made right nobody knows what were
+the exact changes that you did so you
+have no choice but to stick with your
+image right you want to try and update
+ubuntu as best as you can with that you
+know spin up a new container you can
+update it and create a new image but you
+cannot start from the original ubuntu
+image or an upgraded ubuntu image
+because nobody knows what the fixes were
+you did this three months ago you ran a
+few commands and now it's lost that
+knowledge is lost okay
+so this is what's referred to as the
+golden image problem okay i've seen a
+few people in in some companies go well
+this is the image that we use
+don't touch it nobody knows what went
+into it you don't want to disturb that
+so just use it the way it is don't ask
+any questions because you cannot start
+from a newer version of the source image
+the changes are lost it's just saved
+somehow in this container the container
+state is exactly the way we want it this
+emit state is exactly the way we want it
+so don't have to just use that image and
+do what you can right this is a problem
+so
+this is a problem precisely because of
+the way in which you created the image
+you created the image by messing around
+with the container and we broke the
+one-way rule right we you know earlier
+in the course we talked about how it's a
+one-way thing you're going to start from
+an image and build a container you don't
+want to be starting from a container and
+building an image right because you
+might not know what went into it all
+right so this is a problem
+the changes aren't recorded now how do
+you fix this problem you fix this
+problem by writing code what would be
+ideal is if you can write some code
+where you can make all these changes to
+the original image say i want this
+original image and here are the changes
+and you write them in code somewhere and
+you save the code well then you can kind
+of apply those changes whenever you need
+to build a new image rather than
+creating a container and messing with it
+right so this is possible in docker
+using something called docker file right
+this is a docker file is basically a
+piece of code which allows you to create
+an image based on another image so in
+the next unit i'm going to be talking
+about how to create new images using the
+docker file and that solves this problem
+of the golden image now once you have a
+docker file it's in the code you want to
+upgrade to a newer version of ubuntu you
+just change your docker file and you
+have updated the new version all the
+steps that you did to fix it it's all
+documented in the docker file you want
+to change one of those steps you can
+actually go ahead and change it and spin
+up new images so this is how is that
+this is how you're supposed to create
+docker images and we'll learn how to do
+that in the next unit

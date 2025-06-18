@@ -1,0 +1,93 @@
+all right so we've covered a lot in this
+course starting from understanding what
+containerization is
+why docker is helpful what docker images
+are where docker containers are how do
+you get them up and running how do you
+manage them how it's all at the very
+basic level just a process and you know
+we've covered a long way from underlying
+concepts to
+usage using the cli and all that stuff
+so in this video i want to leave you
+with some next steps about what to do
+after this
+the very first recommendation that i
+have is to go to the docker
+documentation website and browse around
+have that be like a source of reference
+for whenever you're working with docker
+right so the website is docs.docker.com
+there are a bunch of really cool
+resources here uh you know we have
+manuals and reference for more detailed
+information about docker but you also
+have language specific guides which i
+think is very handy when you have a very
+specific use case and you want to learn
+how to use docker for it
+the other resource that i would
+recommend is the docker blog you have a
+bunch of really cool blog posts about
+using docker in various different
+scenarios some news updates about new
+features in docker all that good stuff
+so i highly recommend you check this out
+as well now in addition to all this what
+i would recommend is to get into the
+mode of thinking docker so we have an
+application that you need to install by
+default what we would do is go find the
+installation
+fine you know download it install it and
+then use it but then now that you have
+the power of docker at your disposal you
+can also think okay is this a docker
+container that i can use and i can
+dispose of rather than finding the
+program and installing it right so this
+is a good way to think about what are
+your current workflow steps that can be
+dockerized uh it could even be a
+development environment it could be
+something that you're doing as a
+prototype
+see ways in which you can
+dockerize your workflow and start using
+that you have docker installed on your
+machine it's a very lightweight way of
+trying on new software and getting rid
+of the containers when you're done
+without affecting your core operating
+system now while this is helpful about
+docker itself there are a couple of
+other next steps that i would recommend
+one thing is to look at something called
+docker swarm
+docker swarm is a way for you to run
+docker containers in production and
+manage them right you can manage how
+many containers you want you you can
+manage when the container starts and
+stops scale them automatically and so on
+so this is a solution provided by the
+same people who have brought you docker
+it is docker swarm
+an alternative which is a more popular
+version of doing this managing
+containers and runtime in production is
+something called kubernetes okay
+kubernetes is often referred to as k8s
+is an open source system for managing
+this deployment and scaling off your
+containers and this is super popular
+today it is very widely used with docker
+containers in order to scale and manage
+your containers at runtime so i highly
+recommend you check this out as well so
+with this we come to the end of the
+course docker essentials you should have
+all of the essential know how to work
+with docker and apply it to your
+workflows i hope you found this course
+useful thank you for watching

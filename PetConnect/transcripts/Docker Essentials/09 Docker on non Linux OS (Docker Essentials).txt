@@ -1,0 +1,139 @@
+so on linux
+this is the picture that you have okay
+so you have docker running
+and they have all the core
+containerization features that are
+available in linux docker leverages it
+great which is fine but now what about
+mac
+right you install docker on a mac what
+is it to do it's like man i don't have
+any of those
+features that i use on linux okay so
+here's what happens when you install
+docker on a mac it actually installs a
+linux vm okay so for all the hate that
+we gave to virtual machines what docker
+on a mac actually is doing is basically
+creating a virtual machine on your mac
+operating system right all the stuff
+that we talked about right so something
+like virtualbox or something like that i
+don't remember exactly what hypervisor
+software uh doctor uses but it's
+basically creating a linux virtual
+machine it's running a linux os inside
+your mac os and inside that now we have
+core containerization features and now
+docker is going to basically call those
+features in order to make containers
+happen okay so this is how docker works
+on a mac okay
+the the features that enable
+containerization in docker work only on
+linux so you need linux no matter what
+your operating system is so you install
+docker on the mac you get a linux vm
+with windows you used to get a linux vm
+right when you had like
+while back you had to install docker on
+windows it would do the same thing it
+would install the linux vm run it and
+then use containers on that vm
+but
+things have changed with wsl right folks
+you don't know wsl stands for windows
+subsystem for linux it's basically a way
+to virtualize linux on windows and it is
+kind of
+kind of baked into the operating system
+so you don't need a virtual machine you
+just use a wsl nerd because all you need
+is to run linux right wsl provides a way
+for you to run linux on windows and
+without using a vm so it's like why use
+a vm you can just use wsl right so there
+are certain situations where i think a
+vm is still used for example with
+windows home i think you still need to
+install a vm because
+uh windows home doesn't have the
+virtualization features enabled that ws
+needs
+windows pro has virtualization features
+want to get into it too much in depth
+but basically
+docker finds the best way to get linux
+running on your non-linux machine when
+you install it right on mac no choice it
+has to install a vm on windows it says
+okay is this windows homework pro if
+it's home well you cannot install wsl so
+it installs a vm if it's uh pro then it
+goes well i already have wx it's going
+to use that it's going to do the right
+thing for what you want it to do okay so
+with windows you basically have
+uh wsl
+providing those the core
+containerization features that you want
+all right
+at this point i should mention about
+windows containers as well i should
+acknowledge that okay windows has been
+adding containerization features to the
+windows operating system just like i
+told you linux operating system has
+these containerization features windows
+has been building something similar for
+windows so the goal
+is to run
+windows containers in windows without
+needing linux okay so that's that's
+possible but the major market share is
+still linux and it's very very unlikely
+that you're going to encounter a windows
+container in your docker journey as
+software developers so i'm going to
+acknowledge it and i'm going to move
+away from it we're going to focus mainly
+on
+the linux containers
+docker has a
+client server model okay client server
+model client is a docker cli that you
+interact with you write docker commands
+in using terminal we're going to be
+doing a bit of that
+server it's what's referred to as a
+docker engine okay it's basically a set
+of processes that run in the background
+one of them being the daemon but that's
+what's responsible for
+making things happen with your
+containers so for example you run i'm
+going to start a new docker container
+you run a cli see eliza cline and the
+cli communicates with the daemon the
+protocol used as grpc don't worry about
+it if you don't know it's just a way for
+the client to communicate with the
+server and it says hey i want this
+container to run this particular thing
+it's going to start the container stop
+the container all that stuff right for
+example the server on the mac
+is uh responsible for starting that
+linux vm okay it's you need linux vm to
+work on a mac so the the docker engine
+will start the linux vm and get things
+going you
+don't have a separate process for
+installing the client in the server the
+docker installer does it for you you
+just run the docker desktop there's a
+docker desktop is a good way to kind of
+get docker on your machine there are
+other ways to do it this is the easiest
+once you install docker desktop you get
+both the client and the server

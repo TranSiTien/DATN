@@ -1,0 +1,172 @@
+let's look at another example where we
+can do a bunch of things with the docker
+file and i'll show you a common practice
+for doing that so commonly you would
+want to run run a bunch of commands in
+uh you know the creation of the image
+and start this with the run tag often it
+will be like let's say let's take the
+example of you want to create a
+directory and switch to the directory
+create a new file in the directory and
+echo some contents into that file in
+that new directory so there are a bunch
+of commands you can run right so here
+you can say i want an mkdir a new
+directory then cd to that directory and
+then echo some text to a file right
+there are three commands of course you
+can do run of the first command run of
+the second command run of the third
+command and so on but that can get
+tedious so run supports this format
+where you can actually specify multiple
+commands but then you separate it with
+the slash all right let me show you how
+that works so let's say you want to
+follow the same example right so i want
+to create an image from alpine where
+every
+container from that image is going to
+have a new directory
+called code okay let's say that's what i
+want to do i'm going to create a new
+directory called code in my image and
+then in that code directory i'm going to
+have a hello world text which contains
+the uh contents hello world in text
+right hello world.txt which contains
+hello world right so how do i do that
+now i can create these commands i can
+specify my shell commands over here so
+let's say i create mkdir
+code and this is going to create a coded
+directory in my home right so this
+starts out with the home so from alpine
+it is going to create a code directory i
+separate this with a semicolon and then
+instead of creating a new run directive
+below what i do is i put this
+backslash over here to tell
+that this is not done i'm still
+adding more shell commands to this run
+so here i'm going to specify another
+command which is cd
+code okay so this is basically saying
+hey this command created the directory
+and this command is switching to the
+directory and again i'm not done i'm
+going to put this slash over here and
+then i'm going to create one more
+command which is echo
+the string
+hello world
+to
+a hello dash
+world dot txt all right this is greater
+than which is what i intended
+so this is basically gonna pipe whatever
+contents you have over here this is the
+echo i'm going this particular string
+and i'm piping it to hello world.txt so
+at the end of it there will be a hello
+world.txt
+file created in
+the
+code directory because i've switched
+directory to this thing and now i have
+this available over here and this is my
+this is my docker file now it's going to
+run these three commands and if i were
+to build an image from this thing
+again i'm going to use the same build t
+test command and now i have a test
+container i've ever to run this test
+container
+i'm going to have a code directory which
+is over here right and if i were to
+switch to code and then if i were to
+type out
+the hello world txt file you will see
+that it has the contents hello world
+which is a good way of using the run
+directive which are without creating a
+bunch of different commands like this
+and prefixing run for each one of them
+now another thing you can do and this is
+also common is the ability to set a
+working directory because you notice
+what happened here when i created a new
+container from this image right so i
+start a new container it's going to
+throw me in the form directory right
+it's home and yes there is a code
+directory here but people need to know
+that that's where
+the code is or that's where the file is
+right so you can help them by saying
+when somebody creates a new container
+from this image throw them into that
+very specific directory and you can do
+that by using another directive in the
+docker file called
+work dir okay work dir lets you specify
+what is the working directory of the
+container that you spin up from this
+image and this is basically just one
+word which is the directory name here
+it's code so i'm basically going to
+specify
+code
+now notice the difference i'm going to
+spin up another it's this guy
+i'm going to start another container
+sorry create another image from this
+docker file
+and i'm going to
+open a container you notice i'm in the
+code directory right i didn't have to
+switch it's right there so work dir is
+another really useful command that you
+can kind of
+tell the user where
+they need to be or just use a word there
+and just put them there so they're right
+where you want them to be and they can
+execute whatever they want
+the other thing about work dir is that
+it influences where
+the commands you run go so here what we
+did was we did the mkdir we did cd code
+and then only after we changed directory
+v to the echo and the echo happened in
+the code directory now if you do a word
+dir any other commands you run is going
+to be inside that work the air so if i
+were to run
+a command which says touch
+new file
+dot txt i'm creating a new file over
+here by running this command now since
+the workdir is code this new file.txt is
+going to reside in the code directory
+right so rather than if if your need is
+to just switch to directory rather than
+just doing the run cd code you can just
+do work there this is another
+benefit of using the word dir command
+all right so i'm going to
+exit here
+run create an image one more time and
+then
+create a container from that image now
+if you notice new file has been created
+but i didn't have to tell it to switch
+directory to code it knows that the
+current working directory is the code
+and whatever command you run using the
+run directive is going to be in that
+working directory so a couple of new
+things that you learned about creating a
+docker image we'll explore a couple more
+in the next video

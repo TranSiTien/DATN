@@ -1,0 +1,154 @@
+i want to introduce you to another
+docker command which is very handy and
+this is something that a lot of people
+confuse with the run command that i've
+already explained this should make sense
+now the run command
+runs a command when the image is being
+created now however there is another
+command which is useful when a container
+is
+starting when the container is created
+and that is using the cmd command okay
+to understand the difference between the
+two you need to again remember that when
+you do a run
+docker cli is going to run these
+commands on
+the thing that will form the image okay
+so when you're creating an image that's
+when it runs however let's say you want
+to run a certain command when your
+container starts up you use the cmd
+command for it okay unlike a run command
+which runs only when the image has been
+created the cmd command is an
+instruction that's written into the
+image so anytime you start a container
+from that image that instruction
+runs okay so let's say i want to give an
+example of echo
+welcome to my
+container instance okay now this is a
+message that you want to be displayed
+when the container starts and by using
+the cmd command you are going to have
+this command run when the container
+starts up i'm going to
+run the docker build command one more
+time and now it's going to save that
+command
+in the image so that the image knows
+that whenever there is a container to be
+spun up from that image it is going to
+run this command unlike this one which
+is actually run during the creation of
+the image this is basically saved as hey
+when a container starts you gotta run
+this command okay so i'm going to run
+the container again
+the test container with the dash dash rm
+flag so that it gets removed and now you
+notice this
+is run when the container starts up okay
+but there's nothing to do here so it
+immediately ends but then it runs when
+the container starts before i had this
+cmd
+we used to get a shell right i'm going
+to demonstrate that so let's say i
+remove this
+command and then i create the container
+and now i run the container
+you see i get a shell because the
+previous
+command that was run for this image for
+the alpine image is the shell the shell
+that is a part of that image okay before
+you did this
+before we added the cmd command there
+was instruction in the alpine image to
+spin up a shell
+now that we have specified our own cmd
+we have kind of overridden that and we
+don't get a shell anymore right so i'm
+going to demonstrate that one more time
+i'm going to save
+run exit this
+run the build again
+and now i have created a test image
+which has a new cmd which is something
+else that needs to run here which is
+echo
+this command right so in order to fix
+the thing that was happening before
+let's say i want to show this message
+and provide a shell i'm going to use the
+and command and then use the sh okay so
+i want both of them to run so if i were
+to
+build the container one more time
+and then
+run it you see now i get the message and
+i also have the shell prompt because
+this sh was the previous
+cmd in alpine now if i'm providing my
+own then i'm going to have to
+whatever i do is going to override what
+was already there in alpine all right
+now we've looked at how this cmd is
+something that overrides what's already
+available in the base image or whatever
+else there is here's another way to do
+the override and this is something that
+you're already familiar with we've
+looked at how when you want to run a
+certain command on a container start you
+can just specify the command right here
+so that is yet another way you can
+overwrite this so let's say you have
+specified this as the starting command
+right you want to have a different
+starting command all you need to do is
+specify it when you're creating a
+container from that image so here i have
+a container that i'm starting from the
+image test now what i'm going to do is
+i'm going to put a command over here and
+we've seen this we have seen
+how we can add a command here and it is
+going to execute this command then that
+container starts and notice what happens
+instead of running what was specified in
+the cmd for this container it just ran
+your command okay if you run this
+without that command it is going to do
+what you would expect it to do which is
+what was in the cmd right so there are
+multiple levels in which you can
+override the starting command that runs
+when your container starts right so this
+is something which you've already been
+doing but now you know how it works in
+the internals of the image and what
+you're overriding is the final command
+that runs you say you want to say hey
+forget what's in the image run
+this
+instead this command instead so you can
+specify that when you're running a
+container and it's going to take that
+instead of what the image specified so
+this is the cmd command again this a lot
+of people confuse between the run and
+the cmd command hopefully this makes
+sense a run is used in the process of
+creating an image these commands are run
+in the process of creating an image
+whereas a cmd command is saved in the
+image as something that needs to run
+then the container has started up all
+right so this is saved into the image so
+that any time somebody spins up a
+container this command following the cmd
+is executed

@@ -1,0 +1,24 @@
+--- Cat Data Upload Distribution Report ---
+
+Total Cat IDs from CSV: 154
+Total Cat IDs Successfully Processed (at least once): 154
+Total Cat IDs Failed Initial Upload: 0
+
+Final Distribution:
+- Only in 'lost-cats' namespace: 71
+- Only in 'found-cats' namespace: 71
+- In BOTH 'lost-cats' and 'found-cats' namespaces: 12
+
+IDs present in BOTH namespaces:
+- 277866
+- 283641
+- 284348
+- 304960
+- 305749
+- 306453
+- 320795
+- 326804
+- 341926
+- 344867
+- 368586
+- 440458

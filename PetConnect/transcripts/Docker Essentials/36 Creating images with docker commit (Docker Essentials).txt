@@ -1,0 +1,142 @@
+now so far we've been creating
+containers out of images we have
+changed stuff in the container and then
+we kind of get rid of the container
+without affecting the image we are not
+uh going back to an image right so
+whatever changes we make we know it's
+ephemeral because it's not changing what
+is underlying inside the image itself
+right so you spin up a new container
+from an image you're going to get the
+state of the container exactly like what
+the image has if you make a change to
+the container it doesn't persist back to
+the image we understand that now but
+let's say you want to persist it somehow
+like let's say you spin up a container
+you're creating a java environment
+you've got your environment set up
+exactly the way you want it right you
+have all your binary setup you have your
+you know environment variable setup it's
+perfect you want to save it as an image
+well you can actually do that with
+docker it is not recommended to do it
+this way and i will tell you what the
+problem is in the next video but yes you
+can do that and i'm going to show you
+how to do that in this in this video
+right so
+you can let me actually spin up a an
+ubuntu image and i'm going to remove the
+dash dash item i'm going to start an
+ubuntu
+container in interactive mode and it
+throws me to the root directory here i'm
+going to switch to
+the home directory and here i'm going to
+create a file right just just to
+demonstrate
+that uh
+these things can be persistent right so
+let's call it hello hello.txt
+all right so i have a hello.txt in my
+home directory this is not much but this
+is representative of some state that you
+might have in your container right let's
+say you configured a bunch of stuff you
+have a whole lot of things going on in
+this container and you don't want to
+lose it right you want to go back to the
+ubuntu image again and lose all the
+stuff that you've done you want to
+persist it as a new image you're
+obviously not going to be able to update
+the ubuntu image because that's that's
+not even your image right we got this
+from
+the docker hub but let's say you want to
+create your own image which is a which
+you know let's call it hello ubuntu okay
+which has the hello world
+text hello.txt text in uh the home
+directory let's say that's what you want
+okay you can persist it as an image
+right so let's let me exit this
+and if i were to do
+docker
+container ls
+of course i need the dash a option and
+here that was created just about a
+minute ago and just exited just now all
+right now what i want to do is like of
+course i can attach to this container
+again and i have my hello.txt there but
+what i want to do is create an image
+because i don't want to be using this
+container right i want to be able to get
+rid of the container create an image and
+then perhaps distribute the image to my
+colleague who wants to work on the
+seller.txt okay so you can do that by
+using the docker
+commit command okay docker commit helps
+you
+save a container's changes as a new
+image which is exactly what we want okay
+so it takes a bunch of arguments it
+needs to specify you need to specify
+what the container is here i'm going to
+give the name of the container which is
+cranky pike it might be different in
+your machine obviously
+and then i'm going to give it a tag a
+tag is basically the name of the image
+that we've just seen right here ubuntu
+is the tag off the ubuntu image so i'm
+going to create a new image by doing
+this i'm going to say docker
+commit
+and then i'm going to give the container
+crankypike which is this name over here
+and i'm gonna give it a new
+uh image name okay so i'm gonna call
+this
+hello
+ubuntu you can really call this whatever
+you want i'm just calling this this one
+so this is going to be my
+new image that gets created with
+uh with the state of the container that
+i've just exited over here okay now what
+i can do is i can start this new image
+hello ubuntu just like i started this
+ubuntu image but now it's not going to
+start a container from the ubuntu image
+it's going to start a new container from
+my
+newly created image okay so if i were to
+do this i'm again thrown back to the
+shell and if i were to look here it
+looks like any ubuntu image but if i go
+to my home directory
+i look here i have my hello.txt okay so
+the state of the container
+is preserved exactly the way it was when
+you run the docker comment command but
+now it has created an image out of it
+now we can take this hello ubuntu image
+share it with your friends share it with
+your family and they're all going to
+have an ubuntu image which has this
+hollow.txt okay so this is useful when
+you have a container that you think is
+just perfect and you want to preserve it
+and
+you know this is this is one way to
+preserve it as an image
+you don't want to be doing this though
+like i said this is not recommended and
+in the next video i will tell you why
+it's not recommended
