@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button"
 import { ArrowLeft, Search, FileText, Upload, ArrowRight } from "lucide-react"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { SiteHeader } from "@/components/site-header"
-import { SiteFooter } from "@/components/site-footer"
 
 export default function FoundPetOptionsPage() {
   return (
@@ -204,7 +203,6 @@ export default function FoundPetOptionsPage() {
           </div>
         </div>
       </main>
-      <SiteFooter />
     </div>
   )
 }

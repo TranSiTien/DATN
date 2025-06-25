@@ -63,6 +63,16 @@ public class MapperProfile : Profile
             .ForMember(dest => dest.Status, opt => opt.Ignore()) // Status set manually
             .ForMember(dest => dest.ModeratorFeedback, opt => opt.Ignore()); // ModeratorFeedback set manually
             // Description, FoundDateTime are mapped by convention
+            
+        // Add mapping for UpdateFoundPetDto -> FoundPet
+        CreateMap<UpdateFoundPetDto, FoundPet>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore()) // Ignore Id (it's provided via URL)
+            .ForMember(dest => dest.Finder, opt => opt.Ignore()) // Ignore navigation property
+            .ForMember(dest => dest.Images, opt => opt.Ignore()) // Images handled separately
+            .ForMember(dest => dest.FoundLocation, opt => opt.Ignore()) // Location handled separately
+            .ForMember(dest => dest.Status, opt => opt.Ignore()) // Status not updated here
+            .ForMember(dest => dest.ModeratorFeedback, opt => opt.Ignore()); // ModeratorFeedback not updated here
+            // Description, FoundDateTime, LocationName are mapped by convention
 
         // Mapping for Point and PointDto
         CreateMap<Point, PointDto>()

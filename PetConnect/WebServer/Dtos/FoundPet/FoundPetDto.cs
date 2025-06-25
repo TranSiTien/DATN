@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http;
 using PetConnect.Dtos.Shared;
 using PetConnect.External.Storage.Abstractions;
 
@@ -10,6 +11,8 @@ public class FoundPetDto
     public string? Description { get; set; }
 
     public required PointDto FoundLocation { get; set; }
+    
+    public string? LocationName { get; set; }
 
     public required DateTimeOffset FoundDateTime { get; set; }
 
@@ -31,8 +34,27 @@ public class CreateFoundPetDto
     public double FoundLatitude { get; set; }
 
     public double FoundLongitude { get; set; }
+    
+    public string? LocationName { get; set; }
 
     public DateTimeOffset FoundDateTime { get; set; }
 
     public List<IFormFile> Images { get; set; } = new();
+}
+
+public class UpdateFoundPetDto
+{
+    public string? Description { get; set; }
+
+    public double FoundLatitude { get; set; }
+
+    public double FoundLongitude { get; set; }
+    
+    public string? LocationName { get; set; }
+
+    public DateTimeOffset FoundDateTime { get; set; }
+
+    public List<IFormFile>? Images { get; set; }
+    
+    public List<string>? ImagesToDelete { get; set; }
 }

@@ -46,12 +46,18 @@ public class LostPetsController : ControllerBase
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<LostPetDto>>> GetLostPets(double? latitude, double? longitude,
-        DateTimeOffset? fromDate, DateTimeOffset? toDate, int distanceInKilometers = DefaultSearchRadiusInKilometers)
+        DateTimeOffset? fromDate, DateTimeOffset? toDate, Guid? userId, int distanceInKilometers = DefaultSearchRadiusInKilometers)
     {
         var query = _dbContext.LostPets
             .Include(lp => lp.Images)
             .Include(lp => lp.Finder)
             .AsQueryable();
+            
+        // Filter by userId if provided
+        if (userId.HasValue)
+        {
+            query = query.Where(lp => lp.Finder.Id == userId.Value);
+        }
 
         if (latitude != null && longitude != null)
         {
@@ -454,6 +460,13 @@ public class LostPetsController : ControllerBase
         var lostPetDto = _mapper.Map<LostPetDto>(lostPet);
         var lastSeenLocationWgs84 = _gisContext.WebMercatorToWGS84(lostPet.LastSeenLocation);
         lostPetDto.LastSeenLocation = _mapper.Map<PointDto>(lastSeenLocationWgs84);
+        
+        // Ensure FinderId is properly set from the Finder
+        if (lostPet.Finder != null)
+        {
+            lostPetDto.FinderId = lostPet.Finder.Id;
+        }
+        
         return lostPetDto;
     }
     
@@ -502,5 +515,52 @@ public class LostPetsController : ControllerBase
         await _dbContext.SaveChangesAsync();
         
         return Ok(MapToDto(lostPet));
+    }
+    
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> DeleteLostPet(Guid id)
+    {
+        // Skip authentication for now
+        // var user = await _userService.GetGeneralUserAsync(User);
+        // if (user == null)
+        // {
+        //     return Unauthorized("User not authenticated");
+        // }
+        
+        var lostPet = await _dbContext.LostPets
+            .Include(lp => lp.Images)
+            .FirstOrDefaultAsync(lp => lp.Id == id);
+            
+        if (lostPet == null)
+        {
+            return NotFound($"Lost pet with ID {id} not found");
+        }
+        
+        // Skip owner check for now
+        // if (lostPet.Finder.Id != user.Id)
+        // {
+        //     return Forbid("You are not authorized to delete this pet");
+        // }
+        
+        // Delete associated images from storage
+        foreach (var image in lostPet.Images)
+        {
+            try
+            {
+                await _storageService.DeleteFileAsync(image.Metadata.FileId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error deleting image {FileId} for lost pet {LostPetId}", 
+                    image.Metadata.FileId, lostPet.Id);
+                // Continue with deletion even if image deletion fails
+            }
+        }
+        
+        // Remove from database
+        _dbContext.LostPets.Remove(lostPet);
+        await _dbContext.SaveChangesAsync();
+        
+        return NoContent();
     }
 }

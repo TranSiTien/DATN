@@ -11,7 +11,6 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { ArrowLeft, Mail, Lock, User as UserIcon, AlertCircle } from "lucide-react"
 import { SiteHeader } from "@/components/site-header"
-import { SiteFooter } from "@/components/site-footer"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { useUser } from "@/contexts/user-context"
 
@@ -143,7 +142,6 @@ export default function SignupPage() {
           </Card>
         </div>
       </main>
-      <SiteFooter />
     </div>
   )
 }

@@ -10,7 +10,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { ArrowLeft, Upload, Heart, Loader2, Search, MapPin } from "lucide-react"
 import { SiteHeader } from "@/components/site-header"
-import { SiteFooter } from "@/components/site-footer"
 import { useRouter } from "next/navigation"
 import { useUser } from "@/contexts/user-context"
 import { useToast } from "@/components/ui/use-toast"
@@ -53,7 +52,6 @@ export default function ReportFoundPet() {
   // Form state
   const [description, setDescription] = useState("")
   const [dateFound, setDateFound] = useState("")
-  const [currentPetLocationType, setCurrentPetLocationType] = useState("")
   const [images, setImages] = useState<File[]>([])
   const [imageUrls, setImageUrls] = useState<string[]>([])
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -282,10 +280,6 @@ export default function ReportFoundPet() {
       toast({ title: "Missing Date", description: "Please enter the date when the pet was found.", variant: "destructive" })
       return
     }
-    if (!currentPetLocationType) {
-      toast({ title: "Missing Current Location", description: "Please select the current location of the pet.", variant: "destructive" })
-      return
-    }
     if (images.length === 0) {
       toast({ title: "No Images", description: "Please upload at least one photo of the pet.", variant: "destructive" })
       return
@@ -307,7 +301,6 @@ export default function ReportFoundPet() {
     formData.append('FoundLongitude', location.longitude.toString())
     formData.append('FoundDateTime', new Date(dateFound).toISOString())
     formData.append('LocationName', location.locationName || location.address.split(',')[0])
-    formData.append('CurrentPetLocationType', currentPetLocationType)
     images.forEach((image: File) => formData.append('Images', image))
 
     try {
@@ -502,22 +495,7 @@ export default function ReportFoundPet() {
                         required
                       />
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="current-location" className="text-pet-primary font-medium">
-                        Current Location of Pet
-                      </Label>
-                      <Select value={currentPetLocationType} onValueChange={setCurrentPetLocationType} required>
-                        <SelectTrigger id="current-location" className="border-pet-primary/20 focus:ring-pet-primary">
-                          <SelectValue placeholder="Select location" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="with-finder">With me (finder)</SelectItem>
-                          <SelectItem value="shelter">At a shelter</SelectItem>
-                          <SelectItem value="vet">At a veterinarian</SelectItem>
-                          <SelectItem value="other">Other</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
+
                     <div className="space-y-2">
                       <Label htmlFor="description" className="text-pet-primary font-medium">
                         Additional Details
@@ -637,7 +615,6 @@ export default function ReportFoundPet() {
           )}
         </div>
       </main>
-      <SiteFooter />
     </div>
   )
 }

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
@@ -9,7 +9,6 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { ArrowLeft, Mail, Phone, Facebook, Instagram, Twitter, Star, Save, X, Plus, Trash2 } from "lucide-react"
 import { SiteHeader } from "@/components/site-header"
-import { SiteFooter } from "@/components/site-footer"
 import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import {
@@ -26,65 +25,187 @@ import { useUser, type ContactInfo } from "@/contexts/user-context"
 
 export default function ContactsPage() {
   const router = useRouter()
-  const { token, fetchContactInfos, addContactInfo, deleteContactInfos, setPrimaryContact, updateContactInfo } = useUser()
+  const { token, fetchContactInfos, fetchContactInfosByUserId, addContactInfo, deleteContactInfos, setPrimaryContact, updateContactInfo } = useUser()
   const [redirectPath, setRedirectPath] = useState<string | null>(null)
   const [redirectMessage, setRedirectMessage] = useState<string | null>(null)
   const [localContactMethods, setLocalContactMethods] = useState<ContactInfo[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [contactsLoaded, setContactsLoaded] = useState(false)
+  const [viewingUserId, setViewingUserId] = useState<string | null>(null)
+  const [isViewingOwnProfile, setIsViewingOwnProfile] = useState(true)
+  const [userName, setUserName] = useState<string | null>(null)
+  
+  // Use a ref to track initialization
+  const initialized = useRef(false);
 
-  // Check for redirect parameters
+  // Check for URL parameters - ONLY RUN ONCE on mount
   useEffect(() => {
-    const searchParams = new URLSearchParams(window.location.search)
-    const redirect = searchParams.get("redirect")
-    const message = searchParams.get("message")
-
-    if (redirect) {
-      setRedirectPath(redirect)
-    }
-
-    if (message === "contact_required") {
-      toast({
-        title: "Contact information required",
-        description: "Please add at least one contact method so people can reach you about your pet.",
-        duration: 5000,
-      })
-    }
-  }, [])
+    // Only run this once
+    if (initialized.current) return;
+    
+    const parseUrlParams = () => {
+      const searchParams = new URLSearchParams(window.location.search);
+      const redirect = searchParams.get("redirect");
+      const message = searchParams.get("message");
+      const userId = searchParams.get("userId");
+  
+      console.log("URL parameters:", { redirect, message, userId });
+  
+      if (redirect) {
+        setRedirectPath(redirect);
+      }
+  
+      if (message === "contact_required") {
+        toast({
+          title: "Contact information required",
+          description: "Please add at least one contact method so people can reach you about your pet.",
+          duration: 5000,
+        });
+      }
+  
+      if (userId) {
+        console.log("Setting viewingUserId from URL:", userId);
+        setViewingUserId(userId);
+        setIsViewingOwnProfile(false);
+        // Force a reload of contacts
+        setContactsLoaded(false);
+        setLocalContactMethods([]);
+      } else {
+        setViewingUserId(null);
+        setIsViewingOwnProfile(true);
+        // Force a reload of contacts
+        setContactsLoaded(false);
+        setLocalContactMethods([]);
+      }
+    };
+    
+    parseUrlParams();
+    initialized.current = true;
+    
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  
+  // Reset contacts when URL changes (for client-side navigation)
+  useEffect(() => {
+    const handleRouteChange = () => {
+      const searchParams = new URLSearchParams(window.location.search);
+      const newUserId = searchParams.get("userId");
+      
+      // If userId changed, reset state
+      if (newUserId !== viewingUserId) {
+        console.log("URL changed, resetting contacts state");
+        setContactsLoaded(false);
+        setLocalContactMethods([]);
+        
+        if (newUserId) {
+          setViewingUserId(newUserId);
+          setIsViewingOwnProfile(false);
+        } else {
+          setViewingUserId(null);
+          setIsViewingOwnProfile(true);
+        }
+      }
+    };
+    
+    // Listen for URL changes
+    window.addEventListener('popstate', handleRouteChange);
+    
+    return () => {
+      window.removeEventListener('popstate', handleRouteChange);
+    };
+  }, [viewingUserId]);
 
   // Load contact methods
   useEffect(() => {
-    if (!contactsLoaded && token) {
-      const loadContactMethods = async () => {
-        setIsLoading(true)
-        try {
-          const contacts = await fetchContactInfos(token)
-          if (contacts) {
-            setLocalContactMethods(contacts)
-          }
-          setContactsLoaded(true)
-        } catch (error) {
-          console.error("Failed to fetch contact methods:", error)
-          toast({
-            variant: "destructive",
-            title: "Failed to load contact information",
-            description: "There was an error loading your contact information. Please try again.",
-          })
-        } finally {
-          setIsLoading(false)
-        }
-      }
-
-      loadContactMethods()
-    } else if (!token) {
+    // Create a flag to track if the component is still mounted
+    let isMounted = true;
+    
+    if (!token) {
       toast({
         variant: "destructive",
         title: "Authentication required",
-        description: "Please log in to manage your contact information.",
+        description: "Please log in to view contact information.",
       })
       router.push("/login")
+      return;
     }
-  }, [token, fetchContactInfos, router, contactsLoaded])
+
+    // Wait for viewingUserId to be set from URL params before loading
+    if (!initialized.current) {
+      console.log("Waiting for initialization...");
+      return;
+    }
+
+    // Skip if already loaded
+    if (contactsLoaded) {
+      console.log("Contacts already loaded, skipping fetch");
+      return;
+    }
+
+    console.log(`Starting to load contacts... (isViewingOwnProfile: ${isViewingOwnProfile}, viewingUserId: ${viewingUserId || 'none'})`);
+    const loadContactMethods = async () => {
+      setIsLoading(true);
+      try {
+        let contacts: ContactInfo[] | null = null;
+        
+        // Only fetch one set of contacts based on viewing mode
+        if (!isViewingOwnProfile && viewingUserId) {
+          // Fetch another user's contacts
+          console.log(`Fetching ONLY contacts for specific user ID: ${viewingUserId}`);
+          contacts = await fetchContactInfosByUserId(token, viewingUserId);
+          
+          if (!isMounted) return; // Check if component is still mounted
+          
+          console.log("Received contacts for other user:", contacts);
+          setUserName("Pet Owner");
+        } else {
+          // Fetch current user's contacts
+          console.log("Fetching ONLY current user's contacts");
+          contacts = await fetchContactInfos(token);
+          
+          if (!isMounted) return; // Check if component is still mounted
+          
+          console.log("Received current user contacts:", contacts);
+        }
+        
+        if (!isMounted) return; // Check if component is still mounted
+        
+        if (contacts) {
+          console.log(`Setting local contact methods (${contacts.length} items):`, contacts);
+          setLocalContactMethods(contacts);
+        } else {
+          console.log("No contacts received, setting empty array");
+          setLocalContactMethods([]);
+        }
+        
+      } catch (error) {
+        console.error("Failed to fetch contact methods:", error);
+        if (!isMounted) return; // Check if component is still mounted
+        
+        toast({
+          variant: "destructive",
+          title: "Failed to load contact information",
+          description: "There was an error loading contact information. Please try again.",
+        });
+        setLocalContactMethods([]);
+      } finally {
+        if (isMounted) {
+          setContactsLoaded(true);
+          setIsLoading(false);
+        }
+      }
+    };
+
+    loadContactMethods();
+    
+    // Cleanup function to prevent state updates after unmount
+    return () => {
+      isMounted = false;
+    };
+    
+  // Important: Only include dependencies that should trigger a re-fetch
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token, viewingUserId, isViewingOwnProfile]);
 
   const [isAddingContact, setIsAddingContact] = useState(false)
   const [newContactType, setNewContactType] = useState("Email")
@@ -407,6 +528,23 @@ export default function ContactsPage() {
     }
   }
 
+  // Debug log
+  useEffect(() => {
+    console.log("State updated:", {
+      viewingUserId,
+      isViewingOwnProfile,
+      contactsLoaded,
+      localContactMethodsCount: localContactMethods.length
+    });
+  }, [viewingUserId, isViewingOwnProfile, contactsLoaded, localContactMethods]);
+
+  // Function to force refresh contacts
+  const forceRefreshContacts = () => {
+    console.log("Forcing refresh of contacts");
+    setContactsLoaded(false);
+    setLocalContactMethods([]);
+  };
+
   if (isLoading) {
     return (
       <div className="flex flex-col min-h-screen">
@@ -414,10 +552,9 @@ export default function ContactsPage() {
         <main className="flex-1 bg-pet-soft/30 flex items-center justify-center">
           <div className="text-center p-8">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pet-primary mx-auto mb-4"></div>
-            <p className="text-pet-primary">Loading your contact information...</p>
+            <p className="text-pet-primary">Loading contact information...</p>
           </div>
         </main>
-        <SiteFooter />
       </div>
     )
   }
@@ -429,11 +566,11 @@ export default function ContactsPage() {
         <div className="container max-w-3xl px-4 py-12 md:px-6 md:py-16 lg:py-24">
           <div className="mb-8">
             <Link
-              href="/profile"
+              href={isViewingOwnProfile ? "/profile" : "/search"}
               className="inline-flex items-center gap-2 text-sm font-medium text-pet-primary hover:text-pet-primary/80"
             >
               <ArrowLeft className="h-4 w-4" />
-              Back to profile
+              {isViewingOwnProfile ? "Back to profile" : "Back to search"}
             </Link>
           </div>
 
@@ -441,15 +578,21 @@ export default function ContactsPage() {
             <CardHeader className="bg-gradient-to-r from-pet-soft to-white border-b border-pet-primary/10">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
-                  <CardTitle className="text-2xl text-pet-primary">Manage Contact Information</CardTitle>
+                  <CardTitle className="text-2xl text-pet-primary">
+                    {isViewingOwnProfile 
+                      ? "Manage Contact Information" 
+                      : `${userName}'s Contact Information`}
+                  </CardTitle>
                   <CardDescription>
-                    Add or edit contact methods so people can reach you about your pet listings
+                    {isViewingOwnProfile 
+                      ? "Add or edit contact methods so people can reach you about your pet listings" 
+                      : "Contact information for reaching out about their pet"}
                   </CardDescription>
                 </div>
               </div>
             </CardHeader>
             <CardContent className="p-6">
-              {redirectPath && (
+              {redirectPath && isViewingOwnProfile && (
                 <div className="mb-6 p-4 bg-pet-soft/50 border border-pet-primary/20 rounded-lg">
                   <h3 className="text-pet-primary font-medium mb-2">Contact Information Required</h3>
                   <p className="text-sm text-muted-foreground">
@@ -464,7 +607,7 @@ export default function ContactsPage() {
                   <div className="space-y-4">
                     {localContactMethods.map((contact) => (
                       <div key={contact.id} className={`p-4 border rounded-lg bg-white ${contact.isPrimary ? 'border-pet-primary/60' : 'border-pet-primary/10'}`}>
-                        {editingContactId === contact.id ? (
+                        {editingContactId === contact.id && isViewingOwnProfile ? (
                           <div className="space-y-4">
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-2">
@@ -518,67 +661,70 @@ export default function ContactsPage() {
                                 </div>
                               </div>
                             </div>
-                            <div className="flex items-center gap-2">
-                              <Select
-                                value={contact.type}
-                                onValueChange={(value) => updateContactType(contact.id, value)}
-                              >
-                                <SelectTrigger className="w-[120px] border-pet-primary/20 focus:ring-pet-primary h-8 text-xs">
-                                  <SelectValue placeholder="Type" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectItem value="Email">Email</SelectItem>
-                                  <SelectItem value="Phone">Phone</SelectItem>
-                                  <SelectItem value="Facebook">Facebook</SelectItem>
-                                  <SelectItem value="Instagram">Instagram</SelectItem>
-                                  <SelectItem value="Twitter">Twitter</SelectItem>
-                                </SelectContent>
-                              </Select>
-                              <Button
-                                variant={contact.isPrimary ? "secondary" : "ghost"}
-                                size="icon"
-                                className={`h-8 w-8 ${contact.isPrimary 
-                                  ? 'bg-pet-primary/20 text-pet-primary' 
-                                  : 'text-muted-foreground hover:bg-pet-primary/10 hover:text-pet-primary'}`}
-                                onClick={() => handleSetPrimaryContact(contact.id)}
-                                disabled={contact.isPrimary || settingPrimary}
-                                title={contact.isPrimary ? "Primary contact" : "Set as primary contact"}
-                              >
-                                <Star className={`h-4 w-4 ${contact.isPrimary ? 'fill-pet-primary' : ''}`} />
-                              </Button>
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                className="h-8 w-8 text-pet-primary hover:bg-pet-primary/10"
-                                onClick={() => startEditingContact(contact)}
-                                title="Edit contact"
-                              >
-                                <svg
-                                  width="15"
-                                  height="15"
-                                  viewBox="0 0 15 15"
-                                  fill="none"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  className="h-4 w-4"
+                            
+                            {isViewingOwnProfile && (
+                              <div className="flex items-center gap-2">
+                                <Select
+                                  value={contact.type}
+                                  onValueChange={(value) => updateContactType(contact.id, value)}
                                 >
-                                  <path
-                                    d="M11.8536 1.14645C11.6583 0.951184 11.3417 0.951184 11.1465 1.14645L3.71455 8.57836C3.62459 8.66832 3.55263 8.77461 3.50251 8.89155L2.04044 12.303C1.9599 12.491 2.00189 12.709 2.14646 12.8536C2.29103 12.9981 2.50905 13.0401 2.69697 12.9596L6.10847 11.4975C6.2254 11.4474 6.33168 11.3754 6.42164 11.2855L13.8536 3.85355C14.0488 3.65829 14.0488 3.34171 13.8536 3.14645L11.8536 1.14645ZM4.42161 9.28547L11.5 2.20711L12.7929 3.5L5.71455 10.5784L4.21924 11.2192L3.78081 10.7808L4.42161 9.28547Z"
-                                    fill="currentColor"
-                                    fillRule="evenodd"
-                                    clipRule="evenodd"
-                                  ></path>
-                                </svg>
-                              </Button>
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                className="h-8 w-8 text-red-500 hover:bg-red-50"
-                                onClick={() => removeContact(contact.id)}
-                                title="Remove contact"
-                              >
-                                <Trash2 className="h-4 w-4" />
-                              </Button>
-                            </div>
+                                  <SelectTrigger className="w-[120px] border-pet-primary/20 focus:ring-pet-primary h-8 text-xs">
+                                    <SelectValue placeholder="Type" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="Email">Email</SelectItem>
+                                    <SelectItem value="Phone">Phone</SelectItem>
+                                    <SelectItem value="Facebook">Facebook</SelectItem>
+                                    <SelectItem value="Instagram">Instagram</SelectItem>
+                                    <SelectItem value="Twitter">Twitter</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                                <Button
+                                  variant={contact.isPrimary ? "secondary" : "ghost"}
+                                  size="icon"
+                                  className={`h-8 w-8 ${contact.isPrimary 
+                                    ? 'bg-pet-primary/20 text-pet-primary' 
+                                    : 'text-muted-foreground hover:bg-pet-primary/10 hover:text-pet-primary'}`}
+                                  onClick={() => handleSetPrimaryContact(contact.id)}
+                                  disabled={contact.isPrimary || settingPrimary}
+                                  title={contact.isPrimary ? "Primary contact" : "Set as primary contact"}
+                                >
+                                  <Star className={`h-4 w-4 ${contact.isPrimary ? 'fill-pet-primary' : ''}`} />
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="h-8 w-8 text-pet-primary hover:bg-pet-primary/10"
+                                  onClick={() => startEditingContact(contact)}
+                                  title="Edit contact"
+                                >
+                                  <svg
+                                    width="15"
+                                    height="15"
+                                    viewBox="0 0 15 15"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="h-4 w-4"
+                                  >
+                                    <path
+                                      d="M11.8536 1.14645C11.6583 0.951184 11.3417 0.951184 11.1465 1.14645L3.71455 8.57836C3.62459 8.66832 3.55263 8.77461 3.50251 8.89155L2.04044 12.303C1.9599 12.491 2.00189 12.709 2.14646 12.8536C2.29103 12.9981 2.50905 13.0401 2.69697 12.9596L6.10847 11.4975C6.2254 11.4474 6.33168 11.3754 6.42164 11.2855L13.8536 3.85355C14.0488 3.65829 14.0488 3.34171 13.8536 3.14645L11.8536 1.14645ZM4.42161 9.28547L11.5 2.20711L12.7929 3.5L5.71455 10.5784L4.21924 11.2192L3.78081 10.7808L4.42161 9.28547Z"
+                                      fill="currentColor"
+                                      fillRule="evenodd"
+                                      clipRule="evenodd"
+                                    ></path>
+                                  </svg>
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="h-8 w-8 text-red-500 hover:bg-red-50"
+                                  onClick={() => removeContact(contact.id)}
+                                  title="Remove contact"
+                                >
+                                  <Trash2 className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            )}
                           </div>
                         )}
                       </div>
@@ -591,74 +737,111 @@ export default function ContactsPage() {
                     </div>
                     <h3 className="text-lg font-medium text-pet-primary mb-2">No contact methods</h3>
                     <p className="text-muted-foreground mb-4">
-                      Add contact methods so people can reach you about your pet listings
+                      {isViewingOwnProfile 
+                        ? "Add contact methods so people can reach you about your pet listings"
+                        : "This user hasn't added any contact information yet"}
                     </p>
                   </div>
                 )}
 
-                {isAddingContact ? (
-                  <div className="p-4 border border-pet-primary/10 rounded-lg bg-white border-dashed">
-                    <h3 className="text-lg font-medium text-pet-primary mb-4">Add New Contact Method</h3>
-                    <div className="space-y-4">
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <div>
-                          <Label htmlFor="new-contact-type">Contact Type</Label>
-                          <Select value={newContactType} onValueChange={setNewContactType}>
-                            <SelectTrigger
-                              id="new-contact-type"
-                              className="border-pet-primary/20 focus:ring-pet-primary"
-                            >
-                              <SelectValue placeholder="Select type" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="Email">Email</SelectItem>
-                              <SelectItem value="Phone">Phone</SelectItem>
-                              <SelectItem value="Facebook">Facebook</SelectItem>
-                              <SelectItem value="Instagram">Instagram</SelectItem>
-                              <SelectItem value="Twitter">Twitter</SelectItem>
-                            </SelectContent>
-                          </Select>
+                {isViewingOwnProfile && (
+                  isAddingContact ? (
+                    <div className="p-4 border border-pet-primary/10 rounded-lg bg-white border-dashed">
+                      <h3 className="text-lg font-medium text-pet-primary mb-4">Add New Contact Method</h3>
+                      <div className="space-y-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                          <div>
+                            <Label htmlFor="new-contact-type">Contact Type</Label>
+                            <Select value={newContactType} onValueChange={setNewContactType}>
+                              <SelectTrigger
+                                id="new-contact-type"
+                                className="border-pet-primary/20 focus:ring-pet-primary"
+                              >
+                                <SelectValue placeholder="Select type" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="Email">Email</SelectItem>
+                                <SelectItem value="Phone">Phone</SelectItem>
+                                <SelectItem value="Facebook">Facebook</SelectItem>
+                                <SelectItem value="Instagram">Instagram</SelectItem>
+                                <SelectItem value="Twitter">Twitter</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          <div className="sm:col-span-2">
+                            <Label htmlFor="new-contact-value">Contact Value</Label>
+                            <Input
+                              id="new-contact-value"
+                              placeholder={`Enter your ${newContactType}`}
+                              value={newContactValue}
+                              onChange={(e) => setNewContactValue(e.target.value)}
+                              className="border-pet-primary/20 focus-visible:ring-pet-primary"
+                            />
+                          </div>
                         </div>
-                        <div className="sm:col-span-2">
-                          <Label htmlFor="new-contact-value">Contact Value</Label>
-                          <Input
-                            id="new-contact-value"
-                            placeholder={`Enter your ${newContactType}`}
-                            value={newContactValue}
-                            onChange={(e) => setNewContactValue(e.target.value)}
-                            className="border-pet-primary/20 focus-visible:ring-pet-primary"
-                          />
+                        <div className="flex justify-end gap-2">
+                          <Button
+                            variant="outline"
+                            className="border-pet-primary/30 text-pet-primary hover:bg-pet-primary/10"
+                            onClick={addNewContact}
+                          >
+                            Add Contact
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            className="text-muted-foreground"
+                            onClick={() => setIsAddingContact(false)}
+                          >
+                            Cancel
+                          </Button>
                         </div>
-                      </div>
-                      <div className="flex justify-end gap-2">
-                        <Button
-                          variant="outline"
-                          className="border-pet-primary/30 text-pet-primary hover:bg-pet-primary/10"
-                          onClick={addNewContact}
-                        >
-                          Add Contact
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          className="text-muted-foreground"
-                          onClick={() => setIsAddingContact(false)}
-                        >
-                          Cancel
-                        </Button>
                       </div>
                     </div>
+                  ) : (
+                    <Button
+                      variant="outline"
+                      className="w-full border-pet-primary/30 text-pet-primary hover:bg-pet-primary/10 border-dashed"
+                      onClick={startAddingContact}
+                    >
+                      <Plus className="mr-2 h-4 w-4" />
+                      Add Contact Method
+                    </Button>
+                  )
+                )}
+                
+                {!isViewingOwnProfile && (
+                  <div className="mt-6 flex justify-center">
+                    <Button
+                      variant="default"
+                      className="bg-pet-primary hover:bg-pet-primary/90 text-white"
+                      onClick={() => router.back()}
+                    >
+                      <ArrowLeft className="mr-2 h-4 w-4" />
+                      Return to Pet
+                    </Button>
                   </div>
-                ) : (
-                  <Button
-                    variant="outline"
-                    className="w-full border-pet-primary/30 text-pet-primary hover:bg-pet-primary/10 border-dashed"
-                    onClick={startAddingContact}
-                  >
-                    <Plus className="mr-2 h-4 w-4" />
-                    Add Contact Method
-                  </Button>
                 )}
               </div>
+
+              {process.env.NODE_ENV === 'development' && (
+                <div className="mt-8 p-4 border border-dashed border-gray-300 rounded-md">
+                  <h4 className="text-sm font-semibold mb-2">Debug Info:</h4>
+                  <div className="text-xs space-y-1">
+                    <p>Viewing User ID: {viewingUserId || 'None (own profile)'}</p>
+                    <p>Is Viewing Own Profile: {isViewingOwnProfile ? 'Yes' : 'No'}</p>
+                    <p>Contacts Loaded: {contactsLoaded ? 'Yes' : 'No'}</p>
+                    <p>Number of Contacts: {localContactMethods.length}</p>
+                    <Button 
+                      size="sm" 
+                      variant="outline" 
+                      className="mt-2 text-xs h-7" 
+                      onClick={forceRefreshContacts}
+                    >
+                      Force Refresh
+                    </Button>
+                  </div>
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>
@@ -685,7 +868,6 @@ export default function ContactsPage() {
         </DialogContent>
       </Dialog>
 
-      <SiteFooter />
     </div>
   )
 }

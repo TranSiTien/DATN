@@ -10,9 +10,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { ArrowLeft, Heart, MapPin, Calendar, Loader2, X } from "lucide-react"
+import { ArrowLeft, Heart, MapPin, Calendar, Loader2, X, Search } from "lucide-react"
 import { SiteHeader } from "@/components/site-header"
-import { SiteFooter } from "@/components/site-footer"
 import { useToast } from "@/components/ui/use-toast"
 import { useUser } from "@/contexts/user-context"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -57,7 +56,6 @@ export default function EditFoundPet() {
   // Form state
   const [description, setDescription] = useState("")
   const [dateFound, setDateFound] = useState("")
-  const [currentPetLocationType, setCurrentPetLocationType] = useState<string>("")
   const [images, setImages] = useState<File[]>([])
   const [existingImages, setExistingImages] = useState<Array<{fileId: string, fileUrl: string}>>([])
   const [imagesToDelete, setImagesToDelete] = useState<string[]>([])
@@ -107,7 +105,6 @@ export default function EditFoundPet() {
         setDescription(petData.description || "");
         setDateFound(new Date(petData.foundDateTime).toISOString().split('T')[0]);
         setExistingImages(petData.images || []);
-        setCurrentPetLocationType(petData.currentPetLocationType || "with-finder");
         
         // Set location
         if (petData.foundLocation) {
@@ -129,68 +126,93 @@ export default function EditFoundPet() {
     fetchPet();
   }, [petId]);
 
-  // Initialize map
+  // Load map scripts
   useEffect(() => {
-    if (typeof window !== "undefined" && mapRef.current && !mapInstanceRef.current) {
-      const initMap = async () => {
-        const L = (await import("leaflet")).default
-        
-        // Import Leaflet CSS
-        import("leaflet/dist/leaflet.css")
-        
-        // Create map instance
-        const map = L.map(mapRef.current!).setView([40.7128, -74.006], 13)
-        mapInstanceRef.current = map
-        
-        // Add tile layer
-        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map)
-        
-        // Add click handler to map
-        map.on("click", (e: any) => {
-          const { lat, lng } = e.latlng
-          
-          // Update location state
-          setLocation(prev => ({
-            ...prev,
-            latitude: lat,
-            longitude: lng
-          }))
-          
-          // Update marker
-          if (markerRef.current) {
-            markerRef.current.setLatLng([lat, lng])
-          } else {
-            markerRef.current = L.marker([lat, lng]).addTo(map)
-          }
-        })
-        
-        setMapLoaded(true)
-      }
-      
-      initMap()
+    if (typeof window !== "undefined" && !window.L && !document.getElementById("leaflet-css")) {
+      const link = document.createElement("link")
+      link.id = "leaflet-css"
+      link.rel = "stylesheet"
+      link.href = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      link.integrity = "sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      link.crossOrigin = ""
+      document.head.appendChild(link)
+
+      const script = document.createElement("script")
+      script.id = "leaflet-js"
+      script.src = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      script.integrity = "sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      script.crossOrigin = ""
+      script.onload = () => setMapLoaded(true)
+      document.head.appendChild(script)
+    } else if (typeof window !== "undefined" && window.L) {
+      setMapLoaded(true)
     }
   }, [])
 
-  // Update map when location changes from API data
+  // Initialize map
   useEffect(() => {
-    if (mapInstanceRef.current && location.latitude && location.longitude) {
-      import("leaflet").then(L => {
-        const map = mapInstanceRef.current
-        
-        // Center map on location
-        map.setView([location.latitude, location.longitude], 15)
-        
-        // Add or update marker
+    if (mapLoaded && mapRef.current && typeof window.L !== "undefined") {
+      const L = window.L;
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove();
+      }
+      
+      const defaultLat = 40.7128 // Default to NYC, adjust as needed
+      const defaultLng = -74.006
+      mapInstanceRef.current = L.map(mapRef.current).setView([defaultLat, defaultLng], 13)
+      
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      }).addTo(mapInstanceRef.current)
+
+      mapInstanceRef.current.on("click", (e: any) => {
+        const { lat, lng } = e.latlng
         if (markerRef.current) {
-          markerRef.current.setLatLng([location.latitude, location.longitude])
+          markerRef.current.setLatLng([lat, lng])
         } else {
-          markerRef.current = L.default.marker([location.latitude, location.longitude]).addTo(map)
+          const customIcon = L.divIcon({
+            className: "custom-div-icon",
+            html: '<div style="background-color: #F5A623; width: 24px; height: 24px; border-radius: 50%; border: 3px solid white; box-shadow: 0 0 10px rgba(0,0,0,0.2);"></div>',
+            iconSize: [30, 30],
+            iconAnchor: [15, 15],
+          })
+          markerRef.current = L.marker([lat, lng], { icon: customIcon }).addTo(mapInstanceRef.current)
         }
+        setLocation(prev => ({ 
+          ...prev, 
+          latitude: lat, 
+          longitude: lng 
+        }))
       })
+      
+      // If location is already set, update map/marker
+      if (location.latitude && location.longitude) {
+        mapInstanceRef.current.setView([location.latitude, location.longitude], 15);
+        
+        if (!markerRef.current) {
+          const customIcon = L.divIcon({
+            className: "custom-div-icon",
+            html: '<div style="background-color: #F5A623; width: 24px; height: 24px; border-radius: 50%; border: 3px solid white; box-shadow: 0 0 10px rgba(0,0,0,0.2);"></div>',
+            iconSize: [30, 30],
+            iconAnchor: [15, 15],
+          })
+          markerRef.current = L.marker([location.latitude, location.longitude], { icon: customIcon }).addTo(mapInstanceRef.current)
+        } else {
+          markerRef.current.setLatLng([location.latitude, location.longitude])
+        }
+      }
     }
-  }, [location.latitude, location.longitude, mapLoaded])
+    
+    return () => {
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove()
+        mapInstanceRef.current = null;
+        markerRef.current = null;
+      }
+    }
+  }, [mapLoaded, location.latitude, location.longitude])
+
+  // This functionality is now handled in the main map initialization useEffect
 
   // Format image URL
   const formatImageUrl = (url: string) => {
@@ -232,26 +254,54 @@ export default function EditFoundPet() {
   }
 
   // Handle location search
-  const handleLocationSearch = async (query: string) => {
-    if (!query.trim()) {
-      setLocationSuggestions([])
-      setShowSuggestions(false)
+  const handleLocationSearch = async (address: string) => {
+    if (!address) {
+      toast({ title: "Missing Address", description: "Please enter an address to search.", variant: "destructive" })
       return
     }
     
-    setIsSearchingLocation(true)
-    
     try {
-      const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`)
-      const data = await response.json()
-      setLocationSuggestions(data)
-      setShowSuggestions(true)
+      setIsSearchingLocation(true)
+      const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}&limit=5`)
+      if (!response.ok) throw new Error("Geocoding service failed")
+      const suggestionsData = await response.json()
+      
+      if (suggestionsData && suggestionsData.length > 0) {
+        setLocationSuggestions(suggestionsData)
+        setShowSuggestions(true)
+        const { lat, lon, display_name } = suggestionsData[0]
+        const latitude = parseFloat(lat)
+        const longitude = parseFloat(lon)
+        
+        setLocation((prev: Location) => ({ 
+          ...prev, 
+          latitude, 
+          longitude, 
+          locationName: display_name.split(',')[0] || display_name 
+        }))
+        
+        toast({ 
+          title: "Location Found", 
+          description: `Found: ${display_name}`, 
+          variant: "default" 
+        })
+      } else {
+        setLocationSuggestions([])
+        setShowSuggestions(false)
+        toast({ 
+          title: "Location Not Found", 
+          description: "We couldn't find that location. Please try a more specific address or click on the map.", 
+          variant: "destructive" 
+        })
+      }
     } catch (error) {
-      console.error("Error searching for location:", error)
-      toast({
-        title: "Location Search Failed",
-        description: "Could not search for locations. Please try again.",
-        variant: "destructive"
+      console.error('Error searching address:', error)
+      setLocationSuggestions([])
+      setShowSuggestions(false)
+      toast({ 
+        title: "Search Failed", 
+        description: "Failed to search for the address.", 
+        variant: "destructive" 
       })
     } finally {
       setIsSearchingLocation(false)
@@ -271,18 +321,7 @@ export default function EditFoundPet() {
     
     setShowSuggestions(false)
     
-    // Update map
-    if (mapInstanceRef.current) {
-      mapInstanceRef.current.setView([lat, lon], 15)
-      
-      // Add or update marker
-      if (markerRef.current) {
-        markerRef.current.setLatLng([lat, lon])
-      } else {
-        const L = require("leaflet")
-        markerRef.current = L.marker([lat, lon]).addTo(mapInstanceRef.current)
-      }
-    }
+    // Update map (map will be updated automatically via the useEffect that watches location changes)
   }
 
   // Handle form submission
@@ -303,15 +342,6 @@ export default function EditFoundPet() {
       toast({
         title: "Missing Date",
         description: "Please enter the date when the pet was found",
-        variant: "destructive"
-      })
-      return
-    }
-    
-    if (!currentPetLocationType) {
-      toast({
-        title: "Missing Current Location",
-        description: "Please select the current location of the pet",
         variant: "destructive"
       })
       return
@@ -347,7 +377,6 @@ export default function EditFoundPet() {
       formData.append('FoundLongitude', location.longitude.toString())
       formData.append('FoundDateTime', new Date(dateFound).toISOString())
       formData.append('LocationName', location.locationName || location.address.split(',')[0])
-      formData.append('CurrentPetLocationType', currentPetLocationType)
       
       // Append all new images to the formData
       images.forEach(image => {
@@ -420,7 +449,6 @@ export default function EditFoundPet() {
             </div>
           </div>
         </main>
-        <SiteFooter />
       </div>
     )
   }
@@ -454,7 +482,6 @@ export default function EditFoundPet() {
             </div>
           </div>
         </main>
-        <SiteFooter />
       </div>
     )
   }
@@ -494,20 +521,37 @@ export default function EditFoundPet() {
                     <Label htmlFor="found-location" className="text-pet-primary font-medium">
                       Found Location
                     </Label>
-                    <div className="relative">
+                    <div className="flex items-center space-x-2">
                       <Input
-                        id="found-location"
-                        placeholder="Search for a location"
-                        className="border-pet-primary/20 focus-visible:ring-pet-primary pr-10"
+                        id="found-location-address"
+                        placeholder="Address or intersection where pet was found"
                         value={location.address}
+                        className="border-pet-primary/20 focus-visible:ring-pet-primary"
                         onChange={(e) => {
                           setLocation({ ...location, address: e.target.value });
-                          handleLocationSearch(e.target.value);
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            e.preventDefault();
+                            handleLocationSearch(location.address);
+                          }
                         }}
                       />
-                      {isSearchingLocation && (
-                        <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                          <Loader2 className="h-4 w-4 animate-spin text-pet-primary" />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        className="border-pet-accent/30 text-pet-accent hover:bg-pet-accent/10"
+                        onClick={() => handleLocationSearch(location.address)}
+                        disabled={isSearchingLocation}
+                      >
+                        {isSearchingLocation ? <Loader2 className="h-4 w-4 mr-1 animate-spin" /> : <Search className="h-4 w-4 mr-1" />}
+                        Search
+                      </Button>
+                      {location.latitude && location.longitude && (
+                        <div className="flex items-center text-sm text-pet-success">
+                          <MapPin className="h-4 w-4 mr-1" />
+                          <span>Pinned</span>
                         </div>
                       )}
                       {showSuggestions && locationSuggestions.length > 0 && (
@@ -551,6 +595,7 @@ export default function EditFoundPet() {
                     </div>
                   </div>
 
+
                   <div className="space-y-2">
                     <Label htmlFor="date-found" className="text-pet-primary font-medium">
                       Date Found
@@ -565,22 +610,7 @@ export default function EditFoundPet() {
                     />
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="current-location" className="text-pet-primary font-medium">
-                      Current Location of Pet
-                    </Label>
-                    <Select value={currentPetLocationType} onValueChange={setCurrentPetLocationType} required>
-                      <SelectTrigger id="current-location" className="border-pet-primary/20 focus:ring-pet-primary">
-                        <SelectValue placeholder="Select location" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="with-finder">With me (finder)</SelectItem>
-                        <SelectItem value="shelter">At a shelter</SelectItem>
-                        <SelectItem value="vet">At a veterinarian</SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
+
 
                   <div className="space-y-2">
                     <Label htmlFor="description" className="text-pet-primary font-medium">
@@ -709,7 +739,6 @@ export default function EditFoundPet() {
           </form>
         </div>
       </main>
-      <SiteFooter />
     </div>
   )
 } 

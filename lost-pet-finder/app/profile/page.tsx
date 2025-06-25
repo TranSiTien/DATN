@@ -28,7 +28,6 @@ import {
   StarIcon,
 } from "lucide-react"
 import { SiteHeader } from "@/components/site-header"
-import { SiteFooter } from "@/components/site-footer"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -110,17 +109,26 @@ export default function UserProfilePage() {
       setIsLoading(true);
       setError(null);
       
+      // Exit early if no user is available yet
+      if (!user?.id) {
+        if (!isLoadingUser) {
+          setError("User information not available");
+        }
+        setIsLoading(isLoadingUser);
+        return;
+      }
+      
       try {
-        // Fetch lost pets
-        const lostResponse = await fetch(`${API_BASE_URL}/LostPets`);
+        // Fetch lost pets with user ID filter
+        const lostResponse = await fetch(`${API_BASE_URL}/LostPets?userId=${user.id}`);
         if (!lostResponse.ok) {
           throw new Error(`Failed to fetch lost pets: ${lostResponse.status}`);
         }
         const lostPetsData = await lostResponse.json();
         setLostPets(lostPetsData);
         
-        // Fetch found pets
-        const foundResponse = await fetch(`${API_BASE_URL}/FoundPets`);
+        // Fetch found pets with user ID filter
+        const foundResponse = await fetch(`${API_BASE_URL}/FoundPets?userId=${user.id}`);
         if (!foundResponse.ok) {
           throw new Error(`Failed to fetch found pets: ${foundResponse.status}`);
         }
@@ -135,7 +143,7 @@ export default function UserProfilePage() {
     };
     
     fetchPets();
-  }, []);
+  }, [user, isLoadingUser]);
 
   // Filter pets based on status and search query
   const filteredLostPets = lostPets.filter((pet) => {
@@ -341,17 +349,8 @@ export default function UserProfilePage() {
           {/* User Profile Header */}
           <div className="mb-12">
             <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
-              <div className="relative h-24 w-24 overflow-hidden rounded-full border-4 border-white shadow-md">
-                <Image
-                  src="/placeholder.svg?height=100&width=100&text=User"
-                  alt={user?.name || "Guest"}
-                  fill
-                  className="object-cover"
-                />
-              </div>
               <div className="flex-1">
                 <h1 className="text-3xl font-bold text-pet-primary">{user?.name || "Guest"}</h1>
-                <p className="text-muted-foreground">Member since January 2024</p>
                 <div className="mt-2 flex flex-wrap gap-2">
                   <Badge variant="outline" className="bg-pet-soft/50 text-pet-primary">
                     {lostPets.length} Lost Pets
@@ -718,7 +717,6 @@ export default function UserProfilePage() {
                             <div className="flex justify-between items-start mb-2">
                               <div>
                                 <h3 className="text-lg font-medium text-pet-accent">Found {pet.petType || "Pet"}</h3>
-                                <p className="text-sm text-muted-foreground">{pet.breed || "Unknown breed"}</p>
                               </div>
                               <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
@@ -781,14 +779,6 @@ export default function UserProfilePage() {
                               </div>
                             </div>
                           </CardContent>
-                          <CardFooter className="p-4 pt-0 flex justify-between border-t border-pet-primary/10 mt-4">
-                            <div className="text-xs text-muted-foreground">
-                              <span className="font-medium">-</span> views
-                            </div>
-                            <div className="text-xs text-muted-foreground">
-                              <span className="font-medium">-</span> responses
-                            </div>
-                          </CardFooter>
                         </Card>
                       ))}
                     </div>
@@ -836,7 +826,6 @@ export default function UserProfilePage() {
         </DialogContent>
       </Dialog>
 
-      <SiteFooter />
     </div>
   )
 }

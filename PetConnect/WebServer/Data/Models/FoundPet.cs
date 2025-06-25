@@ -11,6 +11,8 @@ public class FoundPet
     public string? Description { get; set; }
 
     public required Point FoundLocation { get; set; }
+    
+    public string? LocationName { get; set; }
 
     public required DateTimeOffset FoundDateTime { get; set; }
 

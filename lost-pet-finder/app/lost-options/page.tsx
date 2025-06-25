@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button"
 import { ArrowLeft, Search, FileText, Upload, ArrowRight, Info } from "lucide-react"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { SiteHeader } from "@/components/site-header"
-import { SiteFooter } from "@/components/site-footer"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 
 export default function LostPetOptionsPage() {
@@ -84,7 +83,7 @@ export default function LostPetOptionsPage() {
                 </div>
                 <div className="mt-8 flex justify-center">
                   <Image
-                    src="/placeholder.svg?height=200&width=300&text=Report+Form"
+                    src="https://cdn.petmojo.com/wp-content/uploads/2024/03/2ee27bb7f1cf74bfa3ba55b7960ddaadb05a0bc8-1200x690-1.jpg?height=200&width=300&text=Report+Form"
                     width={300}
                     height={200}
                     alt="Report form illustration"
@@ -170,7 +169,7 @@ export default function LostPetOptionsPage() {
                 <div className="mt-8 flex justify-center">
                   <div className="relative">
                     <Image
-                      src="/placeholder.svg?height=200&width=300&text=Image+Search"
+                      src="https://m.media-amazon.com/images/I/71MSw6itLuL._AC_UF1000,1000_QL80_.jpg?height=200&width=300&text=Image+Search"
                       width={300}
                       height={200}
                       alt="Image search illustration"
@@ -216,7 +215,6 @@ export default function LostPetOptionsPage() {
           </div>
         </div>
       </main>
-      <SiteFooter />
     </div>
   )
 }

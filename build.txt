@@ -1,0 +1,4 @@
+cd D:\DATN\PetConnect\WebServer
+dotnet publish --configuration Release --output ./publish
+cd D:\DATN\lost-pet-finder
+npm run build

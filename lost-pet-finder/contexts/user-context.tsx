@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useContext, useState, useEffect, type ReactNode } from "react"
+import { createContext, useContext, useState, useEffect, type ReactNode, useRef } from "react"
 
 // Define user type based on API response
 export type User = {
@@ -28,6 +28,7 @@ type UserContextType = {
   logout: () => void
   fetchCurrentUser: (token: string) => Promise<User | null>
   fetchContactInfos: (token: string) => Promise<ContactInfo[] | null>
+  fetchContactInfosByUserId: (token: string, userId: string) => Promise<ContactInfo[] | null>
   addContactInfo: (token: string, info: Omit<ContactInfo, 'id' | 'isPrimary'>) => Promise<ContactInfo | null>
   deleteContactInfos: (token: string, ids: string[]) => Promise<void>
   setPrimaryContact: (token: string, id: string) => Promise<void>
@@ -48,6 +49,7 @@ const UserContext = createContext<UserContextType>({
   logout: () => {},
   fetchCurrentUser: async () => null,
   fetchContactInfos: async () => null,
+  fetchContactInfosByUserId: async () => null,
   addContactInfo: async () => null,
   deleteContactInfos: async () => {},
   setPrimaryContact: async () => {},
@@ -60,6 +62,10 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true)
   const [token, setToken] = useState<string | null>(null)
   const [contactInfos, setContactInfos] = useState<ContactInfo[] | null>(null)
+  
+  // Simple cache to prevent redundant API calls
+  const contactInfoCache = useRef<Record<string, {timestamp: number, data: ContactInfo[]}>>({});
+  const CACHE_EXPIRY = 60000; // 1 minute in milliseconds
 
   // Fetch current user data
   const fetchCurrentUser = async (authToken: string): Promise<User | null> => {
@@ -119,6 +125,70 @@ export function UserProvider({ children }: { children: ReactNode }) {
     } catch (error) {
       console.error("Failed to fetch contact infos:", error)
       setContactInfos(null)
+      return null
+    }
+  }
+
+  // Fetch contact information by user ID
+  const fetchContactInfosByUserId = async (authToken: string, userId: string): Promise<ContactInfo[] | null> => {
+    if (!API_BASE_URL) {
+      console.error("API base URL is not defined.")
+      return null
+    }
+    if (!authToken) {
+      console.error("No auth token provided for fetching contact infos.")
+      return null
+    }
+    if (!userId) {
+      console.error("No user ID provided for fetching contact infos.")
+      return null
+    }
+
+    // Generate a unique request ID for this specific call
+    const requestId = `${userId}-${Date.now()}`;
+    console.log(`[${requestId}] Starting contact info request for user ${userId}`);
+
+    // Check cache first
+    const cacheKey = `user-${userId}`;
+    const cachedData = contactInfoCache.current[cacheKey];
+    const now = Date.now();
+    
+    if (cachedData && (now - cachedData.timestamp < CACHE_EXPIRY)) {
+      console.log(`[${requestId}] Using cached contacts for user ${userId}, age: ${(now - cachedData.timestamp)/1000}s`);
+      return cachedData.data;
+    }
+    
+    try {
+      console.log(`[${requestId}] Fetching contacts for user ID: ${userId} from ${API_BASE_URL}/ContactInfos/user/${userId}`)
+      const response = await fetch(`${API_BASE_URL}/ContactInfos/user/${userId}`, {
+        method: "GET",
+        headers: {
+          "accept": "text/plain",
+          "Authorization": `Bearer ${authToken}`,
+        },
+      })
+      
+      console.log(`[${requestId}] Response status for user ${userId} contacts:`, response.status)
+      
+      if (!response.ok) {
+        const errorText = await response.text()
+        console.error(`[${requestId}] Error fetching contacts for user ${userId}:`, errorText)
+        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`)
+      }
+      
+      const infos: ContactInfo[] = await response.json()
+      console.log(`[${requestId}] Received ${infos.length} contacts for user ${userId}:`, infos)
+      
+      // Update cache
+      contactInfoCache.current[cacheKey] = {
+        timestamp: now,
+        data: infos
+      };
+      
+      console.log(`[${requestId}] Successfully completed request for user ${userId}`);
+      return infos
+    } catch (error) {
+      console.error(`[${requestId}] Failed to fetch contact infos for user ${userId}:`, error)
       return null
     }
   }
@@ -358,7 +428,24 @@ export function UserProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <UserContext.Provider value={{ user, isLoading, token, contactInfos, login, register, logout, fetchCurrentUser, fetchContactInfos, addContactInfo, deleteContactInfos, setPrimaryContact, updateContactInfo }}>
+    <UserContext.Provider
+      value={{
+        user,
+        isLoading,
+        token,
+        contactInfos,
+        login,
+        register,
+        logout,
+        fetchCurrentUser,
+        fetchContactInfos,
+        fetchContactInfosByUserId,
+        addContactInfo,
+        deleteContactInfos,
+        setPrimaryContact,
+        updateContactInfo,
+      }}
+    >
       {children}
     </UserContext.Provider>
   )

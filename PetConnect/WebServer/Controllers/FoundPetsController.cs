@@ -47,12 +47,18 @@ public class FoundPetsController : ControllerBase
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<FoundPetDto>>> GetFoundPets(double? latitude, double? longitude,
-        DateTimeOffset? fromDate, DateTimeOffset? toDate, int distanceInKilometers = DefaultSearchRadiusInKilometers)
+        DateTimeOffset? fromDate, DateTimeOffset? toDate, Guid? userId, int distanceInKilometers = DefaultSearchRadiusInKilometers)
     {
         var query = _dbContext.FoundPets
             .Include(fp => fp.Images)
             .Include(fp => fp.Finder)
             .AsQueryable();
+            
+        // Filter by userId if provided
+        if (userId.HasValue)
+        {
+            query = query.Where(fp => fp.Finder.Id == userId.Value);
+        }
 
         if (latitude != null && longitude != null)
         {
@@ -62,13 +68,13 @@ public class FoundPetsController : ControllerBase
 
         if (fromDate != null)
         {
-            var fromDateUtc = fromDate.Value.ToUniversalTime(); // Convert to UTC
+            var fromDateUtc = fromDate.Value.ToUniversalTime();
             query = query.Where(fp => fp.FoundDateTime >= fromDateUtc);
         }
 
         if (toDate != null)
         {
-            var toDateUtc = toDate.Value.ToUniversalTime(); // Convert to UTC
+            var toDateUtc = toDate.Value.ToUniversalTime();
             query = query.Where(fp => fp.FoundDateTime <= toDateUtc);
         }
 
@@ -313,6 +319,7 @@ public class FoundPetsController : ControllerBase
         foundPet.Id = Guid.NewGuid();
         foundPet.FoundLocation = webMercatorPoint;
         foundPet.Status = FoundPetStatus.Pending; // Assuming FoundPetStatus enum/constants exist
+        foundPet.LocationName = createFoundPetDto.LocationName;
         foundPet.Finder = user;
 
         _dbContext.FoundPets.Add(foundPet);
@@ -351,7 +358,6 @@ public class FoundPetsController : ControllerBase
 
         await _dbContext.SaveChangesAsync(); // Save image references
 
-        // --- Send data to AI server ---
         if (uploadedImageMetadata.Any()) // Only send if there are images
         {
             try
@@ -360,7 +366,7 @@ public class FoundPetsController : ControllerBase
                 var client = _httpClientFactory.CreateClient();
                 using var formData = new MultipartFormDataContent();
 
-                formData.Add(new StringContent(foundPet.Id.ToString()), "cat_id"); // Assuming "pet_id" for AI server
+                formData.Add(new StringContent(foundPet.Id.ToString()), "cat_id");
 
                 foreach (var (metadata, formFile) in uploadedImageMetadata)
                 {
@@ -409,10 +415,158 @@ public class FoundPetsController : ControllerBase
         var foundPetDto = _mapper.Map<FoundPetDto>(foundPet);
         var foundLocationWebMercator = _gisContext.WebMercatorToWGS84(foundPet.FoundLocation);
         foundPetDto.FoundLocation = _mapper.Map<PointDto>(foundLocationWebMercator);
+        
+        // Ensure FinderId is properly set from the Finder
+        if (foundPet.Finder != null)
+        {
+            foundPetDto.FinderId = foundPet.Finder.Id;
+        }
 
         return foundPetDto;
     }
     
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> DeleteFoundPet(Guid id)
+    {
+        // Skip authentication for now
+        // var user = await _userService.GetGeneralUserAsync(User);
+        // if (user == null)
+        // {
+        //     return Unauthorized("User not authenticated");
+        // }
+        
+        var foundPet = await _dbContext.FoundPets
+            .Include(fp => fp.Images)
+            .FirstOrDefaultAsync(fp => fp.Id == id);
+            
+        if (foundPet == null)
+        {
+            return NotFound($"Found pet with ID {id} not found");
+        }
+        
+        // Skip owner check for now
+        // if (foundPet.Finder.Id != user.Id)
+        // {
+        //     return Forbid("You are not authorized to delete this pet");
+        // }
+        
+        // Delete associated images from storage
+        foreach (var image in foundPet.Images)
+        {
+            try
+            {
+                await _storageService.DeleteFileAsync(image.Metadata.FileId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error deleting image {FileId} for found pet {FoundPetId}", 
+                    image.Metadata.FileId, foundPet.Id);
+                // Continue with deletion even if image deletion fails
+            }
+        }
+        
+        // Remove from database
+        _dbContext.FoundPets.Remove(foundPet);
+        await _dbContext.SaveChangesAsync();
+        
+        return NoContent();
+    }
+    
+    [HttpPut("{id}")]
+    [Consumes("multipart/form-data")]
+    public async Task<ActionResult<FoundPetDto>> UpdateFoundPet(Guid id, [FromForm] UpdateFoundPetDto updateFoundPetDto)
+    {
+        var user = await _userService.GetGeneralUserAsync(User);
+        if (user == null)
+        {
+            return Unauthorized("User not authenticated");
+        }
+        
+        var foundPet = await _dbContext.FoundPets
+            .Include(fp => fp.Images)
+            .Include(fp => fp.Finder)
+            .FirstOrDefaultAsync(fp => fp.Id == id);
+            
+        if (foundPet == null)
+        {
+            return NotFound($"Found pet with ID {id} not found");
+        }
+        
+        if (foundPet.Finder.Id != user.Id)
+        {
+            return Forbid("You are not authorized to update this pet");
+        }
+        
+        // Update fields using mapper
+        _mapper.Map(updateFoundPetDto, foundPet);
+        
+        // Update location if provided
+        if (updateFoundPetDto.FoundLatitude != 0 && updateFoundPetDto.FoundLongitude != 0)
+        {
+            var webMercatorPoint = _gisContext.WGS84ToWebMercator(
+                updateFoundPetDto.FoundLongitude, 
+                updateFoundPetDto.FoundLatitude);
+            foundPet.FoundLocation = webMercatorPoint;
+        }
+        
+        // Handle image deletions
+        if (updateFoundPetDto.ImagesToDelete != null && updateFoundPetDto.ImagesToDelete.Any())
+        {
+            foreach (var imageId in updateFoundPetDto.ImagesToDelete)
+            {
+                var imageToDelete = foundPet.Images
+                    .FirstOrDefault(img => img.Metadata.FileId == imageId);
+                
+                if (imageToDelete != null)
+                {
+                    try
+                    {
+                        await _storageService.DeleteFileAsync(imageToDelete.Metadata.FileId);
+                        foundPet.Images.Remove(imageToDelete);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Error deleting image {FileId} for found pet {FoundPetId}", 
+                            imageToDelete.Metadata.FileId, foundPet.Id);
+                    }
+                }
+            }
+        }
+        
+        // Handle new images
+        if (updateFoundPetDto.Images != null && updateFoundPetDto.Images.Any())
+        {
+            foreach (var formFile in updateFoundPetDto.Images)
+            {
+                if (formFile.Length == 0) continue;
+
+                try
+                {
+                    var fileMetadataAbstraction = await _storageService.UploadFileAsync($"found-pet-images/{foundPet.Id}",
+                        new FileToUpload
+                        {
+                            MimeType = formFile.ContentType,
+                            Stream = formFile.OpenReadStream()
+                        });
+
+                    var modelMetadata = _mapper.Map<ModelFileMetadata>(fileMetadataAbstraction);
+                    foundPet.Images.Add(new FoundPetImage
+                    {
+                        Metadata = modelMetadata
+                    });
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e, "Error uploading image for found pet {FoundPetId}", foundPet.Id);
+                }
+            }
+        }
+        
+        await _dbContext.SaveChangesAsync();
+        
+        return Ok(MapToDto(foundPet));
+    }
+
     [HttpPut("{id}/status")]
     public async Task<ActionResult<FoundPetDto>> UpdateFoundPetStatus(Guid id, [FromBody] UpdatePetStatusDto updateStatusDto)
     {

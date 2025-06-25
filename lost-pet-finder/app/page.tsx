@@ -3,9 +3,6 @@ import { Button } from "@/components/ui/button"
 import { Search, MapPin, Heart } from "lucide-react"
 import Image from "next/image"
 import { SiteHeader } from "@/components/site-header"
-import { SiteFooter } from "@/components/site-footer"
-// Import the PetCard component at the top of the file
-import { PetCard } from "@/components/pet-card"
 
 export default function Home() {
   return (
@@ -45,7 +42,7 @@ export default function Home() {
                 </div>
               </div>
               <Image
-                src="/placeholder.svg?height=550&width=550"
+                src="https://i.pinimg.com/564x/17/51/98/175198ee796d9eca03318f2bfa031fef.jpg"
                 width={550}
                 height={550}
                 alt="Happy pet owner reunited with dog"
@@ -97,48 +94,7 @@ export default function Home() {
             </div>
           </div>
         </section>
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-b from-white to-pet-soft/50">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-2">
-                <h2 className="text-3xl font-bold tracking-tighter text-pet-primary sm:text-4xl md:text-5xl">
-                  Recent Listings
-                </h2>
-                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Browse recent lost and found pet listings in your area.
-                </p>
-              </div>
-            </div>
-            <div className="mx-auto grid max-w-5xl gap-8 py-12 md:grid-cols-2 lg:grid-cols-3">
-              {[1, 2, 3, 4, 5, 6].map((i) => (
-                <PetCard
-                  key={i}
-                  id={i}
-                  type={i % 2 === 0 ? "Lost" : "Found"}
-                  name={i % 2 === 0 ? "Missing Tabby Cat" : undefined}
-                  petType={i % 2 === 0 ? "Cat" : "Dog"}
-                  breed={i % 2 === 0 ? "Tabby" : "Golden Retriever"}
-                  location="Downtown Park"
-                  date={new Date(Date.now() - i * 86400000)}
-                  imageUrl={`/placeholder.svg?height=300&width=300&text=Pet+${i}`}
-                />
-              ))}
-            </div>
-            <div className="flex justify-center">
-              <Link href="/search">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-pet-primary/30 text-pet-primary hover:bg-pet-primary/10"
-                >
-                  View all listings
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </section>
       </main>
-      <SiteFooter />
     </div>
   )
 }

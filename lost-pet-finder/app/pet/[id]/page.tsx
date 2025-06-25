@@ -8,9 +8,9 @@ import { Separator } from "@/components/ui/separator"
 import { Card, CardContent } from "@/components/ui/card"
 import { ArrowLeft, MapPin, Calendar, Mail, Phone, Loader2, Heart, AlertTriangle, CheckCircle2 } from "lucide-react"
 import { SiteHeader } from "@/components/site-header"
-import { SiteFooter } from "@/components/site-footer"
 import { useUser } from "@/contexts/user-context"
 import { useToast } from "@/components/ui/use-toast"
+import { useRouter } from "next/navigation"
 
 // Base URL from environment variable
 const BASE_URL = process.env.NEXT_PUBLIC_URL || "http://localhost:5049"
@@ -35,7 +35,7 @@ interface LostPet extends BasePet {
   name: string; // Lost pets typically have a name provided by the owner
   lastSeenLocation: { latitude: number; longitude: number; };
   lastSeenDateTime: string;
-  finderId?: string; // Populated if a finder reports this lost pet as found
+  finderId: string; // Owner's user ID
 }
 
 // Define FoundPet interface
@@ -44,7 +44,7 @@ interface FoundPet extends BasePet {
   name?: string; // Name might be unknown or given by the finder
   foundLocation: { latitude: number; longitude: number; };
   foundDateTime: string;
-  // ownerId?: string; // Could be added if owner is identified later
+  finderId: string; // Finder's user ID
 }
 
 // Discriminated union for Pet type
@@ -55,7 +55,8 @@ export default function PetDetailPage({ params }: { params: Promise<{ id: string
   const petId = resolvedParams.id
   
   const { token } = useUser()
-  // const { toast } = useToast() // toast is declared but not used, can be added if notifications are needed
+  const { toast } = useToast()
+  const router = useRouter()
   
   const [pet, setPet] = useState<Pet | null>(null)
   const [loading, setLoading] = useState(true)
@@ -167,6 +168,8 @@ export default function PetDetailPage({ params }: { params: Promise<{ id: string
 
         if (response.ok) {
           const data: Omit<LostPet, 'kind'> = await response.json();
+          console.log("Lost Pet API Response:", data);
+          console.log("Lost Pet finderId:", data.finderId);
           setPet({ ...data, kind: 'Lost' } as LostPet);
         } else if (response.status === 404) {
           // If not found as Lost Pet, try fetching as a Found Pet
@@ -176,6 +179,8 @@ export default function PetDetailPage({ params }: { params: Promise<{ id: string
           });
           if (response.ok) {
             const data: Omit<FoundPet, 'kind'> = await response.json();
+            console.log("Found Pet API Response:", data);
+            console.log("Found Pet finderId:", data.finderId);
             setPet({ ...data, kind: 'Found' } as FoundPet);
           } else {
             // If not found as Found Pet either, or other error for FoundPets
@@ -223,17 +228,46 @@ export default function PetDetailPage({ params }: { params: Promise<{ id: string
   
   const handleThumbnailClick = (index: number) => setActiveImageIndex(index);
   
+  // Debug log the pet object
+  useEffect(() => {
+    if (pet) {
+      console.log("Pet object in component:", pet);
+      console.log("FinderId value:", pet.finderId);
+    }
+  }, [pet]);
+
   // Determine labels and data based on pet kind
-  const petName = pet?.name || (pet?.kind === 'Found' ? 'Found Pet (Name Unknown)' : 'Pet (Name Unknown)');
+  const petName = pet?.kind === 'Lost' ? (pet?.name || 'Pet (Name Unknown)') : 'Found Pet';
   const eventDateTime = pet ? (pet.kind === 'Lost' ? pet.lastSeenDateTime : pet.foundDateTime) : "";
   const eventLocation = pet ? (pet.kind === 'Lost' ? pet.lastSeenLocation : pet.foundLocation) : null;
   const dateLabel = pet?.kind === 'Lost' ? 'Lost on' : 'Found on';
   const locationLabel = pet?.kind === 'Lost' ? 'Last seen at' : 'Found at';
 
+  // Function to handle contact button click with validation
+  const handleContactClick = () => {
+    if (!pet?.finderId) {
+      toast({
+        title: "Contact information unavailable",
+        description: "Sorry, contact information is not available for this pet.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    console.log("Navigating to contacts page with finderId:", pet.finderId);
+    
+    // Clear any existing URL parameters and set a fresh URL
+    const baseUrl = "/profile/contacts";
+    const url = `${baseUrl}?userId=${encodeURIComponent(pet.finderId)}`;
+    
+    // Use replace to avoid back button issues
+    router.push(url);
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
       <SiteHeader />
-      <main className="flex-1 bg-pet-soft/30">
+      <main className="flex-1 bg-pet-soft/30 pb-20">
         <div className="container max-w-5xl px-4 py-12 md:px-6 md:py-16 lg:py-24">
           <div className="mb-8">
             <Link
@@ -352,16 +386,31 @@ export default function PetDetailPage({ params }: { params: Promise<{ id: string
                     <h2 className="text-xl font-semibold text-pet-primary">
                       {pet.kind === 'Lost' ? 'Contact Owner' : 'Contact Finder'}
                     </h2>
-                    {/* Add specific contact buttons/info based on pet.kind and available data */}
                     <div className="flex flex-wrap gap-3">
-                      <Button className="bg-pet-accent hover:bg-pet-accent/90 text-white">
-                        <Mail className="h-4 w-4 mr-2" />
-                        Contact via Email
-                      </Button>
-                      <Button variant="outline" className="border-pet-primary/30 text-pet-primary hover:bg-pet-primary/10">
-                        <Phone className="h-4 w-4 mr-2" />
-                        View Phone (if available)
-                      </Button>
+                      {/* Debug info */}
+                      {process.env.NODE_ENV === 'development' && (
+                        <div className="w-full mb-2 p-2 bg-gray-100 rounded text-xs">
+                          <p>finderId: {pet.finderId || 'undefined'}</p>
+                        </div>
+                      )}
+                      {pet.finderId ? (
+                        <Button 
+                          className="bg-pet-accent hover:bg-pet-accent/90 text-white"
+                          onClick={handleContactClick}
+                        >
+                          <Mail className="h-4 w-4 mr-2" />
+                          View Contact Information
+                        </Button>
+                      ) : (
+                        <Button 
+                          className="bg-pet-accent/50 text-white"
+                          disabled
+                          title="Contact information not available"
+                        >
+                          <Mail className="h-4 w-4 mr-2" />
+                          Contact Information Unavailable
+                        </Button>
+                      )}
                     </div>
                     <p className="text-xs text-muted-foreground">
                       Please be respectful and responsible when contacting.
@@ -395,12 +444,6 @@ export default function PetDetailPage({ params }: { params: Promise<{ id: string
                         Reunited with Owner
                     </Button>
                 )}
-                <Button variant="outline" className="border-pet-primary/30 text-pet-primary hover:bg-pet-primary/10">
-                  Share Listing
-                </Button>
-                <Button variant="ghost" className="text-pet-primary hover:bg-pet-primary/10">
-                  Report Listing
-                </Button>
               </div>
             </>
           ) : (
@@ -421,7 +464,6 @@ export default function PetDetailPage({ params }: { params: Promise<{ id: string
           )}
         </div>
       </main>
-      <SiteFooter />
     </div>
   )
 }

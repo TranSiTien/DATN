@@ -3,7 +3,6 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { SiteHeader } from "@/components/site-header"
-import { SiteFooter } from "@/components/site-footer"
 import { Heart, Search, Users, MapPin, Mail, Phone, MessageSquare, Quote } from "lucide-react"
 
 export default function AboutPage() {
@@ -464,7 +463,6 @@ export default function AboutPage() {
           </div>
         </section>
       </main>
-      <SiteFooter />
     </div>
   )
 }

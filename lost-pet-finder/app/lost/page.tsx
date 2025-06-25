@@ -9,7 +9,6 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { ArrowLeft, Upload, Mail, Phone, Facebook, Instagram, Twitter, MapPin, Heart, Loader2, Search } from "lucide-react"
 import { SiteHeader } from "@/components/site-header"
-import { SiteFooter } from "@/components/site-footer"
 import { useRouter } from "next/navigation"
 import { useUser } from "@/contexts/user-context"
 import { useToast } from "@/components/ui/use-toast"
@@ -778,7 +777,6 @@ export default function ReportLostPet() {
           )}
         </div>
       </main>
-      <SiteFooter />
     </div>
   )
 }

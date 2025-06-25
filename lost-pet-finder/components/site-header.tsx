@@ -74,13 +74,6 @@ export function SiteHeader() {
             Search
             <span className="absolute inset-x-0 -bottom-1 h-0.5 bg-white scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
           </Link>
-          <Link
-            href="/about"
-            className="text-sm font-medium text-white hover:text-white/90 transition-colors relative group"
-          >
-            About
-            <span className="absolute inset-x-0 -bottom-1 h-0.5 bg-white scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
-          </Link>
         </nav>
 
         {/* Mobile Menu Button - Visible only on mobile */}
@@ -212,13 +205,6 @@ export function SiteHeader() {
 
           {user ? (
             <div className="flex items-center gap-3">
-              {/* Notifications */}
-              <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 relative">
-                <Bell className="h-5 w-5" />
-                <Badge className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center bg-pet-accent text-white">
-                  3
-                </Badge>
-              </Button>
 
               {/* Create New Listing */}
               <DropdownMenu>

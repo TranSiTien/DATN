@@ -11,7 +11,6 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { ArrowLeft, User as UserIcon, Lock, AlertCircle } from "lucide-react"
 import { SiteHeader } from "@/components/site-header"
-import { SiteFooter } from "@/components/site-footer"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { useUser } from "@/contexts/user-context"
 
@@ -121,22 +120,10 @@ export default function LoginPage() {
                   Sign up
                 </Link>
               </div>
-              <div className="text-center text-xs text-muted-foreground">
-                By signing in, you agree to our{" "}
-                <Link href="/terms" className="underline underline-offset-4 hover:text-pet-primary">
-                  Terms of Service
-                </Link>{" "}
-                and{" "}
-                <Link href="/privacy" className="underline underline-offset-4 hover:text-pet-primary">
-                  Privacy Policy
-                </Link>
-                .
-              </div>
             </CardFooter>
           </Card>
         </div>
       </main>
-      <SiteFooter />
     </div>
   )
 }

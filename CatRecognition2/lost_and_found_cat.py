@@ -61,8 +61,8 @@ index = None
 
 def init_pinecone():
     global pc, index
-    pc = Pinecone(api_key="pcsk_6MhuxD_5nm5cJpQxGenWAKdQTKhzhjop8Y2tUt141bmp8gyvGKXxJgzPwbvv1Bar43AQgt")
-    INDEX_NAME = "pet-finder"
+    pc = Pinecone(api_key="pcsk_52ou8p_DiNB1eNfgKZeMnUv2r4Tumpyc496z6YNMoD3T8enAjYcJfHt5NdBH2pe8vpv3NM")
+    INDEX_NAME = "pet-connect2"
 
     try:
         index = pc.Index(INDEX_NAME)
@@ -377,7 +377,7 @@ async def search_similar_cats_by_image(
         
         # Take top_k results
         final_matches = [{"cat_id": cat_id, "best_score": score} 
-                         for cat_id, score, _ in composite_scores[:top_k]]
+                         for cat_id, score, _ in composite_scores[:1000]]
 
         return JSONResponse(content={"matches": final_matches})
 
@@ -451,7 +451,7 @@ async def search_similar_cats_by_cat_id(
 
         print(f"Pinecone query for source vectors returned {len(fetch_response.matches)} matches before filtering.")
         if fetch_response.matches:
-            print(f"First few matches metadata (up to 5): {[m.metadata for m in fetch_response.matches[:5]]}")
+            print(f"First few matches metadata (up to 5): {[m.metadata for m in fetch_response.matches[:1000]]}")
 
         # Filter safely, checking for metadata existence first
         source_vectors = []
@@ -494,7 +494,7 @@ async def search_similar_cats_by_cat_id(
         sorted_matches = sorted(target_cat_id_scores.items(), key=lambda item: item[1])
 
         final_matches = []
-        for cat_id_match, best_score in sorted_matches[:top_k]:
+        for cat_id_match, best_score in sorted_matches[:1000]:
             final_matches.append({
                 "cat_id": cat_id_match,
                 "best_score": best_score

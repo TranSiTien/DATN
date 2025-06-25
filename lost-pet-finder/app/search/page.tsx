@@ -11,7 +11,6 @@ import { Slider } from "@/components/ui/slider"
 import { Card, CardContent } from "@/components/ui/card"
 import { ArrowLeft, Upload, Search, Sliders, MapPin, Calendar, Filter, Loader2, Image as ImageIcon, ListChecks } from "lucide-react"
 import { SiteHeader } from "@/components/site-header"
-import { SiteFooter } from "@/components/site-footer"
 import { useUser } from "@/contexts/user-context"
 import { PetCard } from "@/components/pet-card"
 import { useToast } from "@/components/ui/use-toast"
@@ -88,8 +87,8 @@ export default function SearchPage() {
   })
   
   const [useImageSearch, setUseImageSearch] = useState(shouldUpload || false)
-  const [useLocationAndDistanceFilter, setUseLocationAndDistanceFilter] = useState(true)
-  const [useDateFilter, setUseDateFilter] = useState(true)
+  const [useLocationAndDistanceFilter, setUseLocationAndDistanceFilter] = useState(false)
+  const [useDateFilter, setUseDateFilter] = useState(false)
   const [locationSuggestions, setLocationSuggestions] = useState<any[]>([])
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [isSearchingLocation, setIsSearchingLocation] = useState(false)
@@ -600,7 +599,7 @@ export default function SearchPage() {
                         <Link href={`/pet/${pet.id}`} passHref>
                           <PetCard
                             id={pet.id}
-                            name={pet.name || (isLostPet ? "Unknown Lost Pet" : "Unknown Found Pet")}
+                            name={pet.name || (isLostPet ? "Unknown Lost Pet" : "Found Pet")}
                             description={pet.description || "No description available"}
                             imageUrl={petImageUrl}
                             location={locationDisplay}
@@ -632,7 +631,6 @@ export default function SearchPage() {
           </div>
         </div>
       </main>
-      <SiteFooter />
     </div>
   )
 }

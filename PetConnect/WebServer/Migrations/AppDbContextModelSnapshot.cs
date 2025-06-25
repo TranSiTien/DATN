@@ -47,6 +47,9 @@ namespace PetConnect.Migrations
                         .IsRequired()
                         .HasColumnType("geometry");
 
+                    b.Property<string>("LocationName")
+                        .HasColumnType("text");
+
                     b.Property<string>("ModeratorFeedback")
                         .HasMaxLength(2500)
                         .HasColumnType("character varying(2500)");
