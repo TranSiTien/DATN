@@ -149,14 +149,20 @@ echo "--- Building .NET WebServer (Production) ---"
 echo "========================================="
 cd /root/DATN/PetConnect/WebServer
 
-echo "Cleaning previous builds..."
+echo "Cleaning previous builds and publish directory..."
 dotnet clean --configuration Release
+
+# Remove and recreate publish directory to avoid file conflicts
+if [ -d "publish" ]; then
+    echo "Removing existing publish directory..."
+    rm -rf publish
+fi
 
 echo "Restoring NuGet packages..."
 dotnet restore
 
 echo "Building and publishing for production..."
-dotnet publish -c Release -o ./publish --no-restore
+dotnet publish -c Release -o ./publish --no-restore --no-build-dependencies
 
 if [ $? -eq 0 ]; then
     echo "✅ .NET WebServer build completed successfully!"
